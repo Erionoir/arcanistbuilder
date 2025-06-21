@@ -316,6 +316,94 @@ const metaTeamDatabase = {
     }
 };
 
+const synergyCoreDatabase = {
+    "Mental Crit": {
+        characters: ["Regulus", "Voyager"],
+        description: "A Mental damage core that leverages critical hits. Voyager provides crucial crit-rate buffs and control, setting up Regulus to deal high damage with her ultimate.",
+        bestWith: "A support that can increase Mental DMG or provide more survivability like Tooth Fairy or Medicine Pocket."
+    },
+    "Reality Burst": {
+        characters: ["A Knight", "An-an Lee"],
+        description: "A Reality damage core focused on burst damage. An-an Lee provides significant buffs to Reality damage dealers, allowing A Knight to unleash powerful attacks.",
+        bestWith: "A survival character like Sotheby or Ms. NewBabel, and another Reality sub-dps."
+    },
+    "Poison Ivy": {
+        characters: ["Jessica", "Sotheby"],
+        description: "A damage-over-time core centered around Poison. Jessica is a potent poison applicator, while Sotheby's healing is enhanced when allies are debuffed, creating a unique synergy. Both deal Reality damage.",
+        bestWith: "A character that can apply more debuffs or a strong DPS to take advantage of the poison, like Druvis III."
+    },
+    "FUA Fiesta": {
+        characters: ["Jiu Niangzi", "Pickles"],
+        description: "A Follow-up Attack (FUA) core. Jiu Niangzi is a strong FUA DPS, and Pickles provides valuable buffs that enhance overall team damage and consistency.",
+        bestWith: "Another FUA-enabling support like Flutterpage, and a strong survival character like Fatutu."
+    },
+    "Ultimate Spam": {
+        characters: ["Kaalaa Baunaa", "6"],
+        description: "A core focused on rapidly charging and using ultimates. Kaalaa Baunaa is a DPS that benefits from frequent ultimate usage, and 6 is a unique support that can generate Moxie for the team.",
+        bestWith: "Characters that can generate their own moxie or benefit from high ultimate uptime, like Melania or Eternity."
+    },
+    "Beast Powerhouse (Mental)": {
+        characters: ["Melania", "Medicine Pocket"],
+        description: "A versatile and powerful Beast-afflatus Mental damage core. Melania (S+ Sub DPS) is a top-tier damage dealer who ramps up with her ultimate. Medicine Pocket (S Survival) provides excellent healing and a valuable damage amplification debuff. Their shared Beast afflatus makes them a strong pairing against Plant-type enemies.",
+        bestWith: "A main Mental DPS like Barcarola or Willow, and a buffer like 6 or Voyager."
+    },
+    "Genesis Damage": {
+        characters: ["37", "6"],
+        description: "A Mental damage core focused on the unique 'Genesis' damage type. 37 (A+ DPS) is the main damage dealer. 6 (A Support) provides a mix of buffs for the team and debuffs for the enemy, enhancing 37's damage while controlling the flow of battle.",
+        bestWith: "A survival character like Tooth Fairy or Kiperina, and a sub-dps who can benefit from 6's buffs, like Regulus or Voyager."
+    },
+    "Reality Nuke": {
+        characters: ["Lilya", "An-an Lee"],
+        description: "A Reality damage core designed for massive burst damage. An-an Lee (A Support) provides substantial buffs that dramatically increase the critical damage output of Lilya (A DPS), allowing her ultimate to one-shot powerful enemies.",
+        bestWith: "A character that can apply Reality DEF down debuffs like Shamane, and a strong survival character like Tooth Fairy (who also provides crit-related debuffs)."
+    },
+    "Plant Control": {
+        characters: ["Druvis III", "Noire"],
+        description: "A Plant-afflatus Mental damage core. Noire (A DPS) serves as the main damage dealer, while Druvis III (A Sub DPS) provides excellent crowd control with her [Petrify] mechanic, locking down enemies.",
+        bestWith: "A dedicated healer/survivability character like Vila (who is also Plant/Mental, A+ Survival) or a generic strong healer like Medicine Pocket."
+    },
+    "Burn & Debuff": {
+        characters: ["Spathodea", "Shamane"],
+        description: "A Reality damage core that focuses on the [Burn] DoT effect. Spathodea (A DPS) is the primary damage dealer. Shamane (B Support) provides crucial debuffs that amplify all damage taken by the enemy, significantly boosting Spathodea's output.",
+        bestWith: "A strong survival character like Ms. NewBabel, and another Reality damage dealer or buffer like An-an Lee."
+    },
+    "Poison System": {
+        characters: ["Jessica", "Sotheby"],
+        description: "A Reality damage core that revolves around the [Poison] status effect. Jessica (S DPS) is a powerful damage dealer whose effectiveness is amplified by [Poison]. Sotheby (S+ Survival) provides healing and additional [Poison] application, creating a feedback loop of damage and survivability.",
+        bestWith: "A character that can provide buffs or utility without interfering with the poison setup, like An-an Lee or Pickles."
+    },
+    "Follow-up Frenzy": {
+        characters: ["Centurion", "Pickles"],
+        description: "A Reality damage core focused on maximizing follow-up attacks. Centurion (S+ DPS) deals significant damage through her follow-up mechanic. Pickles (A Support) provides buffs that enhance Centurion's damage output and can contribute his own damage.",
+        bestWith: "A strong survival character like Tooth Fairy or Medicine Pocket, and a debuffer to soften up targets, like Shamane."
+    },
+    "Mineral Shield Wall": {
+        characters: ["Eternity", "Ms. NewBabel"],
+        description: "A highly durable Reality damage core from the Mineral afflatus. Eternity (S Sub DPS) provides both damage and survivability through her [Nasty Wound] and self-healing. Ms. NewBabel (A+ Survival) offers strong shields and healing, making the team incredibly resilient.",
+        bestWith: "A main DPS to capitalize on the survivability, preferably also Mineral afflatus to benefit from afflatus advantages, like Pickles or a neutral damage dealer."
+    },
+    "Spirit Control & Debuff": {
+        characters: ["Voyager", "Tooth Fairy"],
+        description: "A Mental damage core that focuses on controlling the battlefield and debuffing enemies. Voyager (A Support) can inflict [Silence] and [Confusion], disrupting enemy actions. Tooth Fairy (S+ Survival) provides top-tier healing while applying [Weakness] to increase damage taken by enemies.",
+        bestWith: "A main Mental DPS who can take advantage of the control and debuffs, such as Kaalaa Baunaa or 37."
+    },
+    "Taunt & Counter": {
+        characters: ["A Knight", "Medicine Pocket"],
+        description: "A Reality damage core built around a defensive 'Taunt' and 'Counter' strategy. A Knight (A Sub DPS) draws enemy fire with his [Taunt] and retaliates with powerful counters. Medicine Pocket (S Survival) ensures A Knight stays alive with their potent healing and provides a damage amplification debuff.",
+        bestWith: "A main DPS who can operate safely while A Knight tanks, such as Lilya or Regulus."
+    },
+    "Star Afflatus Synergy": {
+        characters: ["Regulus", "Lilya"],
+        description: "A Star-afflatus Reality damage core. Regulus (S+ DPS) and Lilya (A DPS) are both powerful damage dealers who benefit from their shared afflatus when facing Intellect-type enemies. Regulus provides consistent damage and some utility, while Lilya offers massive burst damage with her ultimate.",
+        bestWith: "A strong survival character like Tooth Fairy (who also provides crit-related debuffs that benefit both) and a buffer/debuffer like An-an Lee or Pickles."
+    },
+    "Intellect Afflatus Synergy": {
+        characters: ["Centurion", "An-an Lee"],
+        description: "An Intellect-afflatus Reality damage core. Centurion (S+ DPS) is a top-tier damage dealer who can take advantage of the buffs provided by An-an Lee (A Support), who is also of the Intellect afflatus. This pairing is particularly effective against Beast-type enemies.",
+        bestWith: "A survival character like Medicine Pocket or Ms. NewBabel, and another support or sub-dps to round out the team."
+    }
+};
+
 function findMetaTeamsFor(selectedCharacters) {
     const selectedNames = selectedCharacters.map(char => char.toLowerCase());
     const metaTeams = [];
@@ -380,6 +468,33 @@ function findMetaTeamsFor(selectedCharacters) {
     });
 }
 
+function findSynergyCoresFor(selectedCharacters) {
+    const selectedNames = selectedCharacters.map(char => char.toLowerCase());
+    const synergyCores = [];
+
+    for (const [coreName, coreData] of Object.entries(synergyCoreDatabase)) {
+        const matchingCores = coreData.characters.filter(char =>
+            selectedNames.some(selected =>
+                selected.includes(char.toLowerCase()) ||
+                char.toLowerCase().includes(selected) ||
+                char.toLowerCase() === selected
+            )
+        );
+        if (matchingCores.length > 0) {
+            synergyCores.push({
+                name: coreName,
+                characters: coreData.characters,
+                description: coreData.description,
+                bestWith: coreData.bestWith,
+                matches: matchingCores.length
+            });
+        }
+    }
+
+    return synergyCores.sort((a, b) => b.matches - a.matches);
+}
+
+// Update the AI prompt generation logic to enforce role constraints
 async function generateTeam() {
     if (selectedCharacters.length === 0) return;
 
@@ -387,7 +502,7 @@ async function generateTeam() {
     loadingSpinner.classList.remove('hidden');
     resultsContainer.classList.add('hidden');
     teamResultsWrapper.innerHTML = '';
-    actionButtonsContainer.innerHTML = '';    // Smooth scroll hehe
+    actionButtonsContainer.innerHTML = '';
     loadingSpinner.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
     // Apply experimental features filtering
@@ -397,9 +512,9 @@ async function generateTeam() {
         console.log('🧪 Experimental: Filtered to afflatus restrictions:', selectedAfflatusRestrictions);
         showNotification(`🧪 Using only ${selectedAfflatusRestrictions.join(', ')} afflatus characters`, 'info');
     }
-    
+
     const availableCharactersList = availableCharacters.map(char => char.name).join(', ');
-    
+
     // Get details
     const selectedCharacterDetails = selectedCharacters.map(name => {
         const char = characters.find(c => c.name === name);
@@ -409,14 +524,15 @@ async function generateTeam() {
             return `${char.name} (details not available)`;
         }
         return name;
-    }).join(', ');    // Absolute Meta Mode func
+    }).join(', ');
+
     let metaContext = '';
     if (absoluteMetaMode) {
         console.log('🔥 Absolute Meta Mode activated - Using real CN meta data');
         showNotification('🔥 Absolute Meta Mode: Using verified CN meta data from Prydwen.gg', 'success');
         const metaTeams = findMetaTeamsFor(selectedCharacters);
         console.log('📊 Found meta teams:', metaTeams);
-        
+
         if (metaTeams.length > 0) {
             console.log('✅ Using verified meta team data');
             showNotification(`✅ Found ${metaTeams.length} verified meta team(s) for your selection!`, 'success');
@@ -462,6 +578,14 @@ ${selectedCharacters.map(char => {
     } else {
         console.log('🔧 Using general synergy mode');
         showNotification('🔧 Synergy Mode: Building teams based on general character synergies', 'info');
+        const synergyCores = findSynergyCoresFor(selectedCharacters);
+        if (synergyCores.length > 0) {
+            console.log('🤝 Found synergy cores:', synergyCores);
+            showNotification(`🤝 Found ${synergyCores.length} synergy core(s) for your selection!`, 'info');
+            metaContext = `\nINSPIRATIONAL SYNERGY CORES FOR YOUR CHARACTERS:\n${synergyCores.map(core =>
+                `**${core.name}** (${core.characters.join(' + ')}):\n- Synergy: ${core.description}\n- Recommended Partners: ${core.bestWith}`
+            ).join('\n\n')}`;
+        }
     }
 
     const prompt = `
@@ -480,7 +604,8 @@ ${selectedCharacters.map(char => {
         - Recoleta + Lopera (Ultimate) → Best with Melania + Fatutu
         - Flutterpage + Fatutu (FUA Support) → Best for supporting FUA carries
         ` : `
-        SYNERGY MODE: Build teams around my selected characters, considering their roles, damage types, and synergies while maintaining competitive meta viability.
+        SYNERGY MODE: Build teams around my selected characters, considering their roles, damage types, and synergies. Use the provided INSPIRATIONAL SYNERGY CORES as a starting point, but feel free to create other diverse and effective teams. Prioritize variety and explain your choices. Avoid over-reliance on common staples like Tooth Fairy unless they fit the synergy perfectly.
+        ${metaContext}
         `}
           AVAILABLE 6-STAR CHARACTERS ONLY (you MUST only use characters from this exact list):
         ${availableCharactersList}
@@ -499,7 +624,11 @@ ${selectedCharacters.map(char => {
         - Character combinations that CN players actually use, not theoretical synergies
         - Balanced team composition with proper roles: DPS (main damage), Sub DPS (secondary damage), Support (buffs/debuffs/healing), Survival (sustain/protection)
         
-        IMPORTANT: Consider team role balance when making suggestions. A well-rounded team typically includes different roles working together.
+        IMPORTANT: STRICT ROLE ENFORCEMENT:
+        - DPS characters must only be assigned to the DPS role.
+        - Support characters must only be assigned to the Support role.
+        - Sub DPS characters must only be assigned to the Sub DPS role.
+        - Survival characters must only be assigned to the Survival role.
         
         For each composition, you MUST follow this structure exactly:
         
@@ -1227,29 +1356,6 @@ function showSettingsNotification(message, type = 'info', duration = 2500) {
             }
         }, 400);
     }, duration);
-}
-
-// Update existing dropdown and meta mode functionality to work within settings
-function enhanceSettingsControls() {
-    // Update team number changes to show feedback
-    const originalDropdownHandler = dropdownOptions?.addEventListener;
-    if (dropdownOptions) {
-        dropdownOptions.addEventListener('click', (e) => {
-            if (e.target.tagName === 'A') {
-                const teamCount = e.target.textContent;
-                showSettingsNotification(`Team count set to ${teamCount}`, 'success');
-            }
-        });
-    }
-    
-    // Update meta mode toggle feedback
-    const metaCheckbox = document.getElementById('meta-mode-checkbox');
-    if (metaCheckbox) {
-        metaCheckbox.addEventListener('change', (e) => {
-            const mode = e.target.checked ? 'Absolute Meta Mode' : 'Synergy Mode';
-            showSettingsNotification(`Switched to ${mode}`, 'success');
-        });
-    }
 }
 
 // Experimental Features functionality
