@@ -64,6 +64,18 @@ const dropdownLabel = document.getElementById('dropdown-label');
 const dropdownArrow = document.getElementById('dropdown-arrow');
 const metaModeCheckbox = document.getElementById('meta-mode-checkbox');
 
+// Sidebar elements
+const sidebar = document.getElementById('sidebar');
+const sidebarToggle = document.getElementById('sidebar-toggle');
+const mainContent = document.getElementById('main-content');
+const teamBuilderLink = document.getElementById('team-builder-link');
+const libraryLink = document.getElementById('library-link');
+
+// Create overlay for mobile
+const overlay = document.createElement('div');
+overlay.className = 'sidebar-overlay';
+document.body.appendChild(overlay);
+
 // State
 let selectedCharacters = [];
 let numTeamsToGenerate = 1;
@@ -599,8 +611,74 @@ dropdownButton.addEventListener('keydown', (e) => {
     }
 });
 
-// Event Listeners
-generateBtn.addEventListener('click', generateTeam);
+// Toggle sidebar
+function toggleSidebar() {
+    const isOpen = sidebar.classList.contains('open');
+    
+    if (isOpen) {
+        closeSidebar();
+    } else {
+        openSidebar();
+    }
+}
+
+function openSidebar() {
+    sidebar.classList.add('open');
+    mainContent.classList.add('sidebar-open');
+    overlay.classList.add('active');
+    
+    // Add staggered animation to menu items
+    const menuItems = sidebar.querySelectorAll('.sidebar-item');
+    menuItems.forEach((item, index) => {
+        item.style.animationDelay = `${(index + 1) * 0.1}s`;
+    });
+}
+
+function closeSidebar() {
+    sidebar.classList.remove('open');
+    mainContent.classList.remove('sidebar-open');
+    overlay.classList.remove('active');
+}
+
+// Event listeners
+sidebarToggle.addEventListener('click', toggleSidebar);
+overlay.addEventListener('click', closeSidebar);
+
+// Navigation functionality
+teamBuilderLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    
+    // Update active states
+    document.querySelectorAll('.sidebar-item').forEach(item => item.classList.remove('active'));
+    teamBuilderLink.classList.add('active');
+    
+    // Show team builder content (already visible)
+    showNotification('Team Builder activated! 🎯', 'info');
+    
+    // Close sidebar on mobile
+    if (window.innerWidth <= 768) {
+        closeSidebar();
+    }
+});
+
+libraryLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    showNotification('Library feature coming soon! 📚✨', 'info');
+});
+
+// Handle escape key
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && sidebar.classList.contains('open')) {
+        closeSidebar();
+    }
+});
+
+// Handle window resize
+window.addEventListener('resize', () => {
+    if (window.innerWidth > 768 && overlay.classList.contains('active')) {
+        overlay.classList.remove('active');
+    }
+});
 
 // Meta Mode Toggle
 metaModeCheckbox.addEventListener('change', (e) => {
