@@ -71,6 +71,17 @@ const mainContent = document.getElementById('main-content');
 const teamBuilderLink = document.getElementById('team-builder-link');
 const libraryLink = document.getElementById('library-link');
 
+// Search and Filter elements
+const characterSearch = document.getElementById('character-search');
+const searchClear = document.getElementById('search-clear');
+const filterToggle = document.getElementById('filter-toggle');
+const filterDropdown = document.getElementById('filter-dropdown');
+const filterCount = document.getElementById('filter-count');
+const filterClear = document.getElementById('filter-clear');
+const filterApply = document.getElementById('filter-apply');
+const clearSelectionBtn = document.getElementById('clear-selection-btn');
+const selectionCount = document.getElementById('selection-count');
+
 // Create overlay for mobile
 const overlay = document.createElement('div');
 overlay.className = 'sidebar-overlay';
@@ -80,6 +91,16 @@ document.body.appendChild(overlay);
 let selectedCharacters = [];
 let numTeamsToGenerate = 1;
 let absoluteMetaMode = false;
+
+// Search and Filter State
+let currentSearchTerm = '';
+let activeFilters = {
+    afflatus: [],
+    damageType: [],
+    rank: [],
+    role: []
+};
+let filteredCharacters = [...characters];
 
 function renderCharacterCard(character, isSelectable = false, isSelected = false) {
     const card = document.createElement('div');
@@ -106,7 +127,24 @@ function renderCharacterCard(character, isSelectable = false, isSelected = false
 
 function renderAllCharacters() {
     characterSelectionGrid.innerHTML = '';
-    const sortedCharacters = [...characters].sort((a, b) => a.name.localeCompare(b.name));
+    const sortedCharacters = [...filteredCharacters].sort((a, b) => a.name.localeCompare(b.name));
+    
+    // Show message if no characters match the filters
+    if (sortedCharacters.length === 0) {
+        const noResults = document.createElement('div');
+        noResults.className = 'no-results';
+        noResults.innerHTML = `
+            <div class="no-results-content">
+                <svg class="no-results-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.467-.98-5.982-2.555M15 17H9m6-13H9m9.007-2H5.993A.993.993 0 005 4.007v15.986c0 .548.445.993.993.993h14.014a.993.993 0 00.993-.993V4.007A.993.993 0 0020.007 2z" />
+                </svg>
+                <h3>No characters found</h3>
+                <p>Try adjusting your search or filters</p>
+            </div>
+        `;
+        characterSelectionGrid.appendChild(noResults);
+        return;
+    }
     
     sortedCharacters.forEach((char, index) => {
         const card = renderCharacterCard(char, true, selectedCharacters.includes(char.name));
@@ -160,7 +198,44 @@ function toggleCharacterSelection(name) {
 }
 
 function updateGenerateButtonState() {
-    generateBtn.disabled = selectedCharacters.length === 0;
+    const hasSelectedCharacters = selectedCharacters.length > 0;
+    
+    if (hasSelectedCharacters) {
+        generateBtn.disabled = false;
+        generateBtn.classList.remove('disabled');
+    } else {
+        generateBtn.disabled = true;
+        generateBtn.classList.add('disabled');
+    }
+    
+    updateSelectionCount();
+}
+
+function updateSelectionCount() {
+    const count = selectedCharacters.length;
+    
+    if (count > 0) {
+        selectionCount.textContent = count;
+        selectionCount.classList.remove('hidden');
+        clearSelectionBtn.classList.add('active');
+    } else {
+        selectionCount.classList.add('hidden');
+        clearSelectionBtn.classList.remove('active');
+    }
+}
+
+function clearAllSelections() {
+    selectedCharacters = [];
+    
+    // Update all character cards
+    document.querySelectorAll('.character-card').forEach(card => {
+        card.classList.remove('selected');
+    });
+    
+    updateGenerateButtonState();
+    renderAllCharacters(); // Re-render to update selection states
+    
+    showNotification('All selections cleared! 🗑️', 'info');
 }
 
 // Current meta data from Prydwen.gg (last updated: May 2025)
@@ -677,6 +752,178 @@ document.addEventListener('keydown', (e) => {
 window.addEventListener('resize', () => {
     if (window.innerWidth > 768 && overlay.classList.contains('active')) {
         overlay.classList.remove('active');
+    }
+});
+
+// Search and Filter Functions
+function applySearchAndFilters() {
+    filteredCharacters = characters.filter(character => {
+        // Search filter
+        const matchesSearch = character.name.toLowerCase().includes(currentSearchTerm.toLowerCase());
+        
+        // Afflatus filter
+        const matchesAfflatus = activeFilters.afflatus.length === 0 || 
+            activeFilters.afflatus.includes(character.afflatus);
+        
+        // Damage Type filter
+        const matchesDamageType = activeFilters.damageType.length === 0 || 
+            activeFilters.damageType.includes(character.dmgType);
+        
+        // Rank filter
+        const matchesRank = activeFilters.rank.length === 0 || 
+            activeFilters.rank.includes(character.rank);
+        
+        // Role filter
+        const matchesRole = activeFilters.role.length === 0 || 
+            activeFilters.role.includes(character.role);
+        
+        return matchesSearch && matchesAfflatus && matchesDamageType && matchesRank && matchesRole;
+    });
+    
+    renderAllCharacters();
+    updateFilterCount();
+}
+
+function updateFilterCount() {
+    const totalActiveFilters = Object.values(activeFilters).reduce((sum, arr) => sum + arr.length, 0);
+    
+    if (totalActiveFilters > 0) {
+        filterCount.textContent = totalActiveFilters;
+        filterCount.classList.remove('hidden');
+    } else {
+        filterCount.classList.add('hidden');
+    }
+}
+
+function toggleFilter(category, value) {
+    const filterArray = activeFilters[category];
+    const index = filterArray.indexOf(value);
+    
+    if (index > -1) {
+        filterArray.splice(index, 1);
+    } else {
+        filterArray.push(value);
+    }
+}
+
+function clearAllFilters() {
+    activeFilters = {
+        afflatus: [],
+        damageType: [],
+        rank: [],
+        role: []
+    };
+    
+    // Uncheck all filter checkboxes
+    document.querySelectorAll('.filter-dropdown input[type="checkbox"]').forEach(checkbox => {
+        checkbox.checked = false;
+    });
+    
+    applySearchAndFilters();
+}
+
+function toggleFilterDropdown() {
+    filterDropdown.classList.toggle('hidden');
+}
+
+// Search and Filter Event Listeners
+if (characterSearch) {
+    characterSearch.addEventListener('input', (e) => {
+        currentSearchTerm = e.target.value;
+        
+        // Show/hide clear button
+        if (currentSearchTerm.length > 0) {
+            searchClear.classList.remove('hidden');
+        } else {
+            searchClear.classList.add('hidden');
+        }
+        
+        applySearchAndFilters();
+    });
+}
+
+if (searchClear) {
+    searchClear.addEventListener('click', () => {
+        characterSearch.value = '';
+        currentSearchTerm = '';
+        searchClear.classList.add('hidden');
+        applySearchAndFilters();
+        characterSearch.focus();
+    });
+}
+
+if (filterToggle) {
+    filterToggle.addEventListener('click', toggleFilterDropdown);
+}
+
+if (filterClear) {
+    filterClear.addEventListener('click', clearAllFilters);
+}
+
+if (filterApply) {
+    filterApply.addEventListener('click', () => {
+        applySearchAndFilters();
+        filterDropdown.classList.add('hidden');
+        showNotification('Filters applied successfully! 🎯', 'success');
+    });
+}
+
+// Clear selection button
+if (clearSelectionBtn) {
+    clearSelectionBtn.addEventListener('click', clearAllSelections);
+}
+
+// Set up filter checkboxes
+document.addEventListener('DOMContentLoaded', () => {
+    // Afflatus filters
+    document.querySelectorAll('#afflatus-filters input[type="checkbox"]').forEach(checkbox => {
+        checkbox.addEventListener('change', (e) => {
+            toggleFilter('afflatus', e.target.value);
+        });
+    });
+    
+    // Damage Type filters
+    document.querySelectorAll('#damage-type-filters input[type="checkbox"]').forEach(checkbox => {
+        checkbox.addEventListener('change', (e) => {
+            toggleFilter('damageType', e.target.value);
+        });
+    });
+    
+    // Rank filters
+    document.querySelectorAll('#rank-filters input[type="checkbox"]').forEach(checkbox => {
+        checkbox.addEventListener('change', (e) => {
+            toggleFilter('rank', e.target.value);
+        });
+    });
+    
+    // Role filters
+    document.querySelectorAll('#role-filters input[type="checkbox"]').forEach(checkbox => {
+        checkbox.addEventListener('change', (e) => {
+            toggleFilter('role', e.target.value);
+        });
+    });
+});
+
+// Close filter dropdown when clicking outside
+document.addEventListener('click', (e) => {
+    if (!filterToggle.contains(e.target) && !filterDropdown.contains(e.target) && !clearSelectionBtn.contains(e.target)) {
+        filterDropdown.classList.add('hidden');
+    }
+});
+
+// Keyboard accessibility
+document.addEventListener('keydown', (e) => {
+    // Close filter dropdown with Escape key
+    if (e.key === 'Escape' && !filterDropdown.classList.contains('hidden')) {
+        filterDropdown.classList.add('hidden');
+        filterToggle.focus();
+    }
+    
+    // Quick search focus with Ctrl+F or Cmd+F
+    if ((e.ctrlKey || e.metaKey) && e.key === 'f') {
+        e.preventDefault();
+        characterSearch.focus();
+        characterSearch.select();
     }
 });
 

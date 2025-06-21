@@ -84,7 +84,162 @@
                 
                 <button id="generate-team-btn" class="generate-button">
                     Generate Teams
-                </button>
+                </button>            </div>
+
+            <!-- Search and Filter Section -->
+            <div class="search-filter-section">
+                <div class="search-container">
+                    <div class="search-input-wrapper">
+                        <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                        <input type="text" id="character-search" class="search-input" placeholder="Search characters..." />
+                        <button class="search-clear hidden" id="search-clear">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>                </div>
+
+                <div class="filter-container">
+                    <button class="clear-selection-btn" id="clear-selection-btn">
+                        <svg class="clear-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1-1H9a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                        <span>Clear</span>
+                        <span class="selection-count hidden" id="selection-count">0</span>
+                    </button>
+
+                    <button class="filter-toggle" id="filter-toggle">
+                        <svg class="filter-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.414A1 1 0 013 6.707V4z" />
+                        </svg>
+                        <span>Filters</span>
+                        <span class="filter-count hidden" id="filter-count">0</span>
+                    </button>
+
+                    <div class="filter-dropdown hidden" id="filter-dropdown">
+                        <div class="filter-section">
+                            <h4 class="filter-title">Afflatus</h4>
+                            <div class="filter-options" id="afflatus-filters">
+                                <label class="filter-option">
+                                    <input type="checkbox" value="Beast" />
+                                    <span class="filter-checkmark"></span>
+                                    <img src="assets/afflatus/Beast.png" alt="Beast" class="afflatus-icon" />
+                                    <span>Beast</span>
+                                </label>
+                                <label class="filter-option">
+                                    <input type="checkbox" value="Intellect" />
+                                    <span class="filter-checkmark"></span>
+                                    <img src="assets/afflatus/Intellect.png" alt="Intellect" class="afflatus-icon" />
+                                    <span>Intellect</span>
+                                </label>
+                                <label class="filter-option">
+                                    <input type="checkbox" value="Mineral" />
+                                    <span class="filter-checkmark"></span>
+                                    <img src="assets/afflatus/Mineral.png" alt="Mineral" class="afflatus-icon" />
+                                    <span>Mineral</span>
+                                </label>
+                                <label class="filter-option">
+                                    <input type="checkbox" value="Plant" />
+                                    <span class="filter-checkmark"></span>
+                                    <img src="assets/afflatus/Plant.png" alt="Plant" class="afflatus-icon" />
+                                    <span>Plant</span>
+                                </label>
+                                <label class="filter-option">
+                                    <input type="checkbox" value="Spirit" />
+                                    <span class="filter-checkmark"></span>
+                                    <img src="assets/afflatus/Spirit.png" alt="Spirit" class="afflatus-icon" />
+                                    <span>Spirit</span>
+                                </label>
+                                <label class="filter-option">
+                                    <input type="checkbox" value="Star" />
+                                    <span class="filter-checkmark"></span>
+                                    <img src="assets/afflatus/Star.png" alt="Star" class="afflatus-icon" />
+                                    <span>Star</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="filter-section">
+                            <h4 class="filter-title">Damage Type</h4>
+                            <div class="filter-options" id="damage-type-filters">
+                                <label class="filter-option">
+                                    <input type="checkbox" value="Mental" />
+                                    <span class="filter-checkmark"></span>
+                                    <span>Mental</span>
+                                </label>
+                                <label class="filter-option">
+                                    <input type="checkbox" value="Reality" />
+                                    <span class="filter-checkmark"></span>
+                                    <span>Reality</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="filter-section">
+                            <h4 class="filter-title">Rank</h4>
+                            <div class="filter-options" id="rank-filters">
+                                <label class="filter-option">
+                                    <input type="checkbox" value="S+" />
+                                    <span class="filter-checkmark"></span>
+                                    <span>S+</span>
+                                </label>
+                                <label class="filter-option">
+                                    <input type="checkbox" value="S" />
+                                    <span class="filter-checkmark"></span>
+                                    <span>S</span>
+                                </label>
+                                <label class="filter-option">
+                                    <input type="checkbox" value="A+" />
+                                    <span class="filter-checkmark"></span>
+                                    <span>A+</span>
+                                </label>
+                                <label class="filter-option">
+                                    <input type="checkbox" value="A" />
+                                    <span class="filter-checkmark"></span>
+                                    <span>A</span>
+                                </label>
+                                <label class="filter-option">
+                                    <input type="checkbox" value="B" />
+                                    <span class="filter-checkmark"></span>
+                                    <span>B</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="filter-section">
+                            <h4 class="filter-title">Role</h4>
+                            <div class="filter-options" id="role-filters">
+                                <label class="filter-option">
+                                    <input type="checkbox" value="DPS" />
+                                    <span class="filter-checkmark"></span>
+                                    <span>DPS</span>
+                                </label>
+                                <label class="filter-option">
+                                    <input type="checkbox" value="Sub DPS" />
+                                    <span class="filter-checkmark"></span>
+                                    <span>Sub DPS</span>
+                                </label>
+                                <label class="filter-option">
+                                    <input type="checkbox" value="Support" />
+                                    <span class="filter-checkmark"></span>
+                                    <span>Support</span>
+                                </label>
+                                <label class="filter-option">
+                                    <input type="checkbox" value="Survival" />
+                                    <span class="filter-checkmark"></span>
+                                    <span>Survival</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="filter-actions">
+                            <button class="filter-clear" id="filter-clear">Clear All</button>
+                            <button class="filter-apply" id="filter-apply">Apply Filters</button>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div id="character-selection">
