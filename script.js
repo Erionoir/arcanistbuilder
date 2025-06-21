@@ -197,9 +197,13 @@ function toggleCharacterSelection(name) {
                 cardElement.blur();
             }
             return;
-        }
-    }
+        }    }
     updateGenerateButtonState();
+    
+    // Update clear selection button visibility if the function exists
+    if (typeof updateClearSelectionButtonVisibility === 'function') {
+        updateClearSelectionButtonVisibility();
+    }
 }
 
 function updateGenerateButtonState() {
@@ -1439,6 +1443,75 @@ function applyAfflatusRestrictions(availableCharacters) {
     );
 }
 
+// Floating Button Functionality
+function initializeFloatingButtons() {
+    const scrollToTopBtn = document.getElementById('scrollToTop');
+    const clearSelectionBtn = document.getElementById('clearSelection');
+    
+    if (!scrollToTopBtn || !clearSelectionBtn) {
+        console.warn('Floating buttons not found in DOM');
+        return;
+    }
+    
+    let isScrolling = false;
+    
+    // Throttled scroll handler for better performance
+    function handleScroll() {
+        if (!isScrolling) {
+            window.requestAnimationFrame(() => {
+                const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                
+                // Show/hide scroll to top button based on scroll position
+                if (scrollTop > 300) {
+                    scrollToTopBtn.classList.add('visible');
+                } else {
+                    scrollToTopBtn.classList.remove('visible');
+                }
+                
+                isScrolling = false;
+            });
+            isScrolling = true;
+        }
+    }
+    
+    // Scroll to top functionality
+    function scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }
+      // Clear all selections functionality
+    function clearAllSelections() {
+        selectedCharacters.splice(0, selectedCharacters.length); // Clear the array
+        updateGenerateButtonState();
+        renderAllCharacters();
+        
+        // Hide the clear selection button
+        clearSelectionBtn.classList.remove('visible');
+        
+        // Show success notification
+        showNotification('All selections cleared!', 'success');
+    }
+    
+    // Update clear selection button visibility (make it global)
+    window.updateClearSelectionButtonVisibility = function() {
+        if (selectedCharacters.length > 0) {
+            clearSelectionBtn.classList.add('visible');
+        } else {
+            clearSelectionBtn.classList.remove('visible');
+        }
+    }
+    
+    // Event listeners
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    scrollToTopBtn.addEventListener('click', scrollToTop);
+    clearSelectionBtn.addEventListener('click', clearAllSelections);
+    
+    // Initial state
+    window.updateClearSelectionButtonVisibility();
+}
+
 // Initial Render
 document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM loaded, starting initialization...');
@@ -1456,4 +1529,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Setup experimental features immediately
     setupExperimentalFeatures();
+    
+    // Initialize floating buttons
+    initializeFloatingButtons();
 });
