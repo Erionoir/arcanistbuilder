@@ -61,8 +61,7 @@ const actionButtonsContainer = document.getElementById('action-buttons');
 const teamCountButtons = document.getElementById('team-count-buttons');
 const metaModeCheckbox = document.getElementById('meta-mode-checkbox');
 
-// Experimental features elements
-const experimentalFeaturesCheckbox = document.getElementById('experimental-features-checkbox');
+// Experimental features elements (always enabled)
 const experimentalContent = document.getElementById('experimental-content');
 const afflatusRestrictions = document.getElementById('afflatus-restrictions');
 
@@ -95,8 +94,7 @@ let selectedCharacters = [];
 let numTeamsToGenerate = 1;
 let absoluteMetaMode = false;
 
-// Experimental features state
-let experimentalFeaturesEnabled = false;
+// Experimental features state (always enabled)
 let selectedAfflatusRestrictions = [];
 
 // Search and Filter State
@@ -503,14 +501,15 @@ async function generateTeam() {
     resultsContainer.classList.add('hidden');
     teamResultsWrapper.innerHTML = '';
     actionButtonsContainer.innerHTML = '';
-    loadingSpinner.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-    // Apply experimental features filtering
+    loadingSpinner.scrollIntoView({ behavior: 'smooth', block: 'center' });    // Apply experimental features filtering
     let availableCharacters = [...characters];
-    if (experimentalFeaturesEnabled && selectedAfflatusRestrictions.length > 0) {
+    let usingExperimentalFeatures = false;
+    
+    if (selectedAfflatusRestrictions.length > 0) {
         availableCharacters = applyAfflatusRestrictions(availableCharacters);
+        usingExperimentalFeatures = true;
         console.log('🧪 Experimental: Filtered to afflatus restrictions:', selectedAfflatusRestrictions);
-        showNotification(`🧪 Using only ${selectedAfflatusRestrictions.join(', ')} afflatus characters`, 'info');
+        showNotification(`🧪 Generating with experimental afflatus restrictions: ${selectedAfflatusRestrictions.join(', ')}`, 'warning');
     }
 
     const availableCharactersList = availableCharacters.map(char => char.name).join(', ');
@@ -1075,18 +1074,6 @@ metaModeCheckbox.addEventListener('change', (e) => {
     absoluteMetaMode = e.target.checked;
 });
 
-// Experimental Features Toggle
-experimentalFeaturesCheckbox.addEventListener('change', (e) => {
-    experimentalFeaturesEnabled = e.target.checked;
-    if (experimentalFeaturesEnabled) {
-        experimentalContent.classList.remove('disabled');
-        showNotification('🧪 Experimental features enabled!', 'success');
-    } else {
-        experimentalContent.classList.add('disabled');
-        showNotification('🧪 Experimental features disabled.', 'info');
-    }
-});
-
 // Modern notification system
 function showNotification(message, type = 'info') {
     // Remove any existing notifications
@@ -1358,41 +1345,54 @@ function showSettingsNotification(message, type = 'info', duration = 2500) {
     }, duration);
 }
 
-// Experimental Features functionality
+// Experimental Features functionality (always enabled)
 function setupExperimentalFeatures() {
-    if (!experimentalFeaturesCheckbox || !experimentalContent || !afflatusRestrictions) return;
+    console.log('Setting up experimental features...');
     
-    // Toggle experimental features
-    experimentalFeaturesCheckbox.addEventListener('change', (e) => {
-        experimentalFeaturesEnabled = e.target.checked;
-        
-        if (experimentalFeaturesEnabled) {
-            experimentalContent.classList.remove('disabled');
-            showNotification('🧪 Experimental features enabled! Try the new afflatus restrictions.', 'success');
-        } else {
-            experimentalContent.classList.add('disabled');
-            // Clear afflatus restrictions when disabled
-            selectedAfflatusRestrictions = [];
-            const checkboxes = afflatusRestrictions.querySelectorAll('input[type="checkbox"]');
-            checkboxes.forEach(cb => cb.checked = false);
-            showNotification('🔒 Experimental features disabled.', 'info');
-        }
+    const afflatusRestrictionsEl = document.getElementById('afflatus-restrictions');
+    
+    if (!afflatusRestrictionsEl) {
+        console.error('afflatusRestrictions element not found');
+        return;
+    }
+    
+    console.log('Found afflatus-restrictions element, creating checkboxes...');
+    
+    // Create afflatus checkboxes
+    const afflatusTypes = ['Beast', 'Intellect', 'Mineral', 'Plant', 'Spirit', 'Star'];
+    
+    // Clear existing content first
+    afflatusRestrictionsEl.innerHTML = '';
+    
+    afflatusTypes.forEach(afflatus => {
+        console.log(`Creating checkbox for: ${afflatus}`);
+        const label = document.createElement('label');
+        label.className = 'afflatus-restriction-option';
+        label.innerHTML = `
+            <input type="checkbox" value="${afflatus}" />
+            <span class="afflatus-restriction-checkmark"></span>
+            <img src="assets/afflatus/${afflatus}.png" alt="${afflatus}" class="afflatus-restriction-icon" />
+            <span class="afflatus-restriction-label">${afflatus}</span>
+        `;
+        afflatusRestrictionsEl.appendChild(label);
     });
     
-    // Handle afflatus restriction changes
-    afflatusRestrictions.addEventListener('change', (e) => {
+    console.log('Afflatus checkboxes created successfully, count:', afflatusRestrictionsEl.children.length);
+    
+    // Handle afflatus restriction changes with 3-afflatus limit
+    afflatusRestrictionsEl.addEventListener('change', (e) => {
         if (e.target.type === 'checkbox') {
-            // Prevent interaction when disabled
-            if (!experimentalFeaturesEnabled) {
-                e.preventDefault();
-                e.target.checked = false;
-                showNotification('⚠️ Enable experimental features first!', 'warning');
-                return;
-            }
-            
             const afflatusType = e.target.value;
             
             if (e.target.checked) {
+                // Check if limit is reached
+                if (selectedAfflatusRestrictions.length >= 3) {
+                    e.preventDefault();
+                    e.target.checked = false;
+                    showNotification('⚠️ Maximum of 3 afflatus types can be selected', 'warning');
+                    return;
+                }
+                
                 if (!selectedAfflatusRestrictions.includes(afflatusType)) {
                     selectedAfflatusRestrictions.push(afflatusType);
                 }
@@ -1405,7 +1405,7 @@ function setupExperimentalFeatures() {
             // Show notification about restriction changes
             if (selectedAfflatusRestrictions.length > 0) {
                 showNotification(
-                    `⚡ Afflatus restrictions: ${selectedAfflatusRestrictions.join(', ')}`, 
+                    `⚡ Afflatus restrictions: ${selectedAfflatusRestrictions.join(', ')} (${selectedAfflatusRestrictions.length}/3)`, 
                     'info'
                 );
             } else {
@@ -1415,7 +1415,7 @@ function setupExperimentalFeatures() {
     });
     
     // Keyboard accessibility for afflatus options
-    afflatusRestrictions.addEventListener('keydown', (e) => {
+    afflatusRestrictionsEl.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
             const option = e.target.closest('.afflatus-restriction-option');
             if (option) {
@@ -1430,7 +1430,7 @@ function setupExperimentalFeatures() {
 
 // Function to apply afflatus restrictions to team generation
 function applyAfflatusRestrictions(availableCharacters) {
-    if (!experimentalFeaturesEnabled || selectedAfflatusRestrictions.length === 0) {
+    if (selectedAfflatusRestrictions.length === 0) {
         return availableCharacters;
     }
     
@@ -1441,6 +1441,8 @@ function applyAfflatusRestrictions(availableCharacters) {
 
 // Initial Render
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM loaded, starting initialization...');
+    
     renderAllCharacters();
     updateGenerateButtonState();
     
@@ -1452,9 +1454,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Setup settings menu
     setupSettingsMenu();
     
-    // Enhance settings controls
-    enhanceSettingsControls();
-    
-    // Setup experimental features
+    // Setup experimental features immediately
     setupExperimentalFeatures();
 });

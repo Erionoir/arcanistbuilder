@@ -1846,6 +1846,17 @@ html {
     letter-spacing: 0.05em;
 }
 
+.setting-label.experimental-warning {
+    color: #ff6b6b;
+    background: rgba(255, 107, 107, 0.1);
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 107, 107, 0.3);
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
 /* Adjust existing styles when inside settings */
 .settings-dropdown .meta-mode-toggle {
     margin: 0;
@@ -1942,67 +1953,8 @@ html {
     max-height: none;
     transform: translateY(0);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.experimental-content.disabled {
-    opacity: 0.4;
-    pointer-events: none;
-    user-select: none;
-}
-
-.experimental-content.disabled .experimental-section {
-    background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-primary) 100%) !important;
-    border-color: var(--border-secondary) !important;
-}
-
-.experimental-content.disabled .afflatus-restriction-option {
-    cursor: not-allowed !important;
-    background: var(--bg-secondary) !important;
-    border-color: var(--border-secondary) !important;
-}
-
-.experimental-content.disabled .afflatus-restriction-icon {
-    filter: grayscale(100%) opacity(0.5) !important;
-}
-
-.experimental-content.disabled .afflatus-restriction-label,
-.experimental-content.disabled .experimental-section-label,
-.experimental-content.disabled .experimental-section-description {
-    color: var(--text-muted) !important;
-}
-
-/* Enabled state styles - explicit overrides */
-.experimental-content:not(.disabled) {
-    opacity: 1;
     pointer-events: auto;
     user-select: auto;
-}
-
-.experimental-content:not(.disabled) .experimental-section {
-    background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
-    border-color: var(--border-primary);
-}
-
-.experimental-content:not(.disabled) .afflatus-restriction-option {
-    cursor: pointer;
-    background: var(--bg-elevated);
-    border-color: var(--border-primary);
-}
-
-.experimental-content:not(.disabled) .afflatus-restriction-icon {
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
-}
-
-.experimental-content:not(.disabled) .afflatus-restriction-label {
-    color: var(--text-primary);
-}
-
-.experimental-content:not(.disabled) .experimental-section-label {
-    color: var(--text-primary);
-}
-
-.experimental-content:not(.disabled) .experimental-section-description {
-    color: var(--text-secondary);
 }
 
 .experimental-section {
