@@ -1073,4 +1073,9 @@ function hideCharacterTooltip() {
 document.addEventListener('DOMContentLoaded', () => {
     renderAllCharacters();
     updateGenerateButtonState();
+    
+    // Add event listener for generate button
+    if (generateBtn) {
+        generateBtn.addEventListener('click', generateTeam);
+    }
 });
