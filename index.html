@@ -62,36 +62,108 @@
                 <h1 class="text-4xl md:text-5xl font-bold mb-2">Reverse: 1999</h1>
                 <h2 class="text-2xl md:text-3xl font-semibent text-blue-400">Team Builder</h2>
                 <p class="text-gray-400 mt-4 max-w-2xl mx-auto">Select 1 to 2 Arcanists, then click "Generate"</p>
-            </header><main>
-            <div class="controls">
-                <!-- Custom Dropdown -->
-                <div class="dropdown-container">
-                    <button id="dropdown-button" class="dropdown-button">
-                        <span id="dropdown-label">1 Team</span>
-                        <svg class="w-4 h-4 transition-transform" id="dropdown-arrow" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                        </svg>
+            </header><main>            <div class="controls">
+                <div class="generation-controls">
+                    <button id="generate-team-btn" class="generate-button">
+                        Generate Teams
                     </button>
-                    <div id="dropdown-options" class="dropdown-options hidden">
-                        <a href="#" data-value="1">1 Team</a>
-                        <a href="#" data-value="2">2 Teams</a>
-                        <a href="#" data-value="3">3 Teams</a>
-                        <a href="#" data-value="4">4 Teams</a>
-                    </div>                </div>
-                
-                <!-- Absolute Meta Mode Toggle -->
-                <div class="meta-mode-toggle">
-                    <label class="toggle-container">
-                        <input type="checkbox" id="meta-mode-checkbox" />
-                        <span class="toggle-slider"></span>
-                        <span class="toggle-label">Absolute Meta Mode</span>
-                    </label>
-                    <p class="toggle-description">Returns pure meta compositions from Global/CN servers regardless of selection synergy</p>
+                    
+                    <div class="settings-container">
+                        <button id="settings-toggle" class="settings-button">
+                            <svg class="settings-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                        </button>
+                        
+                        <div class="settings-dropdown hidden" id="settings-dropdown">
+                            <div class="settings-section">
+                                <h4 class="settings-title">Team Generation</h4>
+                                  <!-- Team Count Buttons -->
+                                <div class="setting-item">
+                                    <label class="setting-label">Number of Teams</label>
+                                    <div class="team-count-buttons" id="team-count-buttons">
+                                        <button class="team-count-btn active" data-value="1">1</button>
+                                        <button class="team-count-btn" data-value="2">2</button>
+                                        <button class="team-count-btn" data-value="3">3</button>
+                                        <button class="team-count-btn" data-value="4">4</button>
+                                    </div>
+                                </div>
+                                
+                                <!-- Absolute Meta Mode Toggle -->
+                                <div class="setting-item">
+                                    <label class="setting-label">Generation Mode</label>                                    <div class="meta-mode-toggle">
+                                        <label class="toggle-container">
+                                            <input type="checkbox" id="meta-mode-checkbox" />
+                                            <span class="toggle-slider"></span>
+                                            <span class="toggle-label">Absolute Meta Mode</span>
+                                        </label>
+                                        <p class="toggle-description">Returns pure meta compositions from Global/CN servers regardless of selection synergy</p>
+                                    </div>
+                                </div>
+                                
+                                <!-- Experimental Features Toggle -->
+                                <div class="setting-item">
+                                    <label class="setting-label">Experimental Features</label>
+                                    <div class="experimental-toggle">
+                                        <label class="toggle-container">
+                                            <input type="checkbox" id="experimental-features-checkbox" />
+                                            <span class="toggle-slider"></span>
+                                            <span class="toggle-label">Enable Experimental Features</span>
+                                        </label>
+                                        <p class="toggle-description">Unlock advanced team generation options and filters</p>
+                                    </div>
+                                      <!-- Experimental Features Content -->
+                                    <div class="experimental-content disabled" id="experimental-content">
+                                        <div class="experimental-section">
+                                            <label class="experimental-section-label">Afflatus Restrictions</label>
+                                            <p class="experimental-section-description">Generate teams using only specific afflatus types</p>
+                                            <div class="afflatus-restriction-grid" id="afflatus-restrictions">
+                                                <label class="afflatus-restriction-option">
+                                                    <input type="checkbox" value="Beast" />
+                                                    <span class="afflatus-restriction-checkmark"></span>
+                                                    <img src="assets/afflatus/Beast.png" alt="Beast" class="afflatus-restriction-icon" />
+                                                    <span class="afflatus-restriction-label">Beast</span>
+                                                </label>
+                                                <label class="afflatus-restriction-option">
+                                                    <input type="checkbox" value="Intellect" />
+                                                    <span class="afflatus-restriction-checkmark"></span>
+                                                    <img src="assets/afflatus/Intellect.png" alt="Intellect" class="afflatus-restriction-icon" />
+                                                    <span class="afflatus-restriction-label">Intellect</span>
+                                                </label>
+                                                <label class="afflatus-restriction-option">
+                                                    <input type="checkbox" value="Mineral" />
+                                                    <span class="afflatus-restriction-checkmark"></span>
+                                                    <img src="assets/afflatus/Mineral.png" alt="Mineral" class="afflatus-restriction-icon" />
+                                                    <span class="afflatus-restriction-label">Mineral</span>
+                                                </label>
+                                                <label class="afflatus-restriction-option">
+                                                    <input type="checkbox" value="Plant" />
+                                                    <span class="afflatus-restriction-checkmark"></span>
+                                                    <img src="assets/afflatus/Plant.png" alt="Plant" class="afflatus-restriction-icon" />
+                                                    <span class="afflatus-restriction-label">Plant</span>
+                                                </label>
+                                                <label class="afflatus-restriction-option">
+                                                    <input type="checkbox" value="Spirit" />
+                                                    <span class="afflatus-restriction-checkmark"></span>
+                                                    <img src="assets/afflatus/Spirit.png" alt="Spirit" class="afflatus-restriction-icon" />
+                                                    <span class="afflatus-restriction-label">Spirit</span>
+                                                </label>
+                                                <label class="afflatus-restriction-option">
+                                                    <input type="checkbox" value="Star" />
+                                                    <span class="afflatus-restriction-checkmark"></span>
+                                                    <img src="assets/afflatus/Star.png" alt="Star" class="afflatus-restriction-icon" />
+                                                    <span class="afflatus-restriction-label">Star</span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                
-                <button id="generate-team-btn" class="generate-button">
-                    Generate Teams
-                </button>            </div>
+            </div>
 
             <!-- Search and Filter Section -->
             <div class="search-filter-section">

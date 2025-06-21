@@ -58,17 +58,20 @@ const loadingSpinner = document.getElementById('loading-spinner');
 const resultsContainer = document.getElementById('results-container');
 const teamResultsWrapper = document.getElementById('team-results-wrapper');
 const actionButtonsContainer = document.getElementById('action-buttons');
-const dropdownButton = document.getElementById('dropdown-button');
-const dropdownOptions = document.getElementById('dropdown-options');
-const dropdownLabel = document.getElementById('dropdown-label');
-const dropdownArrow = document.getElementById('dropdown-arrow');
+const teamCountButtons = document.getElementById('team-count-buttons');
 const metaModeCheckbox = document.getElementById('meta-mode-checkbox');
+
+// Experimental features elements
+const experimentalFeaturesCheckbox = document.getElementById('experimental-features-checkbox');
+const experimentalContent = document.getElementById('experimental-content');
+const afflatusRestrictions = document.getElementById('afflatus-restrictions');
 
 // Sidebar elements
 const sidebar = document.getElementById('sidebar');
 const sidebarToggle = document.getElementById('sidebar-toggle');
 const mainContent = document.getElementById('main-content');
 const teamBuilderLink = document.getElementById('team-builder-link');
+const tierListLink = document.getElementById('tier-list-link');
 const libraryLink = document.getElementById('library-link');
 
 // Search and Filter elements
@@ -91,6 +94,10 @@ document.body.appendChild(overlay);
 let selectedCharacters = [];
 let numTeamsToGenerate = 1;
 let absoluteMetaMode = false;
+
+// Experimental features state
+let experimentalFeaturesEnabled = false;
+let selectedAfflatusRestrictions = [];
 
 // Search and Filter State
 let currentSearchTerm = '';
@@ -383,7 +390,15 @@ async function generateTeam() {
     actionButtonsContainer.innerHTML = '';    // Smooth scroll hehe
     loadingSpinner.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-    const availableCharacters = characters.map(char => char.name).join(', ');
+    // Apply experimental features filtering
+    let availableCharacters = [...characters];
+    if (experimentalFeaturesEnabled && selectedAfflatusRestrictions.length > 0) {
+        availableCharacters = applyAfflatusRestrictions(availableCharacters);
+        console.log('🧪 Experimental: Filtered to afflatus restrictions:', selectedAfflatusRestrictions);
+        showNotification(`🧪 Using only ${selectedAfflatusRestrictions.join(', ')} afflatus characters`, 'info');
+    }
+    
+    const availableCharactersList = availableCharacters.map(char => char.name).join(', ');
     
     // Get details
     const selectedCharacterDetails = selectedCharacters.map(name => {
@@ -467,9 +482,8 @@ ${selectedCharacters.map(char => {
         ` : `
         SYNERGY MODE: Build teams around my selected characters, considering their roles, damage types, and synergies while maintaining competitive meta viability.
         `}
-        
-        AVAILABLE 6-STAR CHARACTERS ONLY (you MUST only use characters from this exact list):
-        ${availableCharacters}
+          AVAILABLE 6-STAR CHARACTERS ONLY (you MUST only use characters from this exact list):
+        ${availableCharactersList}
           CRITICAL REQUIREMENTS:
         - Each team MUST have exactly 4 characters
         - You can ONLY use characters from the available list above - no other characters exist
@@ -651,40 +665,35 @@ function renderActionButtons() {
     document.getElementById('regenerate-btn').addEventListener('click', generateTeam);
 }
 
-// Dropdown Logic
-dropdownButton.addEventListener('click', (e) => {
-    e.stopPropagation();
-    dropdownOptions.classList.toggle('hidden');
-    dropdownArrow.classList.toggle('rotate-180');
-});
-
-dropdownOptions.addEventListener('click', (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (e.target.tagName === 'A') {
-        numTeamsToGenerate = parseInt(e.target.dataset.value);
-        dropdownLabel.textContent = e.target.textContent;
-        dropdownOptions.classList.add('hidden');
-        dropdownArrow.classList.remove('rotate-180');
-    }
-});
-
-// Close dropdown on outside click
-document.addEventListener('click', (e) => {
-    if (!dropdownButton.contains(e.target) && !dropdownOptions.contains(e.target)) {
-        dropdownOptions.classList.add('hidden');
-        dropdownArrow.classList.remove('rotate-180');
-    }
-});
-
-// Keyboard navigation for dropdown
-dropdownButton.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        dropdownOptions.classList.toggle('hidden');
-        dropdownArrow.classList.toggle('rotate-180');
-    }
-});
+// Team Count Button Logic
+if (teamCountButtons) {
+    const teamCountBtns = teamCountButtons.querySelectorAll('.team-count-btn');
+    
+    teamCountBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            // Remove active class from all buttons
+            teamCountBtns.forEach(b => b.classList.remove('active'));
+            
+            // Add active class to clicked button
+            btn.classList.add('active');
+            
+            // Update team count
+            numTeamsToGenerate = parseInt(btn.dataset.value);
+              // Show notification
+            showNotification(`🎯 Team count set to ${numTeamsToGenerate}`, 'success');
+        });
+        
+        // Keyboard navigation
+        btn.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                btn.click();
+            }
+        });
+    });
+}
 
 // Toggle sidebar
 function toggleSidebar() {
@@ -739,6 +748,11 @@ teamBuilderLink.addEventListener('click', (e) => {
 libraryLink.addEventListener('click', (e) => {
     e.preventDefault();
     showNotification('Library feature coming soon! 📚✨', 'info');
+});
+
+tierListLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    showNotification('Tier List feature coming soon! 📊✨', 'info');
 });
 
 // Handle escape key
@@ -932,6 +946,18 @@ metaModeCheckbox.addEventListener('change', (e) => {
     absoluteMetaMode = e.target.checked;
 });
 
+// Experimental Features Toggle
+experimentalFeaturesCheckbox.addEventListener('change', (e) => {
+    experimentalFeaturesEnabled = e.target.checked;
+    if (experimentalFeaturesEnabled) {
+        experimentalContent.classList.remove('disabled');
+        showNotification('🧪 Experimental features enabled!', 'success');
+    } else {
+        experimentalContent.classList.add('disabled');
+        showNotification('🧪 Experimental features disabled.', 'info');
+    }
+});
+
 // Modern notification system
 function showNotification(message, type = 'info') {
     // Remove any existing notifications
@@ -1069,6 +1095,244 @@ function hideCharacterTooltip() {
     });
 }
 
+// Enhanced settings functionality
+function setupSettingsMenu() {
+    const settingsButton = document.getElementById('settings-toggle');
+    const settingsDropdown = document.getElementById('settings-dropdown');
+    const settingsIcon = settingsButton?.querySelector('.settings-icon');
+    
+    if (!settingsButton || !settingsDropdown) return;
+    
+    let isOpen = false;
+    
+    // Toggle settings dropdown
+    function toggleSettings(open = null) {
+        if (open !== null) {
+            isOpen = open;
+        } else {
+            isOpen = !isOpen;
+        }
+        
+        settingsButton.classList.toggle('active', isOpen);
+        settingsDropdown.classList.toggle('hidden', !isOpen);
+        
+        // Focus management for accessibility
+        if (isOpen) {
+            const firstInput = settingsDropdown.querySelector('input, button');
+            if (firstInput) {
+                setTimeout(() => firstInput.focus(), 200);
+            }
+        } else {
+            settingsButton.focus();
+        }
+    }
+    
+    // Settings button click handler
+    settingsButton.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleSettings();
+    });
+    
+    // Close settings when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!settingsButton.contains(e.target) && !settingsDropdown.contains(e.target)) {
+            if (isOpen) {
+                toggleSettings(false);
+            }
+        }
+    });
+    
+    // Close settings on escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && isOpen) {
+            toggleSettings(false);
+        }
+    });
+    
+    // Keyboard navigation within settings
+    settingsDropdown.addEventListener('keydown', (e) => {
+        const focusableElements = settingsDropdown.querySelectorAll(
+            'button, input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        const firstElement = focusableElements[0];
+        const lastElement = focusableElements[focusableElements.length - 1];
+        
+        if (e.key === 'Tab') {
+            if (e.shiftKey) {
+                if (document.activeElement === firstElement) {
+                    e.preventDefault();
+                    lastElement.focus();
+                }
+            } else {
+                if (document.activeElement === lastElement) {
+                    e.preventDefault();
+                    firstElement.focus();
+                }
+            }
+        }
+    });
+}
+
+// Enhanced notification system with settings context
+function showSettingsNotification(message, type = 'info', duration = 2500) {
+    // Remove existing notifications
+    const existingNotification = document.querySelector('.settings-notification');
+    if (existingNotification) {
+        existingNotification.remove();
+    }
+    
+    const notification = document.createElement('div');
+    notification.className = `settings-notification notification-${type}`;
+    notification.innerHTML = `
+        <div class="notification-content">
+            <span class="notification-icon">⚙️</span>
+            <span class="notification-text">${message}</span>
+        </div>
+    `;
+    
+    // Style the notification
+    Object.assign(notification.style, {
+        position: 'fixed',
+        top: '20px',
+        right: '20px',
+        background: type === 'success' ? 'var(--accent-gold)' : type === 'error' ? '#ef4444' : 'var(--bg-elevated)',
+        color: type === 'success' ? 'var(--bg-primary)' : 'var(--text-primary)',
+        padding: '12px 20px',
+        borderRadius: '12px',
+        border: '2px solid var(--border-accent)',
+        boxShadow: '0 8px 25px rgba(0, 0, 0, 0.3)',
+        zIndex: '10000',
+        transform: 'translateX(100%)',
+        transition: 'transform 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+        fontSize: '14px',
+        fontWeight: '600',
+        maxWidth: '300px',
+        wordWrap: 'break-word',
+        backdropFilter: 'blur(10px)'
+    });
+    
+    document.body.appendChild(notification);
+    
+    // Animate in
+    requestAnimationFrame(() => {
+        notification.style.transform = 'translateX(0)';
+    });
+    
+    // Auto remove
+    setTimeout(() => {
+        notification.style.transform = 'translateX(100%)';
+        setTimeout(() => {
+            if (notification.parentNode) {
+                notification.remove();
+            }
+        }, 400);
+    }, duration);
+}
+
+// Update existing dropdown and meta mode functionality to work within settings
+function enhanceSettingsControls() {
+    // Update team number changes to show feedback
+    const originalDropdownHandler = dropdownOptions?.addEventListener;
+    if (dropdownOptions) {
+        dropdownOptions.addEventListener('click', (e) => {
+            if (e.target.tagName === 'A') {
+                const teamCount = e.target.textContent;
+                showSettingsNotification(`Team count set to ${teamCount}`, 'success');
+            }
+        });
+    }
+    
+    // Update meta mode toggle feedback
+    const metaCheckbox = document.getElementById('meta-mode-checkbox');
+    if (metaCheckbox) {
+        metaCheckbox.addEventListener('change', (e) => {
+            const mode = e.target.checked ? 'Absolute Meta Mode' : 'Synergy Mode';
+            showSettingsNotification(`Switched to ${mode}`, 'success');
+        });
+    }
+}
+
+// Experimental Features functionality
+function setupExperimentalFeatures() {
+    if (!experimentalFeaturesCheckbox || !experimentalContent || !afflatusRestrictions) return;
+    
+    // Toggle experimental features
+    experimentalFeaturesCheckbox.addEventListener('change', (e) => {
+        experimentalFeaturesEnabled = e.target.checked;
+        
+        if (experimentalFeaturesEnabled) {
+            experimentalContent.classList.remove('disabled');
+            showNotification('🧪 Experimental features enabled! Try the new afflatus restrictions.', 'success');
+        } else {
+            experimentalContent.classList.add('disabled');
+            // Clear afflatus restrictions when disabled
+            selectedAfflatusRestrictions = [];
+            const checkboxes = afflatusRestrictions.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach(cb => cb.checked = false);
+            showNotification('🔒 Experimental features disabled.', 'info');
+        }
+    });
+    
+    // Handle afflatus restriction changes
+    afflatusRestrictions.addEventListener('change', (e) => {
+        if (e.target.type === 'checkbox') {
+            // Prevent interaction when disabled
+            if (!experimentalFeaturesEnabled) {
+                e.preventDefault();
+                e.target.checked = false;
+                showNotification('⚠️ Enable experimental features first!', 'warning');
+                return;
+            }
+            
+            const afflatusType = e.target.value;
+            
+            if (e.target.checked) {
+                if (!selectedAfflatusRestrictions.includes(afflatusType)) {
+                    selectedAfflatusRestrictions.push(afflatusType);
+                }
+            } else {
+                selectedAfflatusRestrictions = selectedAfflatusRestrictions.filter(
+                    type => type !== afflatusType
+                );
+            }
+            
+            // Show notification about restriction changes
+            if (selectedAfflatusRestrictions.length > 0) {
+                showNotification(
+                    `⚡ Afflatus restrictions: ${selectedAfflatusRestrictions.join(', ')}`, 
+                    'info'
+                );
+            } else {
+                showNotification('🌟 All afflatus restrictions cleared', 'info');
+            }
+        }
+    });
+    
+    // Keyboard accessibility for afflatus options
+    afflatusRestrictions.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            const option = e.target.closest('.afflatus-restriction-option');
+            if (option) {
+                e.preventDefault();
+                const checkbox = option.querySelector('input[type="checkbox"]');
+                checkbox.checked = !checkbox.checked;
+                checkbox.dispatchEvent(new Event('change', { bubbles: true }));
+            }
+        }
+    });
+}
+
+// Function to apply afflatus restrictions to team generation
+function applyAfflatusRestrictions(availableCharacters) {
+    if (!experimentalFeaturesEnabled || selectedAfflatusRestrictions.length === 0) {
+        return availableCharacters;
+    }
+    
+    return availableCharacters.filter(character => 
+        selectedAfflatusRestrictions.includes(character.afflatus)
+    );
+}
+
 // Initial Render
 document.addEventListener('DOMContentLoaded', () => {
     renderAllCharacters();
@@ -1078,4 +1342,13 @@ document.addEventListener('DOMContentLoaded', () => {
     if (generateBtn) {
         generateBtn.addEventListener('click', generateTeam);
     }
+    
+    // Setup settings menu
+    setupSettingsMenu();
+    
+    // Enhance settings controls
+    enhanceSettingsControls();
+    
+    // Setup experimental features
+    setupExperimentalFeatures();
 });
