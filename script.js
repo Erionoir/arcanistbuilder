@@ -1484,6 +1484,11 @@ function initializeFloatingButtons() {
     }
       // Clear all selections functionality
     function clearAllSelections() {
+        if (currentAudio) {
+            currentAudio.pause();
+            currentAudio.currentTime = 0;
+            currentAudio = null;
+        }
         selectedCharacters.splice(0, selectedCharacters.length); // Clear the array
         updateGenerateButtonState();
         renderAllCharacters();
