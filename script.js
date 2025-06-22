@@ -73,6 +73,8 @@ const teamBuilderLink = document.getElementById('team-builder-link');
 const tierListLink = document.getElementById('tier-list-link');
 const libraryLink = document.getElementById('library-link');
 const tierListView = document.getElementById('tier-list-view');
+const libraryView = document.getElementById('library-view');
+const characterProfileView = document.getElementById('character-profile-view');
 
 // Search and Filter elements
 const characterSearch = document.getElementById('character-search');
@@ -867,6 +869,13 @@ function closeSidebar() {
     overlay.classList.remove('active');
 }
 
+function hideAllViews() {
+    mainContent.classList.add('hidden');
+    tierListView.classList.add('hidden');
+    libraryView.classList.add('hidden');
+    characterProfileView.classList.add('hidden');
+}
+
 // Event listeners
 sidebarToggle.addEventListener('click', toggleSidebar);
 overlay.addEventListener('click', closeSidebar);
@@ -880,8 +889,8 @@ teamBuilderLink.addEventListener('click', (e) => {
     teamBuilderLink.classList.add('active');
     
     // Show team builder content
+    hideAllViews();
     mainContent.classList.remove('hidden');
-    tierListView.classList.add('hidden');
     
     // Close sidebar on mobile
     if (window.innerWidth <= 768) {
@@ -891,7 +900,20 @@ teamBuilderLink.addEventListener('click', (e) => {
 
 libraryLink.addEventListener('click', (e) => {
     e.preventDefault();
-    showNotification('Library feature coming soon! 📚✨', 'info');
+    
+    // Update active states
+    document.querySelectorAll('.sidebar-item').forEach(item => item.classList.remove('active'));
+    libraryLink.classList.add('active');
+    
+    // Show library view
+    hideAllViews();
+    libraryView.classList.remove('hidden');
+    renderLibrary();
+    
+    // Close sidebar on mobile
+    if (window.innerWidth <= 768) {
+        closeSidebar();
+    }
 });
 
 tierListLink.addEventListener('click', (e) => {
@@ -902,7 +924,7 @@ tierListLink.addEventListener('click', (e) => {
     tierListLink.classList.add('active');
     
     // Show tier list view
-    mainContent.classList.add('hidden');
+    hideAllViews();
     tierListView.classList.remove('hidden');
     
     // Generate tier list content
@@ -1664,4 +1686,118 @@ function renderTierList() {
     html += `</div>`; // End of grid
     html += '</div>';
     tierListView.innerHTML = html;
+}
+
+function renderLibrary() {
+    if (!libraryView) return;
+
+    libraryView.innerHTML = `
+        <div class="container mx-auto px-4 py-8">
+            <header class="text-center mb-8">
+                <h1 class="text-4xl md:text-5xl font-bold mb-2">Arcanist Library</h1>
+                <p class="text-lg text-gray-400">Select a character to view their profile.</p>
+            </header>
+            <div id="library-grid">
+            </div>
+        </div>
+    `;
+
+    const libraryGrid = document.getElementById('library-grid');
+    if (!libraryGrid) return;
+    
+    const sortedCharacters = [...characters].sort((a, b) => a.name.localeCompare(b.name));
+
+    sortedCharacters.forEach((character, index) => {
+        const card = renderCharacterCard(character, true, false);
+        card.style.animationDelay = `${index * 0.05}s`;
+        card.classList.add('fade-in');
+        card.addEventListener('click', () => renderCharacterProfile(character.name));
+        card.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                renderCharacterProfile(character.name);
+            }
+        });
+        libraryGrid.appendChild(card);
+    });
+}
+
+function renderCharacterProfile(characterName) {
+    const character = characters.find(c => c.name === characterName);
+    if (!character || !characterProfileView) return;
+
+    hideAllViews();
+    characterProfileView.classList.remove('hidden');
+
+    const sections = [
+        'Biography', 'Psychubes', 'Inheritance', 
+        'Incantations', 'Teammates', 'Gallery'
+    ];
+
+    characterProfileView.innerHTML = `
+        <div class="profile-container">
+            <button id="back-to-library-btn" class="back-button">← Back to Library</button>
+            <header class="profile-header">
+                <img src="${character.image}" alt="${character.name}" class="profile-image">
+                <div class="profile-header-info">
+                    <h1 class="profile-name">${character.name}</h1>
+                    <div class="profile-tags">
+                        <span class="profile-tag afflatus-${character.afflatus.toLowerCase()}">${character.afflatus}</span>
+                        <span class="profile-tag dmg-${character.dmgType.toLowerCase()}">${character.dmgType}</span>
+                        <span class="profile-tag role-${character.role.toLowerCase()}">${character.role}</span>
+                        <span class="profile-tag rank-${character.rank.toLowerCase().replace('+', 'plus')}">Rank ${character.rank}</span>
+                    </div>
+                </div>
+            </header>
+
+            <div class="profile-content-tabs">
+                <div class="profile-tabs">
+                    ${sections.map((section, index) => `
+                        <button class="profile-tab-btn ${index === 0 ? 'active' : ''}" data-tab="${section.toLowerCase()}">
+                            ${section}
+                        </button>
+                    `).join('')}
+                </div>
+
+                <div class="profile-tab-content-container">
+                    ${sections.map((section, index) => `
+                        <div class="profile-tab-content ${index === 0 ? 'active' : ''}" id="tab-${section.toLowerCase()}">
+                            <h2>${section}</h2>
+                            <p>${section} data not available yet.</p>
+                        </div>
+                    `).join('')}
+                </div>
+            </div>
+        </div>
+    `;
+
+    // Add event listeners for the new tabs
+    const tabButtons = characterProfileView.querySelectorAll('.profile-tab-btn');
+    const tabContents = characterProfileView.querySelectorAll('.profile-tab-content');
+
+    tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            // Deactivate all
+            tabButtons.forEach(btn => btn.classList.remove('active'));
+            tabContents.forEach(content => content.classList.remove('active'));
+
+            // Activate clicked tab
+            button.classList.add('active');
+            const tabId = `tab-${button.dataset.tab}`;
+            document.getElementById(tabId)?.classList.add('active');
+        });
+    });
+
+    const backButton = document.getElementById('back-to-library-btn');
+    if(backButton) {
+        backButton.addEventListener('click', () => {
+            hideAllViews();
+            libraryView.classList.remove('hidden');
+            // Re-render library to re-add animations and ensure state is fresh
+            renderLibrary(); 
+        });
+    }
+
+    // Scroll to top of the page to show the profile
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
