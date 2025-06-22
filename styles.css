@@ -733,7 +733,7 @@ header p {
 }
 
 .character-card .character-rarity {
-    font-size: 1rem;
+    font-size: 1.1rem;
     color: var(--accent-gold);
 }
 
@@ -2307,7 +2307,7 @@ html {
 }
 
 .character-card.mini-card .character-rarity {
-    font-size: 0.5rem;
+    font-size: 0.7rem;
     opacity: 0.8;
 }
 
