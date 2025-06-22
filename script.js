@@ -16,7 +16,7 @@ const characters = [
     { name: "Flutterpage", rarity: 6, image: "assets/characters/Flutterpage_Poster.webp", afflatus: "Star", dmgType: "Reality", rank: "S+", role: "Support" },
     { name: "Getian", rarity: 6, image: "assets/characters/Getian_Poster.webp", afflatus: "Beast", dmgType: "Reality", rank: "B", role: "Support" },
     { name: "Hissabeth", rarity: 6, image: "assets/characters/Hissabeth_Poster_CN.webp", afflatus: "Plant", dmgType: "Mental", rank: "S", role: "Support" },
-    { name: "Isolde", rarity: 6, image: "assets/characters/Isolde_Poster1.webp", afflatus: "Spirit", dmgType: "Mental", rank: "A+", role: "Sub DPS" },
+    { name: "Isolde", rarity: 6, image: "assets/characters/Isolde_Poster1.webp", afflatus: "Spirit", dmgType: "Mental", rank: "A+", role: "Sub DPS", idleAudio: "assets/idles/Isolde_Idle.ogg" },
     { name: "J", rarity: 6, image: "assets/characters/J_Poster.webp", afflatus: "Beast", dmgType: "Reality", rank: "A+", role: "Sub DPS" },
     { name: "Jessica", rarity: 6, image: "assets/characters/Jessica_Poster.webp", afflatus: "Plant", dmgType: "Reality", rank: "A+", role: "Sub DPS" },
     { name: "Jiu Niangzi", rarity: 6, image: "assets/characters/Jiu_Niangzi_Poster.webp", afflatus: "Mineral", dmgType: "Reality", rank: "S", role: "DPS" },
@@ -93,6 +93,7 @@ document.body.appendChild(overlay);
 let selectedCharacters = [];
 let numTeamsToGenerate = 1;
 let absoluteMetaMode = false;
+let currentAudio = null;
 
 // Experimental features state (always enabled)
 let selectedAfflatusRestrictions = [];
@@ -175,6 +176,13 @@ function toggleCharacterSelection(name) {
     const cardElement = characterSelectionGrid.querySelector(`[data-name="${name}"]`);
     const index = selectedCharacters.indexOf(name);
     
+    // Stop any currently playing audio first
+    if (currentAudio) {
+        currentAudio.pause();
+        currentAudio.currentTime = 0;
+        currentAudio = null;
+    }
+
     if (index > -1) {
         // Deselecting - simple removal
         selectedCharacters.splice(index, 1);
@@ -183,21 +191,31 @@ function toggleCharacterSelection(name) {
             cardElement.blur();
             cardElement.classList.remove('fade-in');
             cardElement.style.animationDelay = '';
-        }    } else {
+        }    
+    } else {
         if (selectedCharacters.length < 2) {
             selectedCharacters.push(name);
             if (cardElement) {
                 cardElement.classList.add('selected');
                 cardElement.classList.remove('fade-in');
                 cardElement.style.animationDelay = '';
-            }        } else {
+            }
+
+            // Play sound for the selected character, if available
+            const character = characters.find(c => c.name === name);
+            if (character && character.idleAudio) {
+                currentAudio = new Audio(character.idleAudio);
+                currentAudio.play().catch(e => console.error("Audio playback failed:", e));
+            }
+        } else {
             showNotification("Maximum of 2 characters can be selected.", "warning");
             // Remove focus from card
             if (cardElement) {
                 cardElement.blur();
             }
             return;
-        }    }
+        }    
+    }
     updateGenerateButtonState();
     
     // Update clear selection button visibility if the function exists
@@ -1000,11 +1018,6 @@ if (filterApply) {
         showNotification('Filters applied successfully! 🎯', 'success');
     });
 }
-
-// Clear selection button
-/* if (clearSelectionBtn) {
-    clearSelectionBtn.addEventListener('click', clearAllSelections);
-} */
 
 // Set up filter checkboxes
 document.addEventListener('DOMContentLoaded', () => {
