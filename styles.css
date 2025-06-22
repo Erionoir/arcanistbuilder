@@ -2191,3 +2191,121 @@ html {
         left: 20px;
     }
 }
+
+/* Floating Selections Display */
+.floating-selections-container {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background: rgba(15, 14, 12, 0.8);
+    backdrop-filter: blur(10px);
+    border: 2px solid var(--border-primary);
+    border-radius: 16px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    z-index: 1000;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease-in-out;
+    transform: scale(0.95) translateY(10px);
+    opacity: 0;
+    pointer-events: none;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.floating-selections-container:not(.hidden) {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.selected-arcanists-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--border-secondary);
+    padding-bottom: 0.5rem;
+    display: flex;
+    gap: 0.75rem;
+    perspective: 800px;
+}
+
+.selected-cards-grid {
+    display: flex;
+    gap: 0.75rem;
+    perspective: 800px;
+}
+
+.character-card.mini-card {
+    width: 70px;
+    height: 95px;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+}
+
+.character-card.mini-card.newly-added {
+    animation: simpleFadeIn 0.5s ease-out forwards;
+}
+
+@keyframes simpleFadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.character-card.mini-card img {
+    object-position: center 20%;
+}
+
+.character-card.mini-card .character-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 45%;
+    font-size: 0.6rem;
+    text-align: center;
+    padding: 2px;
+    background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.character-card.mini-card .character-name {
+    font-size: 0.6rem;
+    font-weight: bold;
+    white-space: normal;
+    line-height: 1.2;
+    color: var(--text-primary);
+}
+
+.character-card.mini-card .character-rarity {
+    font-size: 0.5rem;
+    opacity: 0.8;
+}
+
+.clear-all-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background: var(--bg-tertiary);
+    color: var(--text-muted);
+    border: 1px solid var(--border-primary);
+    border-radius: 8px;
+    padding: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.clear-all-button:hover {
+    background: #ff4444;
+    color: var(--text-primary);
+    border-color: #ff4444;
+}

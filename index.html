@@ -129,20 +129,12 @@
                         <input type="text" id="character-search" class="search-input" placeholder="Search characters..." />
                         <button class="search-clear hidden" id="search-clear">
                             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1-1H9a1 1 0 00-1 1v3M4 7h16" />
                             </svg>
                         </button>
                     </div>                </div>
 
                 <div class="filter-container">
-                    <button class="clear-selection-btn" id="clear-selection-btn">
-                        <svg class="clear-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1-1H9a1 1 0 00-1 1v3M4 7h16" />
-                        </svg>
-                        <span>Clear</span>
-                        <span class="selection-count hidden" id="selection-count">0</span>
-                    </button>
-
                     <button class="filter-toggle" id="filter-toggle">
                         <svg class="filter-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.414A1 1 0 013 6.707V4z" />
@@ -294,9 +286,15 @@
         ↑
     </button>
     
-    <button class="floating-button floating-clear-selection" id="clearSelection" title="Clear all selections">
-        ×
-    </button>
+    <div id="selected-arcanists-container" class="floating-selections-container hidden">
+        <p class="selected-arcanists-title">Selected Arcanists</p>
+        <div id="selected-arcanists-cards" class="selected-cards-grid">
+        </div>
+        <button id="clearSelection" class="clear-all-button">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-2"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
+            <span>Clear All</span>
+        </button>
+    </div>
 
     <script src="script.js"></script>
 </body>

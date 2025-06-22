@@ -81,8 +81,8 @@ const filterDropdown = document.getElementById('filter-dropdown');
 const filterCount = document.getElementById('filter-count');
 const filterClear = document.getElementById('filter-clear');
 const filterApply = document.getElementById('filter-apply');
-const clearSelectionBtn = document.getElementById('clear-selection-btn');
-const selectionCount = document.getElementById('selection-count');
+// const clearSelectionBtn = document.getElementById('clear-selection-btn');
+// const selectionCount = document.getElementById('selection-count');
 
 // Create overlay for mobile
 const overlay = document.createElement('div');
@@ -204,6 +204,7 @@ function toggleCharacterSelection(name) {
     if (typeof updateClearSelectionButtonVisibility === 'function') {
         updateClearSelectionButtonVisibility();
     }
+    renderSelectedArcanists();
 }
 
 function updateGenerateButtonState() {
@@ -217,11 +218,11 @@ function updateGenerateButtonState() {
         generateBtn.classList.add('disabled');
     }
     
-    updateSelectionCount();
+    // The selection count is now part of the floating button, so this function is simpler.
 }
 
 function updateSelectionCount() {
-    const count = selectedCharacters.length;
+    /* const count = selectedCharacters.length;
     
     if (count > 0) {
         selectionCount.textContent = count;
@@ -230,21 +231,7 @@ function updateSelectionCount() {
     } else {
         selectionCount.classList.add('hidden');
         clearSelectionBtn.classList.remove('active');
-    }
-}
-
-function clearAllSelections() {
-    selectedCharacters = [];
-    
-    // Update all character cards
-    document.querySelectorAll('.character-card').forEach(card => {
-        card.classList.remove('selected');
-    });
-    
-    updateGenerateButtonState();
-    renderAllCharacters(); // Re-render to update selection states
-    
-    showNotification('All selections cleared! 🗑️', 'info');
+    } */
 }
 
 // Current meta data from Prydwen.gg (last updated: May 2025)
@@ -1015,9 +1002,9 @@ if (filterApply) {
 }
 
 // Clear selection button
-if (clearSelectionBtn) {
+/* if (clearSelectionBtn) {
     clearSelectionBtn.addEventListener('click', clearAllSelections);
-}
+} */
 
 // Set up filter checkboxes
 document.addEventListener('DOMContentLoaded', () => {
@@ -1447,9 +1434,10 @@ function applyAfflatusRestrictions(availableCharacters) {
 function initializeFloatingButtons() {
     const scrollToTopBtn = document.getElementById('scrollToTop');
     const clearSelectionBtn = document.getElementById('clearSelection');
-    
-    if (!scrollToTopBtn || !clearSelectionBtn) {
-        console.warn('Floating buttons not found in DOM');
+    const selectedArcanistsContainer = document.getElementById('selected-arcanists-container');
+
+    if (!scrollToTopBtn || !clearSelectionBtn || !selectedArcanistsContainer) {
+        console.warn('Floating buttons or container not found in DOM');
         return;
     }
     
@@ -1486,9 +1474,10 @@ function initializeFloatingButtons() {
         selectedCharacters.splice(0, selectedCharacters.length); // Clear the array
         updateGenerateButtonState();
         renderAllCharacters();
+        renderSelectedArcanists();
         
         // Hide the clear selection button
-        clearSelectionBtn.classList.remove('visible');
+        updateClearSelectionButtonVisibility();
         
         // Show success notification
         showNotification('All selections cleared!', 'success');
@@ -1497,9 +1486,9 @@ function initializeFloatingButtons() {
     // Update clear selection button visibility (make it global)
     window.updateClearSelectionButtonVisibility = function() {
         if (selectedCharacters.length > 0) {
-            clearSelectionBtn.classList.add('visible');
+            selectedArcanistsContainer.classList.remove('hidden');
         } else {
-            clearSelectionBtn.classList.remove('visible');
+            selectedArcanistsContainer.classList.add('hidden');
         }
     }
     
@@ -1532,4 +1521,33 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Initialize floating buttons
     initializeFloatingButtons();
+    renderSelectedArcanists();
 });
+
+function renderSelectedArcanists() {
+    const container = document.getElementById('selected-arcanists-cards');
+    if (!container) return;
+
+    const previouslyDisplayed = new Set([...container.children].map(c => c.dataset.name));
+    container.innerHTML = '';
+
+    const charactersToRender = selectedCharacters.map(name =>
+        characters.find(c => c.name === name)
+    );
+
+    charactersToRender.forEach((char, index) => {
+        if (char) {
+            const card = renderCharacterCard(char, false, false);
+            card.classList.add('mini-card');
+
+            if (!previouslyDisplayed.has(char.name)) {
+                card.classList.add('newly-added');
+                setTimeout(() => {
+                    card.classList.remove('newly-added');
+                }, 500);
+            }
+            
+            container.appendChild(card);
+        }
+    });
+}
