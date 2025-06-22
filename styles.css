@@ -726,14 +726,14 @@ header p {
 }
 
 .character-card .character-name {
-    font-weight: 600;
     font-size: 0.875rem;
+    font-weight: 600;
     margin-bottom: 0.25rem;
     color: var(--text-primary);
 }
 
 .character-card .character-rarity {
-    font-size: 0.75rem;
+    font-size: 1rem;
     color: var(--accent-gold);
 }
 
