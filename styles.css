@@ -740,10 +740,25 @@ header p {
 /* Controls */
 .controls {
     display: flex;
-    flex-direction: column;
+    justify-content: center;
     align-items: center;
+    margin-bottom: 2rem;
+    position: relative;
+    height: 4rem; /* Reserve space */
+}
+
+.generation-controls {
+    display: flex;
     gap: 1rem;
-    margin: 2rem 0;
+    align-items: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.dropdown-container {
+    position: relative;
 }
 
 @media (min-width: 640px) {
@@ -754,10 +769,6 @@ header p {
 }
 
 /* Enhanced Team Number Dropdown */
-.dropdown-container {
-    position: relative;
-}
-
 .dropdown-button {
     background: linear-gradient(135deg, var(--bg-elevated) 0%, var(--bg-tertiary) 100%);
     border: 2px solid var(--border-primary);
@@ -1690,9 +1701,12 @@ html {
 /* Generation Controls */
 .generation-controls {
     display: flex;
+    gap: 1rem;
     align-items: center;
-    gap: 0.75rem;
-    justify-content: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 /* Settings Container */
@@ -2216,6 +2230,8 @@ html {
     opacity: 0;
     pointer-events: none;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    width: auto;
+    max-width: 500px;
 }
 
 .floating-selections-container:not(.hidden) {
@@ -2241,6 +2257,7 @@ html {
     display: flex;
     gap: 0.75rem;
     perspective: 800px;
+    justify-content: center;
 }
 
 .character-card.mini-card {
@@ -2249,6 +2266,7 @@ html {
     border-radius: 8px;
     overflow: hidden;
     position: relative;
+    align-items: center;
 }
 
 .character-card.mini-card.newly-added {
@@ -2307,10 +2325,20 @@ html {
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s ease;
+    flex-grow: 1;
 }
 
 .clear-all-button:hover {
-    background: #ff4444;
+    background: #c9302c;
     color: var(--text-primary);
-    border-color: #ff4444;
+    border-color: #c9302c;
+}
+
+.floating-selections-container .generate-button {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    height: auto;
+    border-width: 2px;
+    border-radius: 8px;
+    flex-grow: 2;
 }
