@@ -72,6 +72,7 @@ const mainContent = document.getElementById('main-content');
 const teamBuilderLink = document.getElementById('team-builder-link');
 const tierListLink = document.getElementById('tier-list-link');
 const libraryLink = document.getElementById('library-link');
+const tierListView = document.getElementById('tier-list-view');
 
 // Search and Filter elements
 const characterSearch = document.getElementById('character-search');
@@ -124,7 +125,7 @@ function renderCharacterCard(character, isSelectable = false, isSelected = false
         </div>
     `;
     if (character.afflatus && character.dmgType) {
-        card.addEventListener('mouseenter', (e) => showCharacterTooltip(e, character));
+        card.addEventListener('mouseenter', () => showCharacterTooltip(card, character));
         card.addEventListener('mouseleave', hideCharacterTooltip);
     }
 
@@ -878,8 +879,9 @@ teamBuilderLink.addEventListener('click', (e) => {
     document.querySelectorAll('.sidebar-item').forEach(item => item.classList.remove('active'));
     teamBuilderLink.classList.add('active');
     
-    // Show team builder content (already visible)
-    showNotification('Team Builder activated! 🎯', 'info');
+    // Show team builder content
+    mainContent.classList.remove('hidden');
+    tierListView.classList.add('hidden');
     
     // Close sidebar on mobile
     if (window.innerWidth <= 768) {
@@ -894,7 +896,22 @@ libraryLink.addEventListener('click', (e) => {
 
 tierListLink.addEventListener('click', (e) => {
     e.preventDefault();
-    showNotification('Tier List feature coming soon! 📊✨', 'info');
+    
+    // Update active states
+    document.querySelectorAll('.sidebar-item').forEach(item => item.classList.remove('active'));
+    tierListLink.classList.add('active');
+    
+    // Show tier list view
+    mainContent.classList.add('hidden');
+    tierListView.classList.remove('hidden');
+    
+    // Generate tier list content
+    renderTierList();
+    
+    // Close sidebar on mobile
+    if (window.innerWidth <= 768) {
+        closeSidebar();
+    }
 });
 
 // Handle escape key
@@ -1127,7 +1144,7 @@ function showNotification(message, type = 'info') {
 }
 
 // Character tooltip system
-function showCharacterTooltip(event, character) {
+function showCharacterTooltip(element, character) {
     // Remove any existing tooltips immediately (force cleanup)
     const existingTooltips = document.querySelectorAll('.character-tooltip');
     existingTooltips.forEach(tooltip => tooltip.remove());
@@ -1184,7 +1201,7 @@ function showCharacterTooltip(event, character) {
     document.body.appendChild(tooltip);
 
     // Position tooltip
-    const rect = event.currentTarget.getBoundingClientRect();
+    const rect = element.getBoundingClientRect();
     const tooltipRect = tooltip.getBoundingClientRect();
     
     let left = rect.left + (rect.width / 2) - (tooltipRect.width / 2);
@@ -1546,6 +1563,25 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeFloatingButtons();
     renderSelectedArcanists();
 
+    // Event delegation for tier list tooltips
+    if (tierListView) {
+        tierListView.addEventListener('mouseover', e => {
+            const cardElement = e.target.closest('.character-card[data-name]');
+            if (cardElement) {
+                const character = characters.find(c => c.name === cardElement.dataset.name);
+                if (character) {
+                    showCharacterTooltip(cardElement, character);
+                }
+            }
+        });
+        tierListView.addEventListener('mouseout', e => {
+            const cardElement = e.target.closest('.character-card[data-name]');
+            if (cardElement) {
+                hideCharacterTooltip();
+            }
+        });
+    }
+
     // Parallax background effect
     let isTicking = false;
     window.addEventListener('scroll', () => {
@@ -1588,4 +1624,44 @@ function renderSelectedArcanists() {
             container.appendChild(card);
         }
     });
+}
+
+function renderTierList() {
+    const roles = ['DPS', 'Sub DPS', 'Support', 'Survival'];
+    const tiers = ['S+', 'S', 'A+', 'A', 'B']; // Removed 'C' as there are no C-rank 6-stars
+    
+    let html = '<div class="container mx-auto px-4 py-8">';
+    html += '<header class="text-center mb-8"><h1 class="text-4xl md:text-5xl font-bold mb-2">6-Star Tier List</h1></header>';
+
+    // Start the grid structure
+    html += `<div class="tier-list-grid">`;
+
+    // 1. Create the Header Row for Roles
+    html += `<div class="tier-label-wrapper header-corner"></div>`; // Empty cell for the top-left corner
+    roles.forEach(role => {
+        html += `<div class="tier-role-header">${role}</div>`;
+    });
+
+    // 2. Create a row for each Tier
+    tiers.forEach(tier => {
+        // Tier Label Cell (Row Header)
+        html += `<div class="tier-label-wrapper"><span class="tier-label tier-${tier.toLowerCase().replace('+', 'plus')}">${tier}</span></div>`;
+
+        // Create a cell for each role in the current tier row
+        roles.forEach(role => {
+            html += `<div class="tier-role-cell">`;
+            const charactersInCell = characters.filter(c => c.rank === tier && c.role === role);
+            
+            if (charactersInCell.length > 0) {
+                charactersInCell.sort((a,b) => a.name.localeCompare(b.name)).forEach(char => {
+                    html += renderCharacterCard(char, false, false).outerHTML;
+                });
+            }
+            html += `</div>`;
+        });
+    });
+
+    html += `</div>`; // End of grid
+    html += '</div>';
+    tierListView.innerHTML = html;
 }
