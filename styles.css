@@ -2356,7 +2356,7 @@ html {
 .tier-list-grid {
     display: grid;
     grid-template-columns: 100px repeat(4, 1fr);
-    background: rgba(15, 14, 12, 0.5);
+    background: rgba(54, 47, 39, 0.8);
     border: 1px solid var(--border-secondary);
     border-radius: 16px;
     box-shadow: 0 8px 30px rgba(0,0,0,0.2);
@@ -2369,7 +2369,7 @@ html {
     color: var(--text-accent);
     text-align: center;
     padding: 1rem 0.5rem;
-    background: rgba(31, 27, 21, 0.5);
+    background: rgba(42, 37, 30, 0.8);
 }
 
 .tier-label-wrapper {
@@ -2377,7 +2377,7 @@ html {
     justify-content: center;
     align-items: center;
     padding: 1rem 0;
-    border-top: 1px solid var(--border-primary);
+    border-top: 2px solid var(--border-secondary);
 }
 
 .tier-label-wrapper.header-corner {
@@ -2389,21 +2389,16 @@ html {
 }
 
 .tier-label {
-    font-size: 1.5rem;
-    font-weight: 700;
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
-    color: var(--text-primary);
-    text-shadow: 0 1px 3px rgba(0,0,0,0.5);
-    width: 100%;
+    font-size: 2.25rem;
+    font-weight: 900;
     text-align: center;
 }
 
-.tier-splus { background: linear-gradient(135deg, #ff8c8c, #ff4d4d); }
-.tier-s { background: linear-gradient(135deg, #ffae73, #ff7f36); }
-.tier-aplus { background: linear-gradient(135deg, #b392ff, #8b6dff); }
-.tier-a { background: linear-gradient(135deg, #73d1ff, #36b2ff); }
-.tier-b { background: linear-gradient(135deg, #6bdd9b, #30c77a); }
+.tier-splus { color: #FF80D5; text-shadow: 0 0 10px rgba(255, 128, 213, 0.7); }
+.tier-s { color: #E50000; text-shadow: 0 0 10px rgba(229, 0, 0, 0.7); }
+.tier-aplus { color: #FF4D4D; text-shadow: 0 0 10px rgba(255, 77, 77, 0.7); }
+.tier-a { color: #FF8C8C; text-shadow: 0 0 10px rgba(255, 140, 140, 0.7); }
+.tier-b { color: #FFC857; text-shadow: 0 0 10px rgba(255, 200, 87, 0.7); }
 
 .tier-role-cell {
     display: flex;
@@ -2411,7 +2406,7 @@ html {
     gap: 0.5rem;
     padding: 0.75rem;
     align-content: flex-start;
-    border-top: 1px solid var(--border-primary);
+    border-top: 2px solid var(--border-secondary);
     min-height: 140px;
 }
 
