@@ -2638,3 +2638,100 @@ html {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
 }
+
+.inheritance-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.inheritance-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1.5rem;
+    padding: 1rem;
+    background: var(--bg-primary);
+    border-radius: 8px;
+    border: 1px solid var(--border-secondary);
+}
+
+.insight-icon {
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+    flex-shrink: 0;
+    margin-top: 5px;
+}
+
+.inheritance-info h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--accent-amber);
+    margin: 0 0 0.5rem 0;
+}
+
+.inheritance-info p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.gallery-item {
+    background: var(--bg-primary);
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border-secondary);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.gallery-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px var(--shadow-warm);
+}
+
+.gallery-image {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-bottom: 1px solid var(--border-secondary);
+}
+
+.gallery-caption {
+    padding: 1rem;
+}
+
+.gallery-caption h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--accent-gold);
+    margin: 0 0 0.5rem 0;
+}
+
+.gallery-caption .gallery-description {
+    font-style: italic;
+    color: var(--text-muted);
+    margin-bottom: 0.75rem;
+    font-size: 0.9rem;
+}
+
+.gallery-caption .gallery-source {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    background: var(--bg-tertiary);
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    display: inline-block;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

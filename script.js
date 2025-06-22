@@ -16,7 +16,69 @@ const characters = [
     { name: "Flutterpage", rarity: 6, image: "assets/characters/Flutterpage_Poster.webp", afflatus: "Star", dmgType: "Reality", rank: "S+", role: "Support" },
     { name: "Getian", rarity: 6, image: "assets/characters/Getian_Poster.webp", afflatus: "Beast", dmgType: "Reality", rank: "B", role: "Support" },
     { name: "Hissabeth", rarity: 6, image: "assets/characters/Hissabeth_Poster_CN.webp", afflatus: "Plant", dmgType: "Mental", rank: "S", role: "Support" },
-    { name: "Isolde", rarity: 6, image: "assets/characters/Isolde_Poster1.webp", afflatus: "Spirit", dmgType: "Mental", rank: "A+", role: "Sub DPS", idleAudio: "assets/idles/Isolde_Idle.ogg" },
+    { 
+        name: "Isolde", 
+        rarity: 6, 
+        image: "assets/characters/Isolde_Poster1.webp", 
+        afflatus: "Spirit", 
+        dmgType: "Mental", 
+        rank: "A+", 
+        role: "Sub DPS", 
+        idleAudio: "assets/idles/Isolde_Idle.ogg",
+        profile: {
+            bio: "Isolde (伊索尔德) (full name: Isolde von Dittarsdorf) is a Spirit Arcanist in Reverse: 1999. She was introduced through the story chapter E Lucevan Le Stelle alongside Marcus in Version 1.7.\n\nIsolde, the youngest daughter of the noble Dittarsdorf family of Vienna, conducts herself with the grace and warmth of a spring breeze.",
+            inheritance: [
+                {
+                    name: "Seven Veils",
+                    level: 1,
+                    icon: "assets/insights/insight_1.webp",
+                    description: "When starting battle, enter the [Prelude] status and inflict 3 stacks of [Burn] on all enemies. At the end of the round, when the highest enemy [Burn] stack resolves and lose stacks, gain an equal number of [Heat] stacks in turn. When holding 15 stacks of [Heat], the [Prelude] status changes to [Interlude] status."
+                },
+                {
+                    name: "Seven Veils",
+                    level: 2,
+                    icon: "assets/insights/insight_2.webp",
+                    description: "ATK +5% when the caster enters battle."
+                },
+                {
+                    name: "Seven Veils",
+                    level: 3,
+                    icon: "assets/insights/insight_3.webp",
+                    description: "When holding 40 [Heat] stacks, the [Interlude] status changes to the [Finale] status."
+                }
+            ],
+            effects: {
+                "Prelude": "At the start of the round, grants 3 stacks of [Preignition] to all allies (undispellable).",
+                "Interlude": "At the start of the round, grants 3 stacks of [Preignition] to all allies. When the highest enemy [Burn] stack reaches 6 or higher, casts [Intermezzo] (undispellable).",
+                "Finale": "At the start of the round, grants 3 stacks of [Preignition] and 1 stack of [Power Burst] to all allies. When the highest enemy [Burn] stack reaches 6 or higher, casts [Intermezzo], and gain Incantation Might +15% for this attack (undispellable).",
+                "Intermezzo": "Deal 50% Reality DMG to all enemies. For every stack of [Burn] a target has, deal Reality DMG 10% to that target.",
+                "Burn": "Healing Taken -15%(unstackable). At the end of the round, takes (the holder's ATK x4%) Genesis DMG (stackable up to 30 times, multiple stacks of [Burn] is regarded as 1 [Neg Status], removes 50% of the stacks when triggered).",
+                "Heat": "Converted from resolved [Burn] stacks.",
+                "Preignition": "Before attacking, for each stack, inflicts 1 stack of [Burn] on the target (remove all after trigger).",
+                "Power Burst": "DMG Bonus +25% when attacking (-1 stack after trigger)."
+            },
+            gallery: [
+                {
+                    name: "Default",
+                    image: "assets/gallery/isolde/default.webp",
+                    description: "The king's daughter, the painter's beloved—a dazzling star, the hope of a family.",
+                    source: "Obtain by obtaining Isolde"
+                },
+                {
+                    name: "Polyphony",
+                    image: "assets/gallery/isolde/insight2.webp",
+                    description: "I am ... am I? I am. I AM!",
+                    source: "Obtain by reaching Insight II with Isolde"
+                },
+                {
+                    name: "And All That Jazz",
+                    image: "assets/gallery/isolde/garment1.webp",
+                    description: "The breeze halts in this place, where the bluebonnets flourish with grace.",
+                    source: "Available from the Garment Shop in Version 2.1 and Version 2.5 for 1080/US$9.99"
+                }
+            ]
+        }
+    },
     { name: "J", rarity: 6, image: "assets/characters/J_Poster.webp", afflatus: "Beast", dmgType: "Reality", rank: "A+", role: "Sub DPS" },
     { name: "Jessica", rarity: 6, image: "assets/characters/Jessica_Poster.webp", afflatus: "Plant", dmgType: "Reality", rank: "A+", role: "Sub DPS" },
     { name: "Jiu Niangzi", rarity: 6, image: "assets/characters/Jiu_Niangzi_Poster.webp", afflatus: "Mineral", dmgType: "Reality", rank: "S", role: "DPS" },
@@ -1730,8 +1792,12 @@ function renderCharacterProfile(characterName) {
     characterProfileView.classList.remove('hidden');
 
     const sections = [
-        'Biography', 'Psychubes', 'Inheritance', 
-        'Incantations', 'Teammates', 'Gallery'
+        { id: 'bio', name: 'Biography' },
+        { id: 'psychubes', name: 'Psychubes' },
+        { id: 'inheritance', name: 'Inheritance' },
+        { id: 'incantations', name: 'Incantations' },
+        { id: 'teammates', name: 'Teammates' },
+        { id: 'gallery', name: 'Gallery' }
     ];
 
     characterProfileView.innerHTML = `
@@ -1753,17 +1819,16 @@ function renderCharacterProfile(characterName) {
             <div class="profile-content-tabs">
                 <div class="profile-tabs">
                     ${sections.map((section, index) => `
-                        <button class="profile-tab-btn ${index === 0 ? 'active' : ''}" data-tab="${section.toLowerCase()}">
-                            ${section}
+                        <button class="profile-tab-btn ${index === 0 ? 'active' : ''}" data-tab="${section.id}">
+                            ${section.name}
                         </button>
                     `).join('')}
                 </div>
 
                 <div class="profile-tab-content-container">
                     ${sections.map((section, index) => `
-                        <div class="profile-tab-content ${index === 0 ? 'active' : ''}" id="tab-${section.toLowerCase()}">
-                            <h2>${section}</h2>
-                            <p>${section} data not available yet.</p>
+                        <div class="profile-tab-content ${index === 0 ? 'active' : ''}" id="tab-${section.id}">
+                            ${getTabContent(character, section.id)}
                         </div>
                     `).join('')}
                 </div>
@@ -1800,4 +1865,61 @@ function renderCharacterProfile(characterName) {
 
     // Scroll to top of the page to show the profile
     window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function getTabContent(character, tabId) {
+    const profile = character.profile;
+
+    if (!profile) {
+        return `
+            <h2>${tabId.charAt(0).toUpperCase() + tabId.slice(1)}</h2>
+            <p>Data not available for this character yet.</p>
+        `;
+    }
+
+    switch (tabId) {
+        case 'bio':
+            return `
+                <h2>Biography</h2>
+                <p>${profile.bio ? profile.bio.replace(/\n\n/g, '</p><p>') : 'No biography available.'}</p>
+            `;
+        case 'inheritance':
+            if (!profile.inheritance) return '<h2>Inheritance</h2><p>No inheritance data available.</p>';
+            return `
+                <h2>Inheritance: ${profile.inheritance[0].name}</h2>
+                <div class="inheritance-grid">
+                    ${profile.inheritance.map(i => `
+                        <div class="inheritance-item">
+                            <img src="${i.icon}" alt="Insight ${i.level}" class="insight-icon">
+                            <div class="inheritance-info">
+                                <h3>Insight ${i.level}</h3>
+                                <p>${i.description}</p>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        case 'gallery':
+            if (!profile.gallery) return '<h2>Gallery</h2><p>No gallery images available.</p>';
+            return `
+                <h2>Gallery</h2>
+                <div class="gallery-grid">
+                    ${profile.gallery.map(g => `
+                        <div class="gallery-item">
+                            <img src="${g.image}" alt="${g.name}" class="gallery-image">
+                            <div class="gallery-caption">
+                                <h3>${g.name}</h3>
+                                <p class="gallery-description">"${g.description}"</p>
+                                <p class="gallery-source">${g.source}</p>
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        default:
+            return `
+                <h2>${tabId.charAt(0).toUpperCase() + tabId.slice(1)}</h2>
+                <p>Data for this section not available yet.</p>
+            `;
+    }
 }
