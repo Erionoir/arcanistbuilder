@@ -503,6 +503,11 @@ function findSynergyCoresFor(selectedCharacters) {
 
 // Update the AI prompt generation logic to enforce role constraints
 async function generateTeam() {
+    if (currentAudio) {
+        currentAudio.pause();
+        currentAudio.currentTime = 0;
+        currentAudio = null;
+    }
     if (selectedCharacters.length === 0) return;
 
     generateBtn.disabled = true;
