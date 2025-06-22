@@ -57,6 +57,63 @@ const characters = [
                 "Preignition": "Before attacking, for each stack, inflicts 1 stack of [Burn] on the target (remove all after trigger).",
                 "Power Burst": "DMG Bonus +25% when attacking (-1 stack after trigger)."
             },
+            incantations: [
+                {
+                    name: "Twirling Melody",
+                    type: "Arcane Skill",
+                    image: "assets/incantations/isolde/skill1.webp",
+                    ranks: [
+                        {
+                            rank: "✦✧✧",
+                            rankType: "Debuff",
+                            description: "<i>\"Ф I sing and twirl.\"</i><br>Mass Attack. Deals 150% Reality DMG to 2 enemies. Inflicts 2 stacks of [Burn] on the targets hit. When in the [Intermezzo] status, gain Penetration Rate +30% for this attack. When in the [Finale] status, gain Penetration Rate +50% for this attack."
+                        },
+                        {
+                            rank: "✦✦✧",
+                            rankType: "Debuff",
+                            description: "<i>\"Ф I sing and twirl on stage.\"</i><br>Mass Attack. Deals 225% Reality DMG to 2 enemies. Inflicts 2 stacks of [Burn] on the targets hit. When in the [Intermezzo] status, gain Penetration Rate +30% for this attack. When in the [Finale] status, gain Penetration Rate +50% for this attack."
+                        },
+                        {
+                            rank: "✦✦✦",
+                            rankType: "Debuff",
+                            description: "<i>\"Ф I sing and twirl on stage, for there is no place for me other than the stage.\"</i><br>Mass Attack. Deals 300% Reality DMG to 2 enemies. Inflicts 2 stacks of [Burn] on the targets hit. When in the [Intermezzo] status, gain Penetration Rate +30% for this attack. When in the [Finale] status, gain Penetration Rate +50% for this attack."
+                        }
+                    ]
+                },
+                {
+                    name: "Desired Freedom",
+                    type: "Arcane Skill",
+                    image: "assets/incantations/isolde/skill2.webp",
+                    ranks: [
+                        {
+                            rank: "✦✧✧",
+                            rankType: "Debuff",
+                            description: "<i>\"Ф I dance.\"</i><br>Mass debuff. Inflicts Critical DEF -25% and Reality DEF -15% (-20% to targets in the [Burn] status) on all enemies for 2 rounds."
+                        },
+                        {
+                            rank: "✦✦✧",
+                            rankType: "Debuff",
+                            description: "<i>\"Ф I dance to recount my story.\"</i><br>Mass debuff. Inflicts Critical DEF -35% and Reality DEF -15% (-20% to targets in the [Burn] status) on all enemies for 2 rounds."
+                        },
+                        {
+                            rank: "✦✦✦",
+                            rankType: "Debuff",
+                            description: "<i>\"Ф I dance to recount my story, so that others may hear me.\"</i><br>Mass debuff. Inflicts Critical DEF -50% and Reality DEF -15% (-20% to targets in the [Burn] status) on all enemies for 2 rounds."
+                        }
+                    ]
+                },
+                {
+                    name: "Choking on Blood",
+                    type: "Ultimate",
+                    image: "assets/incantations/isolde/ult.webp",
+                    ranks: [
+                        {
+                            rank: "✦✦✦",
+                            description: "<i>\"Ф I hereby relieve you!\"</i><br>Mass Debuff. Inflicts 5 stacks of [Burn] on all enemies, and additional 5 stacks of [Burn] on the main target, at the same time, grants 1 stack of [Rousing Morale] to all allies, and then casts [Intermezzo] as a follow-up attack on the targets. For every excess stack of [Burn] on the main target, this [Intermezzo] gains Incantation Might +15%."
+                        }
+                    ]
+                }
+            ],
             gallery: [
                 {
                     name: "Default",
@@ -247,7 +304,7 @@ function toggleCharacterSelection(name) {
         currentAudio.currentTime = 0;
         currentAudio = null;
     }
-
+    
     if (index > -1) {
         // Deselecting - simple removal
         selectedCharacters.splice(index, 1);
@@ -1554,7 +1611,7 @@ function initializeFloatingButtons() {
     const scrollToTopBtn = document.getElementById('scrollToTop');
     const clearSelectionBtn = document.getElementById('clearSelection');
     const selectedArcanistsContainer = document.getElementById('selected-arcanists-container');
-
+    
     if (!scrollToTopBtn || !clearSelectionBtn || !selectedArcanistsContainer) {
         console.warn('Floating buttons or container not found in DOM');
         return;
@@ -1795,6 +1852,7 @@ function renderCharacterProfile(characterName) {
         { id: 'bio', name: 'Biography' },
         { id: 'psychubes', name: 'Psychubes' },
         { id: 'inheritance', name: 'Inheritance' },
+        { id: 'effects', name: 'Special Effects' },
         { id: 'incantations', name: 'Incantations' },
         { id: 'teammates', name: 'Teammates' },
         { id: 'gallery', name: 'Gallery' }
@@ -1899,6 +1957,48 @@ function getTabContent(character, tabId) {
                     `).join('')}
                 </div>
             `;
+        case 'effects':
+            if (!profile.effects || Object.keys(profile.effects).length === 0) return '<h2>Special Effects</h2><p>No special effects data available.</p>';
+            return `
+                <h2>Special Effects</h2>
+                <div class="effects-list">
+                    ${Object.entries(profile.effects).map(([name, description]) => `
+                        <div class="effect-item">
+                            <h3>[${name}]</h3>
+                            <p>${description.replace(/\[([^\]]+)\]/g, '<strong>[$1]</strong>')}</p>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        case 'incantations':
+            if (!profile.incantations || profile.incantations.length === 0) return '<h2>Incantations</h2><p>No incantation data available.</p>';
+            return `
+                <h2>Incantations</h2>
+                <div class="incantations-grid">
+                    ${profile.incantations.map(incantation => `
+                        <div class="incantation-item">
+                            <div class="incantation-header">
+                                <img src="${incantation.image}" alt="${incantation.name}" class="incantation-image">
+                                <div class="incantation-title">
+                                    <h3>${incantation.name}</h3>
+                                    <p class="incantation-type">${incantation.type}</p>
+                                </div>
+                            </div>
+                            <div class="incantation-ranks">
+                                ${incantation.ranks.map(rank => `
+                                    <div class="incantation-rank">
+                                        <div class="rank-header">
+                                            <span class="rank-indicator">${rank.rank}</span>
+                                            ${rank.rankType ? `<span class="rank-type-text">[${rank.rankType}]</span>` : ''}
+                                        </div>
+                                        <p class="incantation-rank-description">${rank.description}</p>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
         case 'gallery':
             if (!profile.gallery) return '<h2>Gallery</h2><p>No gallery images available.</p>';
             return `
@@ -1922,4 +2022,77 @@ function getTabContent(character, tabId) {
                 <p>Data for this section not available yet.</p>
             `;
     }
+}
+
+if (characterProfileView) {
+    characterProfileView.addEventListener('click', e => {
+        const galleryItem = e.target.closest('.gallery-item');
+        if (galleryItem) {
+            const imageSrc = galleryItem.querySelector('.gallery-image')?.src;
+            if (imageSrc) {
+                createLightbox(imageSrc);
+            }
+        }
+    });
+
+    tierListView.addEventListener('mouseover', e => {
+        const cardElement = e.target.closest('.character-card[data-name]');
+        if (cardElement) {
+            const character = characters.find(c => c.name === cardElement.dataset.name);
+            if (character) {
+                showCharacterTooltip(cardElement, character);
+            }
+        }
+    });
+}
+
+function createLightbox(src) {
+    const existingLightbox = document.querySelector('.lightbox-overlay');
+    if (existingLightbox) {
+        existingLightbox.remove();
+    }
+
+    const lightbox = document.createElement('div');
+    lightbox.className = 'lightbox-overlay';
+
+    lightbox.innerHTML = `
+        <span class="lightbox-close">&times;</span>
+        <img src="${src}" alt="Expanded gallery image" class="lightbox-image">
+    `;
+
+    document.body.appendChild(lightbox);
+    document.body.style.overflow = 'hidden';
+
+    const closeLightbox = () => {
+        lightbox.classList.add('closing');
+        document.body.style.overflow = '';
+        
+        const removeHandler = () => {
+            if (lightbox.parentElement) {
+                lightbox.remove();
+            }
+            lightbox.removeEventListener('transitionend', removeHandler);
+        };
+        lightbox.addEventListener('transitionend', removeHandler);
+    };
+
+    lightbox.querySelector('.lightbox-close').addEventListener('click', closeLightbox);
+    
+    lightbox.addEventListener('click', e => {
+        if (e.target === lightbox) {
+            closeLightbox();
+        }
+    });
+
+    const escapeHandler = e => {
+        if (e.key === 'Escape') {
+            closeLightbox();
+            document.removeEventListener('keydown', escapeHandler);
+        }
+    };
+    document.addEventListener('keydown', escapeHandler);
+
+    requestAnimationFrame(() => {
+        lightbox.classList.add('visible');
+    });
 }
