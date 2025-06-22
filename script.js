@@ -1522,6 +1522,21 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize floating buttons
     initializeFloatingButtons();
     renderSelectedArcanists();
+
+    // Parallax background effect
+    let isTicking = false;
+    window.addEventListener('scroll', () => {
+        const scrollPosition = window.pageYOffset;
+
+        if (!isTicking) {
+            window.requestAnimationFrame(() => {
+                document.body.style.backgroundPosition = `center ${scrollPosition * 0.5}px`;
+                isTicking = false;
+            });
+
+            isTicking = true;
+        }
+    });
 });
 
 function renderSelectedArcanists() {

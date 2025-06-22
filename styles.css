@@ -31,8 +31,10 @@
 
 body {
     font-family: 'Inter', sans-serif;
-    background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
-    background-attachment: fixed;
+    background-image: url('assets/bg.png');
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
     color: var(--text-primary);
     margin: 0;
     min-height: 100vh;
@@ -621,6 +623,7 @@ header p {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
     gap: 1rem;
+    margin: 1.5rem 0;
 }
 
 @media (min-width: 640px) {
@@ -641,14 +644,16 @@ header p {
 
 /* Character Cards */
 .character-card {
-    background: linear-gradient(145deg, var(--bg-card) 0%, var(--bg-elevated) 100%);
-    border: 2px solid var(--border-primary);
-    border-radius: 12px;
-    padding: 0.75rem;
-    cursor: pointer;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    position: relative;
+    background: rgba(31, 27, 21, 0.65);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 2px solid rgba(224, 213, 195, 0.2);
+    border-radius: 16px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
     overflow: hidden;
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
 }
 
 .character-card::before {
