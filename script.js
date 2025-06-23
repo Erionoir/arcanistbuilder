@@ -179,6 +179,14 @@ const teamResultsWrapper = document.getElementById('team-results-wrapper');
 const actionButtonsContainer = document.getElementById('action-buttons');
 const teamCountButtons = document.getElementById('team-count-buttons');
 const metaModeCheckbox = document.getElementById('meta-mode-checkbox');
+// ADD: get Big Brain checkbox element
+const bigBrainCheckbox = document.getElementById('big-brain-checkbox');
+
+// ADD: Slider elements
+const reasoningSection = document.getElementById('reasoning-section');
+const reasoningSlider = document.getElementById('reasoning-slider');
+const sliderValueLabel = document.getElementById('slider-value-label');
+const sliderDescription = document.getElementById('slider-description');
 
 // Experimental features elements (always enabled)
 const experimentalContent = document.getElementById('experimental-content');
@@ -216,6 +224,28 @@ let selectedCharacters = [];
 let numTeamsToGenerate = 1;
 let absoluteMetaMode = false;
 let currentAudio = null;
+// ADD: global state for Big Brain Mode
+let bigBrainMode = false;
+let reasoningLevelValue = -1;
+
+// ADD: Mappings for slider
+const budgetMap = {
+    '-1': -1, '0': 0, '1': 4096, '2': 8192,
+    '3': 12288, '4': 18432, '5': 24576
+};
+const budgetLabelMap = {
+    '-1': 'Dynamic', '0': 'Fastest', '1': 'Quick', '2': 'Balanced',
+    '3': 'Deep', '4': 'Rich', '5': 'Maximum'
+};
+const budgetDescriptionMap = {
+    '-1': 'Dynamic Reasoning: The model adapts its reasoning level as needed.',
+    '0': 'No Reasoning: Fastest response, minimal logical steps.',
+    '1': 'Minimal Reasoning: Low latency with some logical steps.',
+    '2': 'Balanced Speed & Quality: A good mix for general use.',
+    '3': 'Deeper Reasoning: Slower responses with higher quality analysis.',
+    '4': 'Rich Analysis: Very slow with highly detailed and rich responses.',
+    '5': 'Maximum Reasoning: The model uses its full capacity for analysis.'
+};
 
 // Experimental features state (always enabled)
 let selectedAfflatusRestrictions = [];
@@ -789,8 +819,19 @@ ${selectedCharacters.map(char => {
 
     try {
         const payload = { contents: [{ role: "user", parts: [{ text: prompt }] }] };
+
+        if (bigBrainMode) {
+            payload.generationConfig = {
+                thinkingConfig: {
+                    thinkingBudget: budgetMap[reasoningLevelValue]
+                }
+            };
+        }
+
         const apiKey = "AIzaSyBdflNZ8DmJrc1HadPYoxbFFyerdg6rrJE"; 
-        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+        // CHANGE: choose model based on Big Brain Mode
+        const modelVersion = bigBrainMode ? 'gemini-2.5-flash' : 'gemini-2.0-flash';
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelVersion}:generateContent?key=${apiKey}`;
         
         const response = await fetch(apiUrl, {
             method: 'POST',
@@ -801,6 +842,12 @@ ${selectedCharacters.map(char => {
         if (!response.ok) throw new Error(`API call failed with status: ${response.status}`);
         const result = await response.json();
 
+        if (!response.ok) {
+            console.error("API Error Response:", result);
+            const errorDetails = result.error?.message || `API call failed with status: ${response.status}`;
+            throw new Error(errorDetails);
+        }
+
         if (result.candidates && result.candidates[0].content && result.candidates[0].content.parts[0]) {
             const rawText = result.candidates[0].content.parts[0].text;
             parseAndDisplayResults(rawText);
@@ -809,7 +856,7 @@ ${selectedCharacters.map(char => {
         }
     } catch (error) {
         console.error("Error generating team:", error);
-        teamResultsWrapper.innerHTML = `<p style='color: var(--accent-gold); text-align: center;'>An error occurred. Please check your connection and try again.</p>`;
+        teamResultsWrapper.innerHTML = `<p style='color: var(--accent-gold); text-align: center;'>An error occurred: ${error.message}. Please check the console for more details.</p>`;
     } finally {
         loadingSpinner.classList.add('hidden');
         resultsContainer.classList.remove('hidden');
@@ -1239,7 +1286,35 @@ document.addEventListener('keydown', (e) => {
 // Meta Mode Toggle
 metaModeCheckbox.addEventListener('change', (e) => {
     absoluteMetaMode = e.target.checked;
+    // ADD: notify user when Absolute Meta Mode toggles
+    showNotification(absoluteMetaMode ? 'Absolute Meta Mode enabled — using verified meta data.' : 'Absolute Meta Mode disabled.', 'info');
 });
+
+// ADD: Big Brain Mode toggle listener
+if (bigBrainCheckbox) {
+    bigBrainCheckbox.addEventListener('change', (e) => {
+        bigBrainMode = e.target.checked;
+        showNotification(bigBrainMode ? 'Big Brain Mode enabled — expect deeper analysis!' : 'Big Brain Mode disabled.', 'info');
+
+        if (bigBrainMode) {
+            reasoningSection.classList.add('visible');
+        } else {
+            reasoningSection.classList.remove('visible');
+        }
+    });
+}
+
+// ADD: Slider listener
+if (reasoningSlider) {
+    reasoningSlider.addEventListener('input', (e) => {
+        const value = e.target.value;
+        reasoningLevelValue = value;
+        sliderValueLabel.textContent = budgetLabelMap[value];
+        if (sliderDescription) {
+            sliderDescription.textContent = budgetDescriptionMap[value];
+        }
+    });
+}
 
 // Modern notification system
 function showNotification(message, type = 'info') {
@@ -1682,25 +1757,119 @@ function initializeFloatingButtons() {
     window.updateClearSelectionButtonVisibility();
 }
 
+function createLightbox(src) {
+    const existingLightbox = document.querySelector('.lightbox-overlay');
+    if (existingLightbox) {
+        existingLightbox.remove();
+    }
+
+    const lightbox = document.createElement('div');
+    lightbox.className = 'lightbox-overlay';
+
+    lightbox.innerHTML = `
+        <span class="lightbox-close">&times;</span>
+        <img src="${src}" alt="Expanded gallery image" class="lightbox-image">
+    `;
+
+    document.body.appendChild(lightbox);
+    document.body.style.overflow = 'hidden';
+
+    const closeLightbox = () => {
+        lightbox.classList.add('closing');
+        document.body.style.overflow = '';
+        
+        const removeHandler = () => {
+            if (lightbox.parentElement) {
+                lightbox.remove();
+            }
+            lightbox.removeEventListener('transitionend', removeHandler);
+        };
+        lightbox.addEventListener('transitionend', removeHandler);
+    };
+
+    lightbox.querySelector('.lightbox-close').addEventListener('click', closeLightbox);
+    
+    lightbox.addEventListener('click', e => {
+        if (e.target === lightbox) {
+            closeLightbox();
+        }
+    });
+
+    const escapeHandler = e => {
+        if (e.key === 'Escape') {
+            closeLightbox();
+            document.removeEventListener('keydown', escapeHandler);
+        }
+    };
+    document.addEventListener('keydown', escapeHandler);
+
+    requestAnimationFrame(() => {
+        lightbox.classList.add('visible');
+    });
+}
+
+function resetAllInputs() {
+    // Reset Toggles & dependent UI
+    if (metaModeCheckbox) metaModeCheckbox.checked = false;
+    if (bigBrainCheckbox) {
+        bigBrainCheckbox.checked = false;
+        if (reasoningSection) reasoningSection.classList.remove('visible');
+    }
+    
+    absoluteMetaMode = false;
+    bigBrainMode = false;
+
+    // Reset Slider input and its state
+    if (reasoningSlider) {
+        reasoningSlider.value = -1;
+        reasoningSlider.dispatchEvent(new Event('input', { bubbles: true }));
+    }
+    reasoningLevelValue = -1;
+
+    // Reset filter checkboxes and state
+    document.querySelectorAll('.filter-dropdown input[type="checkbox"]').forEach(checkbox => {
+        checkbox.checked = false;
+    });
+    activeFilters = { afflatus: [], damageType: [], rank: [], role: [] };
+    updateFilterCount();
+
+    // Reset experimental afflatus restriction checkboxes and state
+    document.querySelectorAll('#afflatus-restrictions input[type="checkbox"]').forEach(checkbox => {
+        checkbox.checked = false;
+    });
+    selectedAfflatusRestrictions = [];
+
+    // Reset team count buttons and state
+    if (teamCountButtons) {
+        teamCountButtons.querySelectorAll('.team-count-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        const defaultTeamCountBtn = teamCountButtons.querySelector('.team-count-btn[data-value="1"]');
+        if (defaultTeamCountBtn) defaultTeamCountBtn.classList.add('active');
+    }
+    numTeamsToGenerate = 1;
+
+    console.log('All inputs have been reset to their default state on page load.');
+}
+
 // Initial Render
 document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM loaded, starting initialization...');
     
+    // Setup UI components first
+    setupSettingsMenu();
+    setupExperimentalFeatures();
+
+    // Reset all inputs to default state on page load
+    resetAllInputs();
+    
     renderAllCharacters();
     updateGenerateButtonState();
     
-    // Add event listener for generate button
     if (generateBtn) {
         generateBtn.addEventListener('click', generateTeam);
     }
     
-    // Setup settings menu
-    setupSettingsMenu();
-    
-    // Setup experimental features immediately
-    setupExperimentalFeatures();
-    
-    // Initialize floating buttons
     initializeFloatingButtons();
     renderSelectedArcanists();
 
@@ -2043,56 +2212,5 @@ if (characterProfileView) {
                 showCharacterTooltip(cardElement, character);
             }
         }
-    });
-}
-
-function createLightbox(src) {
-    const existingLightbox = document.querySelector('.lightbox-overlay');
-    if (existingLightbox) {
-        existingLightbox.remove();
-    }
-
-    const lightbox = document.createElement('div');
-    lightbox.className = 'lightbox-overlay';
-
-    lightbox.innerHTML = `
-        <span class="lightbox-close">&times;</span>
-        <img src="${src}" alt="Expanded gallery image" class="lightbox-image">
-    `;
-
-    document.body.appendChild(lightbox);
-    document.body.style.overflow = 'hidden';
-
-    const closeLightbox = () => {
-        lightbox.classList.add('closing');
-        document.body.style.overflow = '';
-        
-        const removeHandler = () => {
-            if (lightbox.parentElement) {
-                lightbox.remove();
-            }
-            lightbox.removeEventListener('transitionend', removeHandler);
-        };
-        lightbox.addEventListener('transitionend', removeHandler);
-    };
-
-    lightbox.querySelector('.lightbox-close').addEventListener('click', closeLightbox);
-    
-    lightbox.addEventListener('click', e => {
-        if (e.target === lightbox) {
-            closeLightbox();
-        }
-    });
-
-    const escapeHandler = e => {
-        if (e.key === 'Escape') {
-            closeLightbox();
-            document.removeEventListener('keydown', escapeHandler);
-        }
-    };
-    document.addEventListener('keydown', escapeHandler);
-
-    requestAnimationFrame(() => {
-        lightbox.classList.add('visible');
     });
 }

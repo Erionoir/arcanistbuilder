@@ -2224,7 +2224,7 @@ html {
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
-    z-index: 1000;
+    z-index: 950; /* lowered so sidebar (1000) and overlay (999) appear above */
     transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease-in-out;
     transform: scale(0.95) translateY(10px);
     opacity: 0;
@@ -2908,6 +2908,86 @@ html {
 }
 
 .incantation-rank-description {
-    line-height: 1.7;
     color: var(--text-secondary);
+    line-height: 1.5;
+}
+
+/* Reasoning Slider */
+#reasoning-section {
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: top;
+    overflow: hidden;
+    max-height: 0;
+    opacity: 0;
+    margin-top: 0;
+    padding-top: 0;
+}
+
+#reasoning-section.visible {
+    max-height: 300px;
+    opacity: 1;
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border-secondary);
+}
+
+.slider-container {
+    margin-top: 1rem;
+    position: relative;
+    padding-bottom: 20px;
+}
+
+.slider-value {
+    text-align: center;
+    font-weight: 600;
+    color: var(--accent-amber);
+    margin-bottom: 0.75rem;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+}
+
+.slider {
+    -webkit-appearance: none;
+    width: 100%;
+    height: 8px;
+    background: var(--bg-tertiary);
+    border-radius: 5px;
+    outline: none;
+    transition: opacity .2s;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: var(--accent-gold);
+    cursor: pointer;
+    border-radius: 50%;
+    border: 3px solid var(--bg-primary);
+    box-shadow: 0 0 5px rgba(212, 165, 116, 0.5);
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.slider:hover::-webkit-slider-thumb {
+    transform: scale(1.2);
+}
+
+.slider:active::-webkit-slider-thumb {
+    transform: scale(1.3);
+}
+
+.slider-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: var(--text-muted);
+    margin-top: 8px;
+    padding: 0 5px;
+}
+
+#slider-description {
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    text-align: center;
 }

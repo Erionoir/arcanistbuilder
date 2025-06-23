@@ -112,10 +112,17 @@
                                             <span class="toggle-slider"></span>
                                             <span class="toggle-label">Absolute Meta Mode</span>
                                         </label>
-                                        <p class="toggle-description">Returns pure meta compositions from Global/CN servers regardless of selection synergy</p>
+                                        <p class="toggle-description">Returns pure meta compositions from Global/CN servers regardless of selection synergy.</p>
+                                        <label class="toggle-container" style="margin-top: 0.5rem;">
+                                            <input type="checkbox" id="big-brain-checkbox" />
+                                            <span class="toggle-slider"></span>
+                                            <span class="toggle-label">Big Brain Mode</span>
+                                        </label>
+                                        <p class="toggle-description">Provides deeper analysis (may take slightly longer).</p>
                                     </div>
                                 </div>
-                                  <!-- Experimental Features -->
+
+                                <!-- Experimental Features -->
                                 <div class="setting-item">
                                     <label class="setting-label experimental-warning">⚠️ Experimental Features</label>
                                     <div class="experimental-content" id="experimental-content">
@@ -124,6 +131,24 @@
                                             <div class="afflatus-restriction-grid" id="afflatus-restrictions">
                                                 <!-- Afflatus options will be dynamically generated -->
                                             </div>
+                                        </div>
+                                        <div class="experimental-section" id="reasoning-section">
+                                            <label class="experimental-section-label">Reasoning</label>
+                                            <p class="experimental-section-description">Adjusts the reasoning level for Big Brain Mode.</p>
+                                            <div class="slider-container">
+                                                <input type="range" min="-1" max="5" value="-1" class="slider" id="reasoning-slider">
+                                                <div class="slider-value" id="slider-value-label">Dynamic</div>
+                                                <div class="slider-labels">
+                                                    <span>-1</span>
+                                                    <span>0</span>
+                                                    <span>1</span>
+                                                    <span>2</span>
+                                                    <span>3</span>
+                                                    <span>4</span>
+                                                    <span>5</span>
+                                                </div>
+                                            </div>
+                                            <p id="slider-description" class="toggle-description">Dynamic Reasoning: The model adapts its reasoning level as needed.</p>
                                         </div>
                                     </div>
                                 </div>
