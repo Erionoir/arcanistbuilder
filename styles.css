@@ -733,8 +733,75 @@ header p {
 }
 
 .character-card .character-rarity {
-    font-size: 1.3rem;
     color: var(--accent-gold);
+    margin: 4px 0 0;
+    font-size: 0.875rem;
+}
+
+/* Blacklist Styles */
+.character-card.blacklisted {
+    filter: grayscale(1) brightness(0.6);
+}
+
+.character-card.blacklisted .character-info {
+    opacity: 0.7;
+}
+
+.character-card.blacklisted:hover {
+    filter: grayscale(0.8) brightness(0.7);
+}
+
+.character-card .blacklist-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 30px;
+    height: 30px;
+    background: rgba(20, 18, 15, 0.6);
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 5;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.character-card .blacklist-btn svg {
+    width: 20px;
+    height: 20px;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.character-card:hover .blacklist-btn {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.character-card .blacklist-btn:hover {
+    background: var(--accent-error);
+    color: white;
+    transform: scale(1.1);
+}
+
+.character-card.blacklisted .blacklist-btn {
+    opacity: 1;
+    background: var(--accent-success);
+    color: white;
+}
+
+.character-card.blacklisted .blacklist-btn:hover {
+    background: #4ade80; /* Brighter green on hover */
+    transform: scale(1.1);
+}
+
+.character-card.blacklisted .blacklist-btn svg {
+    transform: rotate(135deg); /* Rotates X to a + */
 }
 
 /* Controls */

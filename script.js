@@ -227,6 +227,7 @@ let selectedCharacters = [];
 let numTeamsToGenerate = 1;
 let absoluteMetaMode = false;
 let currentAudio = null;
+let blacklistedCharacters = [];
 // ADD: global state for Big Brain Mode
 let bigBrainMode = false;
 let insightMode = false;
@@ -265,15 +266,25 @@ let activeFilters = {
 };
 let filteredCharacters = [...characters];
 
-function renderCharacterCard(character, isSelectable = false, isSelected = false) {
+function renderCharacterCard(character, isSelectable = false, isSelected = false, showBlacklistBtn = false) {
+    const isBlacklisted = blacklistedCharacters.includes(character.name);
     const card = document.createElement('div');
-    card.className = `character-card ${isSelectable ? 'cursor-pointer' : ''} ${isSelected ? 'selected' : ''}`;
+    card.className = `character-card ${isSelectable ? 'cursor-pointer' : ''} ${isSelected ? 'selected' : ''} ${isBlacklisted ? 'blacklisted' : ''}`;
     card.dataset.name = character.name;
     card.setAttribute('tabindex', isSelectable ? '0' : '-1');
     
     const rarityStars = '★'.repeat(character.rarity);
 
+    const blacklistButtonHTML = showBlacklistBtn ? `
+        <button class="blacklist-btn" data-name="${character.name}" title="Blacklist ${character.name}" aria-label="Blacklist ${character.name}">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </button>
+    ` : '';
+
     card.innerHTML = `
+        ${blacklistButtonHTML}
         <img src="${character.image}" alt="${character.name}" onerror="this.src='https://placehold.co/150x200/1F1B15/D4A574?text=Error'">
         <div class="character-info">
             <p class="character-name">${character.name}</p>
@@ -310,7 +321,7 @@ function renderAllCharacters() {
     }
     
     sortedCharacters.forEach((char, index) => {
-        const card = renderCharacterCard(char, true, selectedCharacters.includes(char.name));
+        const card = renderCharacterCard(char, true, selectedCharacters.includes(char.name), true);
         
         // Click and keyboard event listeners
         card.addEventListener('click', () => toggleCharacterSelection(char.name));
@@ -330,6 +341,12 @@ function renderAllCharacters() {
 }
 
 function toggleCharacterSelection(name) {
+    // Prevent selection if blacklisted
+    if (blacklistedCharacters.includes(name)) {
+        showNotification(`Cannot select a blacklisted character.`, 'error');
+        return;
+    }
+
     const cardElement = characterSelectionGrid.querySelector(`[data-name="${name}"]`);
     const index = selectedCharacters.indexOf(name);
     
@@ -688,6 +705,13 @@ async function generateTeam() {
     let availableCharacters = [...characters];
     let usingExperimentalFeatures = false;
     
+    // NEW: Filter out blacklisted characters before anything else.
+    if (blacklistedCharacters.length > 0) {
+        availableCharacters = availableCharacters.filter(char => !blacklistedCharacters.includes(char.name));
+        console.log('🚫 Blacklisted characters removed from available pool:', blacklistedCharacters);
+        showNotification(`🚫 Excluding ${blacklistedCharacters.length} blacklisted character(s).`, 'info');
+    }
+    
     if (selectedAfflatusRestrictions.length > 0) {
         availableCharacters = applyAfflatusRestrictions(availableCharacters);
         usingExperimentalFeatures = true;
@@ -794,15 +818,24 @@ ${selectedCharacters.map(char => {
         ` : insightMode ? `
         INSIGHT MODE: You have been granted enhanced insight capabilities. Use this to perform a deeper analysis of character synergies, team compositions, and strategic viability. Provide nuanced and detailed explanations for your choices, going beyond surface-level meta picks.
         ` : ''}
-          AVAILABLE 6-STAR CHARACTERS ONLY (you MUST only use characters from this exact list):
+          AVAILABLE 6-STAR CHARACTERS:
+        The pool of characters you can use for building teams is STRICTLY LIMITED to the following list. Do not use any character not on this list.
         ${availableCharactersList}
+        
+        ${blacklistedCharacters.length > 0 ? `
+        ABSOLUTE EXCLUSION RULE:
+        The following characters are BLACKLISTED and MUST BE EXCLUDED from ALL team suggestions, no matter what. If a common meta team includes one of these characters, you must find a suitable replacement from the list of available characters. DO NOT SUGGEST A TEAM WITH THESE CHARACTERS.
+        Blacklisted: ${blacklistedCharacters.join(', ')}
+        ` : ''}
+
           CRITICAL REQUIREMENTS:
         - Each team MUST have exactly 4 characters
         - You can ONLY use characters from the available list above - no other characters exist
         - All characters must be exactly as spelled in the available list
         - MUST include ALL of my selected characters: ${selectedCharacters.join(', ')}
         - Complete each team by adding ${4 - selectedCharacters.length} more characters from the available list
-        - Generate exactly ${numTeamsToGenerate} team${numTeamsToGenerate !== 1 ? 's' : ''} as requested        Focus on:
+        - Generate exactly ${numTeamsToGenerate} team${numTeamsToGenerate !== 1 ? 's' : ''} as requested
+        Focus on:
         - CURRENT CN server meta data from 2024-2025 (not outdated information)
         - Actual documented team compositions with proven win rates
         - Specific character synergies used in CN competitive play and high-level content
@@ -899,6 +932,7 @@ ${selectedCharacters.map(char => {
 
 function parseAndDisplayResults(rawText) {
     const teams = rawText.split('--- Team Start ---').slice(1);
+    let teamsDisplayed = 0;
 
     if (teams.length === 0) {
          teamResultsWrapper.innerHTML = "<p style='color: var(--accent-gold); text-align: center;'>Could not parse the AI response. No teams found.</p>";
@@ -909,7 +943,15 @@ function parseAndDisplayResults(rawText) {
         const teamData = teamText.split('--- Team End ---')[0];
         const lines = teamData.split('\n');        const teamLine = lines.find(line => line.toLowerCase().startsWith('final team:'));
         
-        if (!teamLine) return;        const teamNames = teamLine.substring(teamLine.indexOf(':') + 1).split(',').map(name => name.trim());
+        if (!teamLine) return;        
+        const teamNames = teamLine.substring(teamLine.indexOf(':') + 1).split(',').map(name => name.trim());
+        
+        // Client-side check to enforce blacklist. If a team contains a blacklisted character, skip it.
+        const hasBlacklistedChar = teamNames.some(name => blacklistedCharacters.includes(name));
+        if (hasBlacklistedChar) {
+            console.warn(`AI suggested a team with a blacklisted character. Filtering out team: ${teamNames.join(', ')}`);
+            return;
+        }
         
         // Validate
         const validCharacters = teamNames.filter(name => 
@@ -989,7 +1031,12 @@ function parseAndDisplayResults(rawText) {
             <div style="margin-top: 1.5rem; color: var(--text-secondary); line-height: 1.6;">${htmlContent}</div>
         `;
         teamResultsWrapper.appendChild(teamContainer);
+        teamsDisplayed++;
     });
+    
+    if (teamsDisplayed === 0 && teams.length > 0) {
+        teamResultsWrapper.innerHTML = "<p style='color: var(--accent-gold); text-align: center;'>The AI's suggestions included blacklisted characters and were filtered out. Please try generating again.</p>";
+    }
     
     renderActionButtons();
 }
@@ -1967,6 +2014,18 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeFloatingButtons();
     renderSelectedArcanists();
 
+    // Event listener for blacklist button clicks using event delegation
+    characterSelectionGrid.addEventListener('click', (e) => {
+        const blacklistBtn = e.target.closest('.blacklist-btn');
+        if (blacklistBtn) {
+            e.stopPropagation(); // Prevent the card from being selected
+            const characterName = blacklistBtn.dataset.name;
+            if (characterName) {
+                toggleBlacklist(characterName);
+            }
+        }
+    });
+
     // Event delegation for tier list tooltips
     if (tierListView) {
         tierListView.addEventListener('mouseover', e => {
@@ -1982,6 +2041,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const cardElement = e.target.closest('.character-card[data-name]');
             if (cardElement) {
                 hideCharacterTooltip();
+            }
+        });
+        tierListView.addEventListener('click', (e) => {
+            const blacklistBtn = e.target.closest('.blacklist-btn');
+            if (blacklistBtn) {
+                e.stopPropagation(); // Prevent any other card actions
+                const characterName = blacklistBtn.dataset.name;
+                if (characterName) {
+                    toggleBlacklist(characterName);
+                }
             }
         });
     }
@@ -2058,7 +2127,7 @@ function renderTierList() {
             
             if (charactersInCell.length > 0) {
                 charactersInCell.sort((a,b) => a.name.localeCompare(b.name)).forEach(char => {
-                    html += renderCharacterCard(char, false, false).outerHTML;
+                    html += renderCharacterCard(char, false, false, true).outerHTML;
                 });
             }
             html += `</div>`;
@@ -2090,10 +2159,16 @@ function renderLibrary() {
     const sortedCharacters = [...characters].sort((a, b) => a.name.localeCompare(b.name));
 
     sortedCharacters.forEach((character, index) => {
-        const card = renderCharacterCard(character, true, false);
+        const card = renderCharacterCard(character, true, false, true);
         card.style.animationDelay = `${index * 0.05}s`;
         card.classList.add('fade-in');
-        card.addEventListener('click', () => renderCharacterProfile(character.name));
+        card.addEventListener('click', (e) => {
+            // Prevent profile view if blacklist button is clicked
+            if (e.target.closest('.blacklist-btn')) {
+                return;
+            }
+            renderCharacterProfile(character.name)
+        });
         card.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' || e.key === ' ') {
                 e.preventDefault();
@@ -2307,4 +2382,34 @@ if (characterProfileView) {
             }
         }
     });
+}
+
+function toggleBlacklist(name) {
+    const cardElements = document.querySelectorAll(`.character-card[data-name="${name}"]`);
+    const index = blacklistedCharacters.indexOf(name);
+    
+    if (index > -1) {
+        // Un-blacklist
+        blacklistedCharacters.splice(index, 1);
+        cardElements.forEach(el => el.classList.remove('blacklisted'));
+        showNotification(`✅ ${name} removed from blacklist.`, 'success');
+    } else {
+        // Blacklist
+        blacklistedCharacters.push(name);
+        cardElements.forEach(el => el.classList.add('blacklisted'));
+        showNotification(`🚫 ${name} has been blacklisted.`, 'warning');
+        
+        // If character was selected, deselect them
+        const selectedIndex = selectedCharacters.indexOf(name);
+        if (selectedIndex > -1) {
+            selectedCharacters.splice(selectedIndex, 1);
+            cardElements.forEach(el => el.classList.remove('selected'));
+            updateGenerateButtonState();
+            renderSelectedArcanists();
+            // Ensure the floating container's visibility is updated.
+            if (typeof updateClearSelectionButtonVisibility === 'function') {
+                updateClearSelectionButtonVisibility();
+            }
+        }
+    }
 }
