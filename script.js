@@ -158,6 +158,7 @@ const characters = [
     { name: "Recoleta", rarity: 6, image: "assets/characters/Recoleta_Poster.webp", afflatus: "Mineral", dmgType: "Reality", rank: "S+", role: "DPS" },
     { name: "Regulus", rarity: 6, image: "assets/characters/Regulus_Poster.webp", afflatus: "Star", dmgType: "Mental", rank: "A+", role: "Sub DPS" },
     { name: "Semmelweis", rarity: 6, image: "assets/characters/Semmelweis_Poster.webp", afflatus: "Mineral", dmgType: "Reality", rank: "S+", role: "Sub DPS" },
+    { name: "Sentinel", rarity: 6, image: "assets/characters/Sentinel_Poster_CN.webp", afflatus: "Mineral", dmgType: "Reality", rank: "S", role: "Sub DPS" },
     { name: "Shamane", rarity: 6, image: "assets/characters/Shamane_Poster.webp", afflatus: "Beast", dmgType: "Reality", rank: "B", role: "Support" },
     { name: "Sotheby", rarity: 6, image: "assets/characters/Sotheby_Poster.webp", afflatus: "Plant", dmgType: "Reality", rank: "S", role: "Survival" },
     { name: "Spathodea", rarity: 6, image: "assets/characters/Spathodea_Poster.webp", afflatus: "Beast", dmgType: "Reality", rank: "A", role: "DPS" },
@@ -179,8 +180,8 @@ const teamResultsWrapper = document.getElementById('team-results-wrapper');
 const actionButtonsContainer = document.getElementById('action-buttons');
 const teamCountButtons = document.getElementById('team-count-buttons');
 const metaModeCheckbox = document.getElementById('meta-mode-checkbox');
-// ADD: get Big Brain checkbox element
 const bigBrainCheckbox = document.getElementById('big-brain-checkbox');
+const insightModeCheckbox = document.getElementById('insight-mode-checkbox');
 
 // ADD: Slider elements
 const reasoningSection = document.getElementById('reasoning-section');
@@ -199,8 +200,10 @@ const mainContent = document.getElementById('main-content');
 const teamBuilderLink = document.getElementById('team-builder-link');
 const tierListLink = document.getElementById('tier-list-link');
 const libraryLink = document.getElementById('library-link');
+const roadmapLink = document.getElementById('roadmap-link');
 const tierListView = document.getElementById('tier-list-view');
 const libraryView = document.getElementById('library-view');
+const roadmapView = document.getElementById('roadmap-view');
 const characterProfileView = document.getElementById('character-profile-view');
 
 // Search and Filter elements
@@ -226,6 +229,7 @@ let absoluteMetaMode = false;
 let currentAudio = null;
 // ADD: global state for Big Brain Mode
 let bigBrainMode = false;
+let insightMode = false;
 let reasoningLevelValue = -1;
 
 // ADD: Mappings for slider
@@ -375,6 +379,17 @@ function toggleCharacterSelection(name) {
         updateClearSelectionButtonVisibility();
     }
     renderSelectedArcanists();
+}
+
+if (insightModeCheckbox) {
+    insightModeCheckbox.addEventListener('change', () => {
+        insightMode = insightModeCheckbox.checked;
+        if (insightMode) {
+            showNotification('💡 Insight Mode: Enhanced with deep analysis.', 'success');
+        } else {
+            showNotification('💡 Insight Mode disabled.', 'info');
+        }
+    });
 }
 
 function updateGenerateButtonState() {
@@ -760,7 +775,7 @@ ${selectedCharacters.map(char => {
         ABSOLUTE META MODE - REAL CN META DATA (Prydwen.gg May 2025):
         ${metaContext}
         
-        INSTRUCTIONS: You must build teams based on the VERIFIED META DATA above. Use the actual team compositions and synergies shown in the meta analysis. Do not ignore this data - it represents real CN server competitive usage with proven win rates.
+        INSTRUCTIONS: You must build teams based on the VERIFIED META DATA ABOVE. Use the actual team compositions and synergies shown in the meta analysis. Do not ignore this data - it represents real CN server competitive usage with proven win rates.
         
         KEY META CORES TO REFERENCE:
         - Voyager + Kiperina (Inspiration/Crit) → Best with Barcarola + Aleph
@@ -772,6 +787,11 @@ ${selectedCharacters.map(char => {
         SYNERGY MODE: Build teams around my selected characters, considering their roles, damage types, and synergies. Use the provided INSPIRATIONAL SYNERGY CORES as a starting point, but feel free to create other diverse and effective teams. Prioritize variety and explain your choices. Avoid over-reliance on common staples like Tooth Fairy unless they fit the synergy perfectly.
         ${metaContext}
         `}
+        ${(insightMode && absoluteMetaMode) ? `
+        INSIGHT-ENHANCED META MODE: Your insight capabilities are active. You MUST use them to search for and validate the LATEST CN SERVER META information. Cross-reference the provided data with your search results to find the most up-to-date, cutting-edge team compositions. Prioritize teams that have emerged or risen in prominence after May 2025.
+        ` : insightMode ? `
+        INSIGHT MODE: You have been granted enhanced insight capabilities. Use this to perform a deeper analysis of character synergies, team compositions, and strategic viability. Provide nuanced and detailed explanations for your choices, going beyond surface-level meta picks.
+        ` : ''}
           AVAILABLE 6-STAR CHARACTERS ONLY (you MUST only use characters from this exact list):
         ${availableCharactersList}
           CRITICAL REQUIREMENTS:
@@ -826,6 +846,10 @@ ${selectedCharacters.map(char => {
                     thinkingBudget: budgetMap[reasoningLevelValue]
                 }
             };
+        }
+
+        if (insightMode) {
+            payload.tools = [{ "googleSearch": {} }];
         }
 
         const apiKey = "AIzaSyBdflNZ8DmJrc1HadPYoxbFFyerdg6rrJE"; 
@@ -1039,6 +1063,7 @@ function hideAllViews() {
     mainContent.classList.add('hidden');
     tierListView.classList.add('hidden');
     libraryView.classList.add('hidden');
+    roadmapView.classList.add('hidden');
     characterProfileView.classList.add('hidden');
 }
 
@@ -1101,6 +1126,50 @@ tierListLink.addEventListener('click', (e) => {
         closeSidebar();
     }
 });
+
+// Roadmap tab navigation
+if (roadmapLink) {
+    roadmapLink.addEventListener('click', (e) => {
+        e.preventDefault();
+
+        // Update active states
+        document.querySelectorAll('.sidebar-item').forEach(item => item.classList.remove('active'));
+        roadmapLink.classList.add('active');
+
+        // Show roadmap view
+        hideAllViews();
+        roadmapView.classList.remove('hidden');
+
+        // Close sidebar on mobile
+        if (window.innerWidth <= 768) {
+            closeSidebar();
+        }
+    });
+}
+
+// Animate roadmap progress bars when roadmap view is shown
+if (roadmapLink && roadmapView) {
+    roadmapLink.addEventListener('click', () => {
+        // Animate progress bars
+        setTimeout(() => {
+            roadmapView.querySelectorAll('.roadmap-progress-bar').forEach(bar => {
+                const fill = bar.querySelector('.roadmap-progress-fill');
+                const percent = bar.getAttribute('data-progress');
+                if (fill) {
+                    fill.style.width = percent + '%';
+                }
+            });
+        }, 200); // slight delay for smoothness
+    });
+    // Reset progress bars when hiding
+    document.addEventListener('click', (e) => {
+        if (!roadmapView.contains(e.target) && !roadmapLink.contains(e.target)) {
+            roadmapView.querySelectorAll('.roadmap-progress-fill').forEach(fill => {
+                fill.style.width = '0%';
+            });
+        }
+    });
+}
 
 // Handle escape key
 document.addEventListener('keydown', (e) => {
@@ -1320,6 +1389,7 @@ if (reasoningSlider) {
 function showNotification(message, type = 'info') {
     // Remove any existing notifications
     const existingNotification = document.querySelector('.notification');
+
     if (existingNotification) {
         existingNotification.remove();
     }

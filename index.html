@@ -39,6 +39,13 @@
                 </svg>
                 <span class="sidebar-text">Library</span>
             </a>
+            
+            <a href="#" id="roadmap-link" class="sidebar-item">
+                <svg class="sidebar-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span class="sidebar-text">Roadmap</span>
+            </a>
         </div>
         
         <div class="sidebar-footer">
@@ -119,6 +126,12 @@
                                             <span class="toggle-label">Big Brain Mode</span>
                                         </label>
                                         <p class="toggle-description">Provides deeper analysis (may take slightly longer).</p>
+                                        <label class="toggle-container" style="margin-top: 0.5rem;">
+                                            <input type="checkbox" id="insight-mode-checkbox" />
+                                            <span class="toggle-slider"></span>
+                                            <span class="toggle-label">Insight Mode</span>
+                                        </label>
+                                        <p class="toggle-description">Enhances team generation with deeper character and synergy insights.</p>
                                     </div>
                                 </div>
 
@@ -311,6 +324,41 @@
     </div>
     <div id="character-profile-view" class="hidden">
         <!-- Character profile content will be generated here -->
+    </div>
+    <div id="roadmap-view" class="hidden">
+        <div class="roadmap-container">
+            <h2 class="roadmap-title">Site Roadmap</h2>
+            <div class="roadmap-list">
+                <div class="roadmap-item">
+                    <div class="roadmap-label">Team Builder Core</div>
+                    <div class="roadmap-progress-bar" data-progress="100">
+                        <div class="roadmap-progress-fill"></div>
+                    </div>
+                    <div class="roadmap-progress-text">Complete</div>
+                </div>
+                <div class="roadmap-item">
+                    <div class="roadmap-label">Character Library</div>
+                    <div class="roadmap-progress-bar" data-progress="85">
+                        <div class="roadmap-progress-fill"></div>
+                    </div>
+                    <div class="roadmap-progress-text">85%</div>
+                </div>
+                <div class="roadmap-item">
+                    <div class="roadmap-label">Tier List</div>
+                    <div class="roadmap-progress-bar" data-progress="60">
+                        <div class="roadmap-progress-fill"></div>
+                    </div>
+                    <div class="roadmap-progress-text">60%</div>
+                </div>
+                <div class="roadmap-item">
+                    <div class="roadmap-label">User Accounts</div>
+                    <div class="roadmap-progress-bar" data-progress="20">
+                        <div class="roadmap-progress-fill"></div>
+                    </div>
+                    <div class="roadmap-progress-text">Planned</div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Floating Buttons -->
