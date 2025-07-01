@@ -231,6 +231,7 @@ let currentAudio = null;
 let bigBrainMode = false;
 let insightMode = false;
 let reasoningLevelValue = -1;
+let teamsGenerated = false; // Track if teams have been successfully generated
 
 // ADD: Mappings for slider
 const budgetMap = {
@@ -682,6 +683,7 @@ async function generateTeam() {
     resultsContainer.classList.add('hidden');
     teamResultsWrapper.innerHTML = '';
     actionButtonsContainer.innerHTML = '';
+    teamsGenerated = false; // Reset at start of generation
     loadingSpinner.scrollIntoView({ behavior: 'smooth', block: 'center' });    // Apply experimental features filtering
     let availableCharacters = [...characters];
     let usingExperimentalFeatures = false;
@@ -875,6 +877,7 @@ ${selectedCharacters.map(char => {
         if (result.candidates && result.candidates[0].content && result.candidates[0].content.parts[0]) {
             const rawText = result.candidates[0].content.parts[0].text;
             parseAndDisplayResults(rawText);
+            teamsGenerated = true; // Mark that teams have been successfully generated
         } else {
             teamResultsWrapper.innerHTML = "<p style='color: var(--accent-gold); text-align: center;'>Sorry, the AI response was empty. Please try again.</p>";
         }
@@ -1161,14 +1164,7 @@ if (roadmapLink && roadmapView) {
             });
         }, 200); // slight delay for smoothness
     });
-    // Reset progress bars when hiding
-    document.addEventListener('click', (e) => {
-        if (!roadmapView.contains(e.target) && !roadmapLink.contains(e.target)) {
-            roadmapView.querySelectorAll('.roadmap-progress-fill').forEach(fill => {
-                fill.style.width = '0%';
-            });
-        }
-    });
+    // Keep progress bars animated - no reset when clicking elsewhere
 }
 
 // Handle escape key
@@ -1777,6 +1773,28 @@ function initializeFloatingButtons() {
                     scrollToTopBtn.classList.remove('visible');
                 }
                 
+                // Handle arcanist selection container visibility when teams are generated
+                if (teamsGenerated && selectedCharacters.length > 0) {
+                    const characterSelectionElement = document.getElementById('character-selection');
+                    const resultsElement = document.getElementById('results-container');
+                    
+                    if (characterSelectionElement && resultsElement) {
+                        const characterSelectionBottom = characterSelectionElement.offsetTop + characterSelectionElement.offsetHeight;
+                        const resultsTop = resultsElement.offsetTop;
+                        
+                        // Hide container when scrolling past character selection toward results
+                        if (scrollTop > characterSelectionBottom - 100) {
+                            selectedArcanistsContainer.style.transform = 'translateX(400px)';
+                            selectedArcanistsContainer.style.opacity = '0';
+                        } 
+                        // Show container when scrolling back up to character selection
+                        else if (scrollTop < resultsTop - 200) {
+                            selectedArcanistsContainer.style.transform = 'translateX(0)';
+                            selectedArcanistsContainer.style.opacity = '1';
+                        }
+                    }
+                }
+                
                 isScrolling = false;
             });
             isScrolling = true;
@@ -1798,6 +1816,7 @@ function initializeFloatingButtons() {
             currentAudio = null;
         }
         selectedCharacters.splice(0, selectedCharacters.length); // Clear the array
+        teamsGenerated = false; // Reset teams generated flag
         updateGenerateButtonState();
         renderAllCharacters();
         renderSelectedArcanists();
@@ -1813,6 +1832,11 @@ function initializeFloatingButtons() {
     window.updateClearSelectionButtonVisibility = function() {
         if (selectedCharacters.length > 0) {
             selectedArcanistsContainer.classList.remove('hidden');
+            // Reset transform when showing initially (before teams are generated)
+            if (!teamsGenerated) {
+                selectedArcanistsContainer.style.transform = 'translateX(0)';
+                selectedArcanistsContainer.style.opacity = '1';
+            }
         } else {
             selectedArcanistsContainer.classList.add('hidden');
         }
