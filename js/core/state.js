@@ -7,9 +7,9 @@ export let filteredCharacters = [];
 
 // Team generation settings
 export let numTeamsToGenerate = 1;
-export let absoluteMetaMode = false;
-export let bigBrainMode = false;
-export let insightMode = false;
+export let absoluteMetaMode = true;  // Always enabled - integrated meta analysis
+export let bigBrainMode = true;      // Always enabled - enhanced reasoning
+export let insightMode = true;       // Always enabled - deep insights
 export let reasoningLevelValue = -1;
 export let teamsGenerated = false;
 

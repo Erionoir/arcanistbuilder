@@ -2,9 +2,6 @@
 
 import { 
     teamCountButtons, 
-    metaModeCheckbox, 
-    bigBrainCheckbox, 
-    insightModeCheckbox, 
     reasoningSection, 
     reasoningSlider, 
     sliderValueLabel, 
@@ -146,41 +143,11 @@ export function initializeTeamCountButtons() {
     });
 }
 
-// Initialize mode toggles
+// Initialize mode toggles (now simplified since modes are always enabled)
 export function initializeModeToggles() {
-    // Meta Mode Toggle
-    if (metaModeCheckbox) {
-        metaModeCheckbox.addEventListener('change', (e) => {
-            setAbsoluteMetaMode(e.target.checked);
-            showNotification(absoluteMetaMode ? 'Absolute Meta Mode enabled — using verified meta data.' : 'Absolute Meta Mode disabled.', 'info');
-        });
-    }
-
-    // Big Brain Mode toggle listener
-    if (bigBrainCheckbox) {
-        bigBrainCheckbox.addEventListener('change', (e) => {
-            setBigBrainMode(e.target.checked);
-            showNotification(bigBrainMode ? 'Big Brain Mode enabled — expect deeper analysis!' : 'Big Brain Mode disabled.', 'info');
-
-            if (bigBrainMode) {
-                reasoningSection.classList.add('visible');
-            } else {
-                reasoningSection.classList.remove('visible');
-            }
-        });
-    }
-
-    // Insight Mode toggle
-    if (insightModeCheckbox) {
-        insightModeCheckbox.addEventListener('change', () => {
-            setInsightMode(insightModeCheckbox.checked);
-            if (insightMode) {
-                showNotification('💡 Insight Mode: Enhanced with deep analysis.', 'success');
-            } else {
-                showNotification('💡 Insight Mode disabled.', 'info');
-            }
-        });
-    }
+    // All modes are now always enabled by default
+    // No toggle initialization needed
+    console.log('🚀 All advanced features enabled by default: Meta Analysis + Deep Analysis + Insights + Synergy Cores');
 }
 
 // Initialize reasoning slider
@@ -278,16 +245,8 @@ export function setupExperimentalFeatures() {
 
 // Reset all inputs to default state
 export function resetAllInputs() {
-    // Reset Toggles & dependent UI
-    if (metaModeCheckbox) metaModeCheckbox.checked = false;
-    if (bigBrainCheckbox) {
-        bigBrainCheckbox.checked = false;
-        if (reasoningSection) reasoningSection.classList.remove('visible');
-    }
+    // All modes are now always enabled by default, no need to reset them
     
-    setAbsoluteMetaMode(false);
-    setBigBrainMode(false);
-
     // Reset Slider input and its state
     if (reasoningSlider) {
         reasoningSlider.value = -1;
@@ -311,7 +270,7 @@ export function resetAllInputs() {
     }
     setNumTeamsToGenerate(APP_CONSTANTS.DEFAULT_TEAM_COUNT);
 
-    console.log('All inputs have been reset to their default state on page load.');
+    console.log('Input preferences reset. All advanced features remain enabled by default.');
 }
 
 // Initialize all settings components
@@ -322,4 +281,9 @@ export function initializeSettings() {
     initializeReasoningSlider();
     setupExperimentalFeatures();
     resetAllInputs();
+    
+    // Always show reasoning section since enhanced analysis is always enabled
+    if (reasoningSection) {
+        reasoningSection.classList.add('visible');
+    }
 }
