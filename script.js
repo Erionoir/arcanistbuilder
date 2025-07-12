@@ -225,12 +225,12 @@ document.body.appendChild(overlay);
 // State
 let selectedCharacters = [];
 let numTeamsToGenerate = 1;
-let absoluteMetaMode = false;
+let absoluteMetaMode = true;  // Always enabled - integrated meta analysis
 let currentAudio = null;
 let blacklistedCharacters = [];
 // ADD: global state for Big Brain Mode
-let bigBrainMode = false;
-let insightMode = false;
+let bigBrainMode = true;      // Always enabled - enhanced reasoning
+let insightMode = true;       // Always enabled - deep insights
 let reasoningLevelValue = -1;
 let teamsGenerated = false; // Track if teams have been successfully generated
 

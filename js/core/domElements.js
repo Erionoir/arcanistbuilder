@@ -10,9 +10,6 @@ export const actionButtonsContainer = document.getElementById('action-buttons');
 
 // Settings and controls
 export const teamCountButtons = document.getElementById('team-count-buttons');
-export const metaModeCheckbox = document.getElementById('meta-mode-checkbox');
-export const bigBrainCheckbox = document.getElementById('big-brain-checkbox');
-export const insightModeCheckbox = document.getElementById('insight-mode-checkbox');
 
 // Reasoning slider elements
 export const reasoningSection = document.getElementById('reasoning-section');

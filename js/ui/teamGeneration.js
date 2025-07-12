@@ -77,16 +77,22 @@ export async function generateTeam() {
     }).join(', ');
 
     let metaContext = '';
-    if (absoluteMetaMode) {
-        console.log('🔥 Absolute Meta Mode activated - Using real CN meta data');
-        showNotification('🔥 Absolute Meta Mode: Using verified CN meta data from Prydwen.gg', 'success');
-        const metaTeams = findMetaTeamsFor(selectedCharacters);
-        console.log('📊 Found meta teams:', metaTeams);
+    
+    // Always use enhanced generation combining all features
+    console.log('🚀 Enhanced Generation Mode - Using all advanced features');
+    showNotification('🚀 Enhanced Generation: Meta Analysis + Deep Insights + Synergy Cores', 'success');
+    
+    // Get meta teams and synergy cores data (previously from different modes)
+    const metaTeams = findMetaTeamsFor(selectedCharacters);
+    const synergyCores = findSynergyCoresFor(selectedCharacters);
+    
+    console.log('📊 Found meta teams:', metaTeams);
+    console.log('🤝 Found synergy cores:', synergyCores);
 
-        if (metaTeams.length > 0) {
-            console.log('✅ Using verified meta team data');
-            showNotification(`✅ Found ${metaTeams.length} verified meta team(s) for your selection!`, 'success');
-            metaContext = `
+    if (metaTeams.length > 0) {
+        console.log('✅ Using verified meta team data');
+        showNotification(`✅ Found ${metaTeams.length} verified meta team(s) for your selection!`, 'success');
+        metaContext = `
 VERIFIED META TEAMS CONTAINING YOUR CHARACTERS (from Prydwen.gg May 2025):
 ${metaTeams.slice(0, 3).map(team => 
     `**${team.name}** (${team.tier} tier): ${team.characters.join(', ')}
@@ -107,10 +113,10 @@ ${selectedCharacters.map(char => {
     }
     return `${char}: Not in current meta rankings`;
 }).join('\n')}`;
-        } else {
-            console.log('⚠️ No exact meta teams found, using tier data');
-            showNotification('⚠️ No exact meta teams found, using tier rankings from CN meta', 'warning');
-            metaContext = `
+    } else {
+        console.log('⚠️ No exact meta teams found, using tier data');
+        showNotification('⚠️ No exact meta teams found, using tier rankings from CN meta', 'warning');
+        metaContext = `
 No exact meta teams found for your selection, but will recommend teams based on current tier rankings:
 ${selectedCharacters.map(char => {
     for (const [tier, characters] of Object.entries(metaTeamDatabase?.tierList || {})) {
@@ -124,18 +130,18 @@ ${selectedCharacters.map(char => {
     }
     return `${char}: Not in current meta rankings`;
 }).join('\n')}`;
-        }
-    } else {
-        console.log('🔧 Using general synergy mode');
-        showNotification('🔧 Synergy Mode: Building teams based on general character synergies', 'info');
-        const synergyCores = findSynergyCoresFor(selectedCharacters);
-        if (synergyCores.length > 0) {
-            console.log('🤝 Found synergy cores:', synergyCores);
-            showNotification(`🤝 Found ${synergyCores.length} synergy core(s) for your selection!`, 'info');
-            metaContext = `\nINSPIRATIONAL SYNERGY CORES FOR YOUR CHARACTERS:\n${synergyCores.map(core =>
-                `**${core.name}** (${core.characters.join(' + ')}):\n- Synergy: ${core.description}\n- Recommended Partners: ${core.bestWith}`
-            ).join('\n\n')}`;
-        }
+    }
+    
+    // Add synergy cores for additional inspiration
+    if (synergyCores.length > 0) {
+        console.log('🤝 Adding synergy cores for comprehensive analysis');
+        showNotification(`🤝 Found ${synergyCores.length} synergy core(s) for enhanced team building!`, 'info');
+        metaContext += `
+
+INSPIRATIONAL SYNERGY CORES FOR YOUR CHARACTERS:
+${synergyCores.map(core =>
+    `**${core.name}** (${core.characters.join(' + ')}):\n- Synergy: ${core.description}\n- Recommended Partners: ${core.bestWith}`
+).join('\n\n')}`;
     }
 
     const prompt = buildPrompt(selectedCharacterDetails, availableCharactersList, metaContext);
@@ -143,19 +149,18 @@ ${selectedCharacters.map(char => {
     try {
         const payload = { contents: [{ role: "user", parts: [{ text: prompt }] }] };
 
-        if (bigBrainMode) {
-            payload.generationConfig = {
-                thinkingConfig: {
-                    thinkingBudget: budgetMap[reasoningLevelValue]
-                }
-            };
-        }
+        // Always use enhanced reasoning capabilities (formerly Big Brain Mode)
+        payload.generationConfig = {
+            thinkingConfig: {
+                thinkingBudget: budgetMap[reasoningLevelValue]
+            }
+        };
 
-        if (insightMode) {
-            payload.tools = [{ "googleSearch": {} }];
-        }
+        // Always enable enhanced insights (formerly Insight Mode)
+        payload.tools = [{ "googleSearch": {} }];
 
-        const modelVersion = bigBrainMode ? API_CONFIG.MODELS.BIG_BRAIN : API_CONFIG.MODELS.STANDARD;
+        // Always use the enhanced model for best results
+        const modelVersion = API_CONFIG.MODELS.BIG_BRAIN;
         const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelVersion}:generateContent?key=${API_CONFIG.GEMINI_API_KEY}`;
         
         const response = await fetch(apiUrl, {
@@ -200,11 +205,11 @@ function buildPrompt(selectedCharacterDetails, availableCharactersList, metaCont
     return `
         I am building a team in the game Reverse: 1999. My core characters are: ${selectedCharacterDetails}.
         Based on the current meta and what Chinese (CN) players are using in high-level content, please suggest ${numTeamsToGenerate} distinct, complete 4-person team compositions that are proven effective in the CN meta.
-          ${absoluteMetaMode ? `
-        ABSOLUTE META MODE - REAL CN META DATA (Prydwen.gg May 2025):
+        
+        ENHANCED GENERATION MODE - COMPREHENSIVE ANALYSIS:
         ${metaContext}
         
-        INSTRUCTIONS: You must build teams based on the VERIFIED META DATA ABOVE. Use the actual team compositions and synergies shown in the meta analysis. Do not ignore this data - it represents real CN server competitive usage with proven win rates.
+        INSTRUCTIONS: You have access to verified meta data, synergy cores, and enhanced analysis capabilities. Use ALL available information to build the most effective teams. Combine meta team compositions with synergy insights and provide deep strategic analysis.
         
         KEY META CORES TO REFERENCE:
         - Voyager + Kiperina (Inspiration/Crit) → Best with Barcarola + Aleph
@@ -212,15 +217,12 @@ function buildPrompt(selectedCharacterDetails, availableCharactersList, metaCont
         - Lucy + Ulrich (Dynamo) → Best with Mercuria + Ezra Theodore
         - Recoleta + Lopera (Ultimate) → Best with Melania + Fatutu
         - Flutterpage + Fatutu (FUA Support) → Best for supporting FUA carries
-        ` : `
-        SYNERGY MODE: Build teams around my selected characters, considering their roles, damage types, and synergies. Use the provided INSPIRATIONAL SYNERGY CORES as a starting point, but feel free to create other diverse and effective teams. Prioritize variety and explain your choices. Avoid over-reliance on common staples like Tooth Fairy unless they fit the synergy perfectly.
-        ${metaContext}
-        `}
-        ${(insightMode && absoluteMetaMode) ? `
-        INSIGHT-ENHANCED META MODE: Your insight capabilities are active. You MUST use them to search for and validate the LATEST CN SERVER META information. Cross-reference the provided data with your search results to find the most up-to-date, cutting-edge team compositions. Prioritize teams that have emerged or risen in prominence after May 2025.
-        ` : insightMode ? `
-        INSIGHT MODE: You have been granted enhanced insight capabilities. Use this to perform a deeper analysis of character synergies, team compositions, and strategic viability. Provide nuanced and detailed explanations for your choices, going beyond surface-level meta picks.
-        ` : ''}
+        
+        ENHANCED INSIGHT ANALYSIS: Provide nuanced and detailed explanations for your choices, including:
+        - Deep character synergy analysis beyond surface-level meta picks
+        - Strategic positioning and rotation guidance
+        - Matchup considerations and team versatility
+        - Advanced tactical insights for optimal team performance
           AVAILABLE 6-STAR CHARACTERS:
         The pool of characters you can use for building teams is STRICTLY LIMITED to the following list. Do not use any character not on this list.
         ${availableCharactersList}

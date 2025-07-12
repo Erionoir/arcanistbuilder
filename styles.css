@@ -1044,6 +1044,32 @@ header p {
     line-height: 1.4;
 }
 
+.enhanced-generation-info {
+    background: var(--bg-elevated);
+    border: 2px solid var(--border-accent);
+    border-radius: 12px;
+    padding: 1rem;
+    margin-top: 0.5rem;
+}
+
+.enhanced-generation-info p {
+    margin: 0 0 0.5rem 0;
+    color: var(--text-primary);
+    font-size: 0.85rem;
+}
+
+.enhanced-generation-info ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.enhanced-generation-info li {
+    margin: 0.25rem 0;
+    font-size: 0.75rem;
+    line-height: 1.4;
+}
+
 /* Generate Button */
 .generate-button {
     background: linear-gradient(135deg, var(--accent-bronze) 0%, var(--accent-gold) 50%, var(--accent-amber) 100%);
