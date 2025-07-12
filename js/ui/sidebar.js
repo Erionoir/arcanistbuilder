@@ -7,15 +7,18 @@ import {
     teamBuilderLink, 
     tierListLink, 
     libraryLink, 
+    bossStrategyLink,
     roadmapLink,
     tierListView,
     libraryView,
+    bossStrategyView,
     roadmapView,
     characterProfileView,
     overlay 
 } from '../core/domElements.js';
 import { renderTierList } from './tierList.js';
 import { renderLibrary } from './library.js';
+import { renderBossStrategy } from './bossStrategy.js';
 
 // Toggle sidebar
 export function toggleSidebar() {
@@ -50,6 +53,7 @@ export function hideAllViews() {
     mainContent.classList.add('hidden');
     tierListView.classList.add('hidden');
     libraryView.classList.add('hidden');
+    bossStrategyView.classList.add('hidden');
     roadmapView.classList.add('hidden');
     characterProfileView.classList.add('hidden');
 }
@@ -89,6 +93,24 @@ export function initializeSidebar() {
         hideAllViews();
         libraryView.classList.remove('hidden');
         renderLibrary();
+        
+        // Close sidebar on mobile
+        if (window.innerWidth <= 768) {
+            closeSidebar();
+        }
+    });
+
+    bossStrategyLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        
+        // Update active states
+        document.querySelectorAll('.sidebar-item').forEach(item => item.classList.remove('active'));
+        bossStrategyLink.classList.add('active');
+        
+        // Show boss strategy view
+        hideAllViews();
+        bossStrategyView.classList.remove('hidden');
+        renderBossStrategy();
         
         // Close sidebar on mobile
         if (window.innerWidth <= 768) {

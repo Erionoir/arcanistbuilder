@@ -3158,3 +3158,434 @@ html {
         padding: 1.2rem 0.5rem 1.2rem 0.5rem;
     }
 }
+
+/* ================================
+   Boss Strategy Styles
+   ================================ */
+
+.boss-strategy-container {
+    min-height: 100vh;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    padding: 2rem 0;
+}
+
+.boss-selection-section {
+    max-width: 4xl;
+    margin: 0 auto;
+}
+
+.boss-dropdown-container {
+    margin-bottom: 2rem;
+}
+
+.boss-dropdown-container label {
+    color: var(--accent-gold);
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.boss-select {
+    width: 100%;
+    background: var(--bg-secondary);
+    border: 2px solid var(--border-secondary);
+    border-radius: 12px;
+    color: var(--text-primary);
+    font-size: 1.125rem;
+    padding: 1rem 3rem 1rem 1rem;
+    appearance: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px var(--shadow-subtle);
+}
+
+.boss-select:hover {
+    border-color: var(--accent-bronze);
+    box-shadow: 0 6px 20px var(--shadow-medium);
+    transform: translateY(-1px);
+}
+
+.boss-select:focus {
+    outline: none;
+    border-color: var(--accent-gold);
+    box-shadow: 0 0 0 3px rgba(218, 165, 32, 0.1), 0 6px 20px var(--shadow-medium);
+}
+
+.boss-dropdown-container {
+    position: relative;
+}
+
+.boss-dropdown-icon {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    width: 1.5rem;
+    height: 1.5rem;
+    color: var(--text-muted);
+    transition: transform 0.3s ease;
+}
+
+.boss-select:focus + .boss-dropdown-icon {
+    transform: translateY(-50%) rotate(180deg);
+}
+
+.boss-info {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-secondary);
+    border-radius: 16px;
+    padding: 2rem;
+    margin: 2rem 0;
+    box-shadow: 0 8px 32px var(--shadow-medium);
+    transform: translateY(10px);
+    opacity: 0;
+    animation: bossInfoSlideIn 0.5s ease forwards;
+}
+
+@keyframes bossInfoSlideIn {
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.boss-details {
+    text-align: center;
+}
+
+.boss-name {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent-gold);
+    margin-bottom: 1rem;
+    letter-spacing: 0.5px;
+}
+
+.boss-metadata {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.boss-category {
+    background: var(--accent-bronze);
+    color: var(--bg-primary);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.boss-difficulty {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.difficulty-medium {
+    background: #22c55e;
+    color: white;
+}
+
+.difficulty-hard {
+    background: #f59e0b;
+    color: white;
+}
+
+.difficulty-extreme {
+    background: #ef4444;
+    color: white;
+}
+
+.boss-description {
+    font-size: 1.125rem;
+    line-height: 1.7;
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+    font-style: italic;
+}
+
+.boss-mechanics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    text-align: left;
+}
+
+.mechanics-section h4,
+.weaknesses-section h4,
+.resistances-section h4 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--accent-gold);
+    border-bottom: 2px solid var(--border-secondary);
+    padding-bottom: 0.5rem;
+}
+
+.mechanics-list,
+.weaknesses-list,
+.resistances-list {
+    list-style: none;
+    padding: 0;
+}
+
+.mechanics-list li,
+.weaknesses-list li,
+.resistances-list li {
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+    background: var(--bg-primary);
+    border-radius: 8px;
+    border-left: 4px solid var(--accent-bronze);
+    transition: all 0.3s ease;
+}
+
+.mechanics-list li:hover,
+.weaknesses-list li:hover,
+.resistances-list li:hover {
+    transform: translateX(4px);
+    box-shadow: 0 4px 12px var(--shadow-subtle);
+}
+
+.weaknesses-list li {
+    border-left-color: #22c55e;
+}
+
+.resistances-list li {
+    border-left-color: #ef4444;
+}
+
+.generate-strategy-section {
+    text-align: center;
+    margin: 2rem 0;
+}
+
+.generate-strategy-btn {
+    background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-amber) 100%);
+    color: var(--bg-primary);
+    border: none;
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    font-size: 1.125rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    box-shadow: 0 4px 16px rgba(218, 165, 32, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.generate-strategy-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(218, 165, 32, 0.4);
+}
+
+.generate-strategy-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: 0 4px 16px rgba(218, 165, 32, 0.1);
+}
+
+.btn-icon {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+.strategy-loading {
+    text-align: center;
+    padding: 3rem 2rem;
+}
+
+.loading-spinner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.spinner {
+    width: 3rem;
+    height: 3rem;
+    border: 4px solid var(--border-secondary);
+    border-top: 4px solid var(--accent-gold);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.loading-spinner p {
+    font-size: 1.125rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.strategy-results {
+    max-width: 5xl;
+    margin: 0 auto;
+    background: var(--bg-secondary);
+    border-radius: 16px;
+    box-shadow: 0 10px 40px var(--shadow-medium);
+    overflow: hidden;
+    animation: strategyResultsSlideIn 0.6s ease forwards;
+}
+
+@keyframes strategyResultsSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.strategy-header {
+    background: linear-gradient(135deg, var(--accent-bronze) 0%, var(--accent-gold) 100%);
+    color: var(--bg-primary);
+    padding: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.strategy-header h2 {
+    font-size: 1.875rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.regenerate-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+}
+
+.regenerate-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+    transform: translateY(-1px);
+}
+
+.regenerate-btn svg {
+    width: 1rem;
+    height: 1rem;
+}
+
+.strategy-content {
+    padding: 2rem;
+    line-height: 1.7;
+}
+
+.strategy-section-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent-gold);
+    margin: 2rem 0 1rem 0;
+    border-bottom: 2px solid var(--border-secondary);
+    padding-bottom: 0.5rem;
+}
+
+.strategy-section-title:first-child {
+    margin-top: 0;
+}
+
+.strategy-subsection-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--accent-bronze);
+    margin: 1.5rem 0 0.75rem 0;
+}
+
+.strategy-list {
+    margin: 1rem 0;
+    padding-left: 0;
+    list-style: none;
+}
+
+.strategy-list li {
+    padding: 0.75rem 1rem;
+    margin-bottom: 0.5rem;
+    background: var(--bg-primary);
+    border-radius: 8px;
+    border-left: 4px solid var(--accent-bronze);
+    transition: all 0.3s ease;
+}
+
+.strategy-list li:hover {
+    transform: translateX(4px);
+    box-shadow: 0 4px 12px var(--shadow-subtle);
+}
+
+.strategy-paragraph {
+    margin: 1rem 0;
+    color: var(--text-secondary);
+}
+
+.error-message {
+    text-align: center;
+    padding: 2rem;
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    border: 2px solid #ef4444;
+}
+
+.error-message h3 {
+    color: #ef4444;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.error-message p {
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+}
+
+@media (max-width: 768px) {
+    .boss-mechanics-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .boss-metadata {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .strategy-header {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+    
+    .boss-name {
+        font-size: 1.5rem;
+    }
+    
+    .strategy-content {
+        padding: 1rem;
+    }
+}

@@ -28,11 +28,13 @@ export const mainContent = document.getElementById('main-content');
 export const teamBuilderLink = document.getElementById('team-builder-link');
 export const tierListLink = document.getElementById('tier-list-link');
 export const libraryLink = document.getElementById('library-link');
+export const bossStrategyLink = document.getElementById('boss-strategy-link');
 export const roadmapLink = document.getElementById('roadmap-link');
 
 // View containers
 export const tierListView = document.getElementById('tier-list-view');
 export const libraryView = document.getElementById('library-view');
+export const bossStrategyView = document.getElementById('boss-strategy-view');
 export const roadmapView = document.getElementById('roadmap-view');
 export const characterProfileView = document.getElementById('character-profile-view');
 
