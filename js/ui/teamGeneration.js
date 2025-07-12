@@ -264,6 +264,12 @@ function buildPrompt(selectedCharacterDetails, availableCharactersList, metaCont
         ## Team Synergy and Strategy
         ... (your analysis here focusing on why this works in CN meta)
         
+        ## How To Use
+        ... (provide detailed practical guidance on how to effectively use this team in combat, including rotation order, timing, positioning tips, and key strategies for maximizing team performance)
+        
+        ## Is this viable in Auto?
+        ... (assess whether this team composition works well in auto-play mode, considering AI behavior, skill timing, survivability, and overall effectiveness when not manually controlled)
+        
         ## Flex/Alternative Options
         ... (your text analysis here with meta alternatives)
         After your text analysis for alternatives, add machine-readable lines for each substitute like this:
