@@ -1,7 +1,7 @@
 // Team generation and AI logic
 
 import { characters } from '../data/characters.js';
-import { findMetaTeamsFor, findSynergyCoresFor } from '../data/metaData.js';
+import { findMetaTeamsFor, findSynergyCoresFor, metaTeamDatabase } from '../data/metaData.js';
 import { API_CONFIG, budgetMap } from '../core/config.js';
 import { 
     selectedCharacters, 
@@ -102,7 +102,7 @@ ${metaTeams.slice(0, 3).map(team =>
 
 TIER RANKINGS FOR YOUR SELECTED CHARACTERS:
 ${selectedCharacters.map(char => {
-    for (const [tier, characters] of Object.entries(metaTeamDatabase?.tierList || {})) {
+    for (const [tier, characters] of Object.entries(metaTeamDatabase.tierList)) {
         if (characters.some(metaChar => 
             char.toLowerCase().includes(metaChar.toLowerCase()) || 
             metaChar.toLowerCase().includes(char.toLowerCase()) ||
@@ -119,7 +119,7 @@ ${selectedCharacters.map(char => {
         metaContext = `
 No exact meta teams found for your selection, but will recommend teams based on current tier rankings:
 ${selectedCharacters.map(char => {
-    for (const [tier, characters] of Object.entries(metaTeamDatabase?.tierList || {})) {
+    for (const [tier, characters] of Object.entries(metaTeamDatabase.tierList)) {
         if (characters.some(metaChar => 
             char.toLowerCase().includes(metaChar.toLowerCase()) || 
             metaChar.toLowerCase().includes(char.toLowerCase()) ||
