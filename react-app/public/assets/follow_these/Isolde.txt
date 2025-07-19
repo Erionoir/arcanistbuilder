@@ -1,0 +1,55 @@
+Biography:
+Isolde (伊索尔德) (full name: Isolde von Dittarsdorf) is a Spirit Arcanist in Reverse: 1999. She was introduced through the story chapter E Lucevan Le Stelle alongside Marcus in Version 1.7.
+
+Isolde, the youngest daughter of the noble Dittarsdorf family of Vienna, conducts herself with the grace and warmth of a spring breeze.
+
+Inheritance:
+[Insight I] Seven Veils
+When starting battle, enter the [Prelude] status and inflict 3 stacks of [Burn] on all enemies. At the end of the round, when the highest enemy [Burn] stack resolves and lose stacks, gain an equal number of [Heat] stacks in turn. When holding 15 stacks of [Heat], the [Prelude] status changes to [Interlude] status. 
+
+[Insight II] Seven Veils
+ATK +5% when the caster enters battle.
+
+[Insight III] Seven Veils
+When holding 40 [Heat] stacks, the [Interlude] status changes to the [Finale] status.
+
+Special Effects:
+[Prelude]
+At the start of the round, grants 3 stacks of [Preignition] to all allies (undispellable).
+
+[Interlude]
+At the start of the round, grants 3 stacks of [Preignition] to all allies. When the highest enemy [Burn] stack reaches 6 or higher, casts [Intermezzo] (undispellable).
+
+[Finale]
+At the start of the round, grants 3 stacks of [Preignition] and 1 stack of [Power Burst] to all allies. When the highest enemy [Burn] stack reaches 6 or higher, casts [Intermezzo], and gain Incantation Might +15% for this attack (undispellable).
+
+[Intermezzo]
+Deal 50% Reality DMG to all enemies. For every stack of [Burn] a target has, deal Reality DMG 10% to that target.
+
+[Burn]
+Healing Taken -15%(unstackable). At the end of the round, takes (the holder's ATK x4%) Genesis DMG (stackable up to 30 times, multiple stacks of [Burn] is regarded as 1 [Neg Status], removes 50% of the stacks when triggered).
+
+[Heat]
+Converted from resolved [Burn] stacks.
+
+[Preignition]
+Before attacking, for each stack, inflicts 1 stack of [Burn] on the target (remove all after trigger).
+
+[Power Burst]
+DMG Bonus +25% when attacking (-1 stack after trigger).
+
+Gallery:
+[Default]
+The king's daughter, the painter's beloved—a dazzling star, the hope of a family.
+
+Obtain by obtaining Isolde
+
+[Polyphony] (insight2.webp)
+I am ... am I? I am. I AM!
+
+Obtain by reaching Insight II with Isolde 
+
+[And All That Jazz] (garment1.webp)
+The breeze halts in this place, where the bluebonnets flourish with grace.
+
+Available from the Garment Shop in Version 2.1 and Version 2.5 for 1080/US$9.99 
