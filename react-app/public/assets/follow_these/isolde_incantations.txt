@@ -1,0 +1,39 @@
+To Gemini:
+
+Incantations have three ranks. ✦✧✧ (Rank 1), ✦✦✧ (Rank 2), ✦✦✦ (Rank 3), please use these instead of words.
+
+Arcane Skill is a normal Incantation
+The Ultimate is well, an Ultimate
+
+Twirling Melody
+Arcane Skill
+Rank 1 (Debuff, use debuff.webp)
+"Ф I sing and twirl."
+Mass Attack. Deals 150% Reality DMG to 2 enemies. Inflicts 2 stacks of [Burn] on the targets hit. When in the [Intermezzo] status, gain Penetration Rate +30% for this attack. When in the [Finale] status, gain Penetration Rate +50% for this attack.
+
+Rank 2 (Debuff)
+"Ф I sing and twirl on stage."
+Mass Attack. Deals 225% Reality DMG to 2 enemies. Inflicts 2 stacks of [Burn] on the targets hit. When in the [Intermezzo] status, gain Penetration Rate +30% for this attack. When in the [Finale] status, gain Penetration Rate +50% for this attack. 
+
+Rank 3 (Debuff)
+"Ф I sing and twirl on stage, for there is no place for me other than the stage."
+Mass Attack. Deals 300% Reality DMG to 2 enemies. Inflicts 2 stacks of [Burn] on the targets hit. When in the [Intermezzo] status, gain Penetration Rate +30% for this attack. When in the [Finale] status, gain Penetration Rate +50% for this attack. 
+
+Desired Freedom
+Arcane Skill
+Rank 1 (Debuff)
+"Ф I dance."
+Mass debuff. Inflicts Critical DEF -25% and Reality DEF -15% (-20% to targets in the [Burn] status) on all enemies for 2 rounds. 
+
+Rank 2 (Debuff)
+"Ф I dance to recount my story."
+Mass debuff. Inflicts Critical DEF -35% and Reality DEF -15% (-20% to targets in the [Burn] status) on all enemies for 2 rounds. 
+
+Rank 3 (Debuff)
+"Ф I dance to recount my story, so that others may hear me."
+Mass debuff. Inflicts Critical DEF -50% and Reality DEF -15% (-20% to targets in the [Burn] status) on all enemies for 2 rounds.
+
+Choking on Blood
+Ultimate
+"Ф I hereby relieve you!"
+Mass Debuff. Inflicts 5 stacks of [Burn] on all enemies, and additional 5 stacks of [Burn] on the main target, at the same time, grants 1 stack of [Rousing Morale] to all allies, and then casts [Intermezzo] as a follow-up attack on the targets. For every excess stack of [Burn] on the main target, this [Intermezzo] gains Incantation Might +15%. 
