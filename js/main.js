@@ -10,8 +10,9 @@ import { generateTeam } from './ui/teamGeneration.js';
 import { showCharacterTooltip, hideCharacterTooltip } from './utils/tooltips.js';
 import { tierListView } from './core/domElements.js';
 import { characters } from './data/characters.js';
+import { initializeModernAnimations } from './utils/modernAnimations.js';
 
-// Parallax background effect
+// Enhanced parallax background effect
 function initializeParallaxEffect() {
     let isTicking = false;
     window.addEventListener('scroll', () => {
@@ -19,7 +20,20 @@ function initializeParallaxEffect() {
 
         if (!isTicking) {
             window.requestAnimationFrame(() => {
-                document.body.style.backgroundPosition = `center ${scrollPosition * 0.5}px`;
+                // Enhanced parallax with multiple layers
+                const mainBg = document.body;
+                const parallaxElements = document.querySelectorAll('[data-parallax]');
+                
+                // Main background parallax
+                mainBg.style.backgroundPosition = `center ${scrollPosition * 0.5}px`;
+                
+                // Additional parallax elements
+                parallaxElements.forEach(el => {
+                    const speed = parseFloat(el.dataset.parallax) || 0.5;
+                    const yPos = -(scrollPosition * speed);
+                    el.style.transform = `translateY(${yPos}px)`;
+                });
+                
                 isTicking = false;
             });
             isTicking = true;
@@ -60,19 +74,30 @@ function initializeTierListHandlers() {
     }
 }
 
-// Initialize generate team button
+// Initialize generate team button with enhanced feedback
 function initializeGenerateButton() {
     const generateBtn = document.getElementById('generate-team-btn');
     if (generateBtn) {
-        generateBtn.addEventListener('click', generateTeam);
+        generateBtn.addEventListener('click', async (e) => {
+            // Add loading animation
+            generateBtn.classList.add('loading-pulse');
+            generateBtn.disabled = true;
+            
+            try {
+                await generateTeam();
+            } finally {
+                generateBtn.classList.remove('loading-pulse');
+                generateBtn.disabled = false;
+            }
+        });
     }
 }
 
-// Main initialization function
+// Enhanced initialization with modern features
 function initializeApp() {
-    console.log('DOM loaded, starting initialization...');
+    console.log('🚀 DOM loaded, starting modern initialization...');
     
-    // Initialize all components
+    // Initialize core components
     initializeSettings();
     initializeSidebar();
     initializeSearchAndFilter();
@@ -81,9 +106,27 @@ function initializeApp() {
     initializeLibraryHandlers();
     initializeTierListHandlers();
     initializeGenerateButton();
-    initializeParallaxEffect();
     
-    console.log('Application initialization complete');
+    // Initialize enhanced visual effects
+    initializeParallaxEffect();
+    initializeModernAnimations();
+    
+    // Add entrance animations to main content
+    const mainContent = document.getElementById('main-content');
+    if (mainContent) {
+        mainContent.classList.add('animate-fade-in-up');
+    }
+    
+    // Add stagger animation to character cards after they load
+    setTimeout(() => {
+        const characterCards = document.querySelectorAll('.character-card');
+        characterCards.forEach((card, index) => {
+            card.style.animationDelay = `${index * 50}ms`;
+            card.classList.add('animate-fade-in-scale');
+        });
+    }, 500);
+    
+    console.log('✨ Modern ArcanistBuilder initialization complete');
 }
 
 // Start the application when DOM is ready

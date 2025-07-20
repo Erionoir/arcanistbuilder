@@ -1,0 +1,53 @@
+{
+  "name": "arcanistbuilder",
+  "version": "2.0.0",
+  "description": "Modern team builder for Reverse: 1999 with Art Nouveau aesthetic",
+  "type": "module",
+  "main": "src/main.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint src --ext .js,.jsx,.ts,.tsx --fix",
+    "format": "prettier --write src/ *.js *.json *.md",
+    "type-check": "tsc --noEmit",
+    "serve": "python3 -m http.server 8000 --bind 127.0.0.1"
+  },
+  "dependencies": {
+    "framer-motion": "^11.0.0",
+    "gsap": "^3.12.0",
+    "lenis": "^1.0.0",
+    "three": "^0.160.0"
+  },
+  "devDependencies": {
+    "@types/three": "^0.160.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "autoprefixer": "^10.4.0",
+    "eslint": "^8.50.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "postcss": "^8.4.0",
+    "prettier": "^3.0.0",
+    "typescript": "^5.0.0",
+    "vite": "^5.0.0",
+    "vite-plugin-eslint": "^1.8.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "reverse-1999",
+    "team-builder",
+    "arcanist",
+    "game-tools",
+    "art-nouveau",
+    "modern-ui"
+  ],
+  "author": "ArcanistBuilder Team",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Erionoir/arcanistbuilder.git"
+  }
+}

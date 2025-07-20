@@ -4,6 +4,7 @@
 /* Base Styles */
 @import 'variables.css';
 @import 'layout.css';
+@import 'animations.css';
 
 /* Component Styles */
 @import 'components/search-filter.css';
