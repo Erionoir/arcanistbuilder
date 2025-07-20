@@ -1,29 +1,101 @@
 /* CSS Custom Properties and Global Variables */
 :root {
-    /*Nouveau Color Palette */
-    --bg-primary: #0F0E0C;
-    --bg-secondary: #1A1612;
-    --bg-tertiary: #2A2218;
-    --bg-card: #1F1B15;
-    --bg-elevated: #252017;
+    /* Enhanced Art Nouveau Color Palette */
+    --bg-primary: hsl(38, 25%, 6%);
+    --bg-secondary: hsl(38, 20%, 9%);
+    --bg-tertiary: hsl(38, 15%, 12%);
+    --bg-card: hsl(38, 18%, 10%);
+    --bg-elevated: hsl(38, 22%, 11%);
     
-    --accent-gold: #D4A574;
-    --accent-amber: #E6B886;
-    --accent-bronze: #B8956C;
-    --accent-copper: #A67C5A;
+    /* Glass Morphism Colors */
+    --bg-glass: hsla(38, 15%, 12%, 0.8);
+    --bg-glass-light: hsla(45, 25%, 20%, 0.6);
+    --bg-glass-ultra: hsla(38, 10%, 8%, 0.95);
     
-    --text-primary: #F5F2E8;
-    --text-secondary: #E0D5C3;
-    --text-muted: #B8A896;
+    /* Enhanced Gold Palette */
+    --accent-gold: hsl(45, 55%, 75%);
+    --accent-amber: hsl(40, 45%, 65%);
+    --accent-bronze: hsl(35, 40%, 55%);
+    --accent-copper: hsl(30, 35%, 45%);
+    --accent-warm: hsl(50, 60%, 80%);
+    
+    /* Text Colors */
+    --text-primary: hsl(45, 40%, 95%);
+    --text-secondary: hsl(40, 35%, 85%);
+    --text-muted: hsl(35, 25%, 70%);
     --text-accent: var(--accent-gold);
+    --text-glow: hsl(45, 60%, 85%);
     
-    --border-primary: #3A3226;
-    --border-secondary: #2A261C;
+    /* Border System */
+    --border-primary: hsl(38, 15%, 25%);
+    --border-secondary: hsl(38, 12%, 20%);
     --border-accent: var(--accent-bronze);
     --border-glow: var(--accent-amber);
+    --border-glass: hsla(45, 30%, 60%, 0.2);
     
-    --shadow-warm: rgba(212, 165, 116, 0.15);
-    --shadow-gold: rgba(230, 184, 134, 0.25);
+    /* Enhanced Shadow System */
+    --shadow-warm: hsla(45, 55%, 75%, 0.15);
+    --shadow-gold: hsla(40, 45%, 65%, 0.25);
+    --shadow-mystical: 0 8px 32px hsla(45, 55%, 75%, 0.15);
+    --shadow-card: 0 8px 32px hsla(0, 0%, 0%, 0.3);
+    --shadow-glow: 0 0 30px hsla(45, 55%, 75%, 0.3);
+    --shadow-inner: inset 0 1px 3px hsla(0, 0%, 0%, 0.2);
+    
+    /* Gradient System */
+    --gradient-primary: linear-gradient(135deg, 
+        hsl(45, 55%, 75%) 0%,
+        hsl(40, 45%, 65%) 35%,
+        hsl(35, 40%, 55%) 100%);
+    --gradient-secondary: linear-gradient(135deg,
+        hsl(50, 50%, 70%) 0%,
+        hsl(45, 40%, 60%) 50%,
+        hsl(40, 35%, 50%) 100%);
+    --gradient-mystical: radial-gradient(circle at center,
+        hsla(45, 60%, 80%, 0.1) 0%,
+        hsla(40, 45%, 65%, 0.05) 50%,
+        transparent 100%);
+    --gradient-card: linear-gradient(145deg,
+        hsla(45, 20%, 15%, 0.9) 0%,
+        hsla(38, 15%, 12%, 0.95) 100%);
+    
+    /* Animation Easing */
+    --ease-in-out-cubic: cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-in-out-back: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    
+    /* Timing */
+    --duration-fast: 0.15s;
+    --duration-normal: 0.3s;
+    --duration-slow: 0.5s;
+    --duration-slower: 0.8s;
+    
+    /* Spacing Scale */
+    --space-xs: 0.25rem;
+    --space-sm: 0.5rem;
+    --space-md: 1rem;
+    --space-lg: 1.5rem;
+    --space-xl: 2rem;
+    --space-2xl: 3rem;
+    --space-3xl: 4rem;
+    
+    /* Border Radius Scale */
+    --radius-xs: 0.125rem;
+    --radius-sm: 0.25rem;
+    --radius-md: 0.5rem;
+    --radius-lg: 0.75rem;
+    --radius-xl: 1rem;
+    --radius-2xl: 1.5rem;
+    --radius-full: 50%;
+    
+    /* Z-Index Scale */
+    --z-dropdown: 1000;
+    --z-sticky: 1020;
+    --z-fixed: 1030;
+    --z-modal-backdrop: 1040;
+    --z-modal: 1050;
+    --z-popover: 1060;
+    --z-tooltip: 1070;
+    --z-toast: 1080;
 }
 
 /* Global Reset and Base Styles */
