@@ -1,10 +1,10 @@
-/* Search and Filter Section */
+/* Search and Filter Section - Enhanced Glass Morphism */
 .search-filter-section {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    gap: 1rem;
-    margin: 2rem 0;
+    gap: var(--space-lg);
+    margin: var(--space-xl) 0;
     flex-wrap: wrap;
 }
 
@@ -22,30 +22,57 @@
 
 .search-input {
     width: 100%;
-    padding: 0.875rem 1rem 0.875rem 3rem;
-    background: linear-gradient(135deg, var(--bg-elevated) 0%, var(--bg-tertiary) 100%);
-    border: 2px solid var(--border-primary);
-    border-radius: 12px;
+    padding: var(--space-md) var(--space-md) var(--space-md) 3rem;
+    background: var(--bg-glass);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--border-glass);
+    border-radius: var(--radius-xl);
     color: var(--text-primary);
     font-size: 0.975rem;
     font-weight: 500;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: all var(--duration-normal) var(--ease-out-expo);
+    box-shadow: var(--shadow-card);
+    position: relative;
+    isolation: isolate;
+}
+
+.search-input::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--gradient-mystical);
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity var(--duration-normal) var(--ease-out-expo);
+    z-index: -1;
 }
 
 .search-input:focus {
     outline: none;
     border-color: var(--border-glow);
-    background: linear-gradient(135deg, var(--bg-tertiary) 0%, var(--bg-elevated) 100%);
+    background: var(--bg-glass-light);
     box-shadow: 
-        0 8px 25px rgba(0, 0, 0, 0.3),
-        0 0 0 1px var(--border-glow),
-        0 0 20px var(--shadow-warm);
-    transform: translateY(-2px);
+        var(--shadow-mystical),
+        0 0 0 2px hsla(45, 55%, 75%, 0.3),
+        var(--shadow-glow);
+    transform: translateY(-2px) scale(1.02);
+}
+
+.search-input:focus::before {
+    opacity: 1;
 }
 
 .search-input::placeholder {
     color: var(--text-muted);
+    transition: color var(--duration-fast) ease;
+}
+
+.search-input:focus::placeholder {
+    color: var(--text-secondary);
 }
 
 .search-icon {
