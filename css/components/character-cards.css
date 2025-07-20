@@ -1,0 +1,230 @@
+/* Character Grid */
+#character-selection {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+/* Team and Substitute Cards Grid - Match Character Selection Sizing */
+.team-cards-grid,
+.substitute-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+}
+
+/* Character Cards */
+.character-card {
+    background: rgba(31, 27, 21, 0.65);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 2px solid rgba(224, 213, 195, 0.2);
+    border-radius: 16px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+}
+
+.character-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--shadow-warm) 0%, transparent 100%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    pointer-events: none;
+}
+
+.character-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    border-color: var(--border-accent);
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.3),
+        0 0 0 1px var(--border-accent),
+        0 0 30px var(--shadow-warm);
+}
+
+.character-card:hover::before {
+    opacity: 1;
+}
+
+.character-card.selected {
+    transform: translateY(-8px) scale(1.05);
+    border-color: var(--border-glow);
+    background: linear-gradient(145deg, var(--bg-elevated) 0%, var(--bg-tertiary) 100%);
+    box-shadow: 
+        0 25px 50px rgba(0, 0, 0, 0.4),
+        0 0 0 2px var(--border-glow),
+        0 0 40px var(--shadow-gold),
+        inset 0 1px 0 rgba(230, 184, 134, 0.2);
+    animation: selectedPulse 2s ease-in-out infinite alternate;
+}
+
+@keyframes selectedPulse {
+    0% { box-shadow: 
+        0 25px 50px rgba(0, 0, 0, 0.4),
+        0 0 0 2px var(--border-glow),
+        0 0 40px var(--shadow-gold),
+        inset 0 1px 0 rgba(230, 184, 134, 0.2); }
+    100% { box-shadow: 
+        0 25px 50px rgba(0, 0, 0, 0.4),
+        0 0 0 2px var(--border-glow),
+        0 0 60px var(--shadow-gold),
+        inset 0 1px 0 rgba(230, 184, 134, 0.3); }
+}
+
+.character-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    object-position: center top;
+    border-radius: 8px;
+    transition: transform 0.4s ease;
+}
+
+.character-card:hover img {
+    transform: scale(1.05);
+}
+
+.character-card .character-info {
+    padding-top: 0.5rem;
+    text-align: center;
+}
+
+.character-card .character-name {
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    color: var(--text-primary);
+}
+
+.character-card .character-rarity {
+    color: var(--accent-gold);
+    margin: 4px 0 0;
+    font-size: 0.875rem;
+}
+
+/* Blacklist Styles */
+.character-card.blacklisted {
+    filter: grayscale(1) brightness(0.6);
+}
+
+.character-card.blacklisted .character-info {
+    opacity: 0.7;
+}
+
+.character-card.blacklisted:hover {
+    filter: grayscale(0.8) brightness(0.7);
+}
+
+.character-card .blacklist-btn {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    width: 30px;
+    height: 30px;
+    background: rgba(20, 18, 15, 0.6);
+    backdrop-filter: blur(4px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 5;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.character-card .blacklist-btn svg {
+    width: 20px;
+    height: 20px;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.character-card:hover .blacklist-btn {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.character-card .blacklist-btn:hover {
+    background: var(--accent-error);
+    color: white;
+    transform: scale(1.1);
+}
+
+.character-card.blacklisted .blacklist-btn {
+    opacity: 1;
+    background: var(--accent-success);
+    color: white;
+}
+
+.character-card.blacklisted .blacklist-btn:hover {
+    background: #4ade80; /* Brighter green on hover */
+    transform: scale(1.1);
+}
+
+.character-card.blacklisted .blacklist-btn svg {
+    transform: rotate(135deg); /* Rotates X to a + */
+}
+
+/* Mini Card Styles for Floating Selections */
+.character-card.mini-card {
+    width: 70px;
+    height: 95px;
+    border-radius: 8px;
+    overflow: hidden;
+    position: relative;
+    align-items: center;
+}
+
+.character-card.mini-card.newly-added {
+    animation: simpleFadeIn 0.5s ease-out forwards;
+}
+
+@keyframes simpleFadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+.character-card.mini-card img {
+    object-position: center 20%;
+}
+
+.character-card.mini-card .character-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 45%;
+    font-size: 0.6rem;
+    text-align: center;
+    padding: 2px;
+    background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.character-card.mini-card .character-name {
+    font-size: 0.6rem;
+    font-weight: bold;
+    white-space: normal;
+    line-height: 1.2;
+    color: var(--text-primary);
+}
+
+.character-card.mini-card .character-rarity {
+    font-size: 0.7rem;
+    opacity: 0.8;
+}

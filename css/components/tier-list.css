@@ -1,0 +1,73 @@
+/* Tier List Styles */
+#tier-list-view .container {
+    animation: fadeInUp 0.5s ease-out;
+}
+
+.tier-list-grid {
+    display: grid;
+    grid-template-columns: 100px repeat(4, 1fr);
+    background: rgba(54, 47, 39, 0.8);
+    border: 1px solid var(--border-secondary);
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+    overflow: hidden;
+}
+
+.tier-role-header {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-accent);
+    text-align: center;
+    padding: 1rem 0.5rem;
+    background: rgba(42, 37, 30, 0.8);
+}
+
+.tier-label-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem 0;
+    border-top: 2px solid var(--border-secondary);
+}
+
+.tier-label-wrapper.header-corner {
+    border-top: none;
+}
+
+.tier-list-grid > div:not(.tier-label-wrapper) {
+    border-left: 1px solid var(--border-primary);
+}
+
+.tier-label {
+    font-size: 2.25rem;
+    font-weight: 900;
+    text-align: center;
+}
+
+.tier-splus { color: #FF80D5; text-shadow: 0 0 10px rgba(255, 128, 213, 0.7); }
+.tier-s { color: #E50000; text-shadow: 0 0 10px rgba(229, 0, 0, 0.7); }
+.tier-aplus { color: #FF4D4D; text-shadow: 0 0 10px rgba(255, 77, 77, 0.7); }
+.tier-a { color: #FF8C8C; text-shadow: 0 0 10px rgba(255, 140, 140, 0.7); }
+.tier-b { color: #FFC857; text-shadow: 0 0 10px rgba(255, 200, 87, 0.7); }
+
+.tier-role-cell {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    align-content: flex-start;
+    border-top: 2px solid var(--border-secondary);
+    min-height: 140px;
+}
+
+#tier-list-view .character-card {
+    width: 80px;
+    height: 105px;
+}
+
+#tier-list-view .character-card {
+    background-color: transparent;
+    border: none;
+    box-shadow: none;
+    backdrop-filter: none;
+}

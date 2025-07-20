@@ -1,0 +1,122 @@
+/* Modern Notification System */
+.notification {
+    position: fixed;
+    top: 2rem;
+    right: 2rem;
+    z-index: 1000;
+    background: linear-gradient(135deg, var(--bg-elevated) 0%, var(--bg-tertiary) 100%);
+    border: 2px solid var(--border-accent);
+    border-radius: 12px;
+    padding: 0;
+    min-width: 320px;
+    max-width: 480px;
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.3),
+        0 0 0 1px var(--border-accent),
+        0 0 30px var(--shadow-warm);
+    transform: translateX(120%) scale(0.8);
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.notification.show {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+}
+
+.notification-content {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 1.25rem;
+}
+
+.notification-icon {
+    font-size: 1.25rem;
+    flex-shrink: 0;
+}
+
+.notification-message {
+    color: var(--text-primary);
+    font-weight: 500;
+    flex: 1;
+    line-height: 1.4;
+}
+
+.notification-close {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.notification-close:hover {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    transform: scale(1.1);
+}
+
+.notification.warning {
+    border-color: var(--accent-amber);
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.3),
+        0 0 0 1px var(--accent-amber),
+        0 0 30px rgba(230, 184, 134, 0.3);
+}
+
+.notification.warning.show {
+    animation: slideInAndShake 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes slideInAndShake {
+    0% {
+        transform: translateX(120%) scale(0.8);
+        opacity: 0;
+    }
+    50% {
+        transform: translateX(0) scale(1);
+        opacity: 1;
+    }
+    60% {
+        transform: translateX(-8px) scale(1);
+    }
+    70% {
+        transform: translateX(6px) scale(1);
+    }
+    80% {
+        transform: translateX(-4px) scale(1);
+    }
+    90% {
+        transform: translateX(2px) scale(1);
+    }
+    100% {
+        transform: translateX(0) scale(1);
+        opacity: 1;
+    }
+}
+
+.notification.error {
+    border-color: #dc2626;
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.3),
+        0 0 0 1px #dc2626,
+        0 0 30px rgba(220, 38, 38, 0.3);
+}
+
+.notification.success {
+    border-color: #16a34a;
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.3),
+        0 0 0 1px #16a34a,
+        0 0 30px rgba(22, 163, 74, 0.3);
+}
