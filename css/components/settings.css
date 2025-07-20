@@ -1,0 +1,330 @@
+/* Settings Container */
+.settings-container {
+    position: relative;
+    display: inline-block;
+}
+
+.settings-button {
+    background: linear-gradient(135deg, var(--bg-elevated) 0%, var(--bg-tertiary) 100%);
+    border: 2px solid var(--border-primary);
+    color: var(--text-primary);
+    font-weight: 600;
+    padding: 0.875rem;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    position: relative;
+    width: 48px;
+    height: 48px;
+}
+
+.settings-button:hover {
+    border-color: var(--border-accent);
+    background: linear-gradient(135deg, var(--bg-tertiary) 0%, var(--bg-elevated) 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.settings-icon {
+    width: 20px;
+    height: 20px;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.settings-button:hover .settings-icon {
+    transform: rotate(45deg);
+}
+
+.settings-button.active .settings-icon {
+    transform: rotate(90deg);
+}
+
+/* Settings Dropdown */
+.settings-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 0.5rem;
+    background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-elevated) 100%);
+    border: 2px solid var(--border-primary);
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.4),
+        0 0 0 1px var(--border-accent),
+        0 0 30px var(--shadow-warm);
+    z-index: 100;
+    min-width: 320px;
+    max-width: 400px;
+    backdrop-filter: blur(20px);
+    opacity: 0;
+    transform: translateY(-20px) scale(0.9);
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.settings-dropdown::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, transparent 0%, rgba(212, 165, 116, 0.03) 50%, transparent 100%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.settings-dropdown:not(.hidden) {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: all;
+}
+
+.settings-dropdown:not(.hidden)::before {
+    opacity: 1;
+}
+
+.settings-section {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.settings-dropdown:not(.hidden) .settings-section {
+    opacity: 1;
+    transform: translateY(0);
+    transition-delay: 0.1s;
+}
+
+.settings-title {
+    color: var(--accent-gold);
+    font-size: 1.125rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    position: relative;
+}
+
+.settings-title::after {
+    content: '';
+    position: absolute;
+    bottom: -0.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 40px;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent-bronze), var(--accent-gold));
+    border-radius: 1px;
+}
+
+.setting-item {
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    transform: translateX(-10px);
+    animation: none;
+}
+
+.settings-dropdown:not(.hidden) .setting-item {
+    animation: settingsSlideIn 0.4s ease forwards;
+}
+
+.setting-item:nth-child(2) { animation-delay: 0.2s; }
+.setting-item:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes settingsSlideIn {
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+.setting-label {
+    display: block;
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 0.875rem;
+    margin-bottom: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.setting-label.experimental-warning {
+    color: #ff6b6b;
+    background: rgba(255, 107, 107, 0.1);
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 107, 107, 0.3);
+    text-transform: uppercase;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+/* Adjust existing styles when inside settings */
+.settings-dropdown .meta-mode-toggle {
+    margin: 0;
+}
+
+.settings-dropdown .toggle-container {
+    margin-bottom: 0.5rem;
+}
+
+.settings-dropdown .toggle-description {
+    font-size: 0.75rem;
+    line-height: 1.4;
+    margin: 0;
+}
+
+/* Experimental Features */
+.experimental-toggle {
+    margin: 0;
+}
+
+.experimental-content {
+    margin-top: 1.5rem;
+    opacity: 1;
+    max-height: none;
+    transform: translateY(0);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: auto;
+    user-select: auto;
+}
+
+.experimental-section {
+    background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+    border: 2px solid var(--border-primary);
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.experimental-section-label {
+    display: block;
+    color: var(--accent-gold);
+    font-weight: 700;
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.experimental-section-description {
+    color: var(--text-secondary);
+    font-size: 0.75rem;
+    margin-bottom: 1rem;
+    line-height: 1.4;
+}
+
+.afflatus-restriction-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+}
+
+.afflatus-restriction-option {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem;
+    background: var(--bg-elevated);
+    border: 2px solid var(--border-primary);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.afflatus-restriction-option:hover {
+    border-color: var(--border-accent);
+    background: linear-gradient(135deg, var(--bg-tertiary) 0%, var(--bg-elevated) 100%);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.afflatus-restriction-option input[type="checkbox"] {
+    display: none;
+}
+
+.afflatus-restriction-checkmark {
+    width: 16px;
+    height: 16px;
+    border: 2px solid var(--border-primary);
+    border-radius: 4px;
+    margin-right: 0.5rem;
+    position: relative;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.afflatus-restriction-checkmark::after {
+    content: '';
+    position: absolute;
+    top: 1px;
+    left: 4px;
+    width: 4px;
+    height: 8px;
+    border: solid var(--bg-primary);
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg) scale(0);
+    transition: transform 0.2s ease;
+}
+
+.afflatus-restriction-option input[type="checkbox"]:checked + .afflatus-restriction-checkmark {
+    background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-bronze) 100%);
+    border-color: var(--accent-gold);
+    box-shadow: 0 0 15px rgba(212, 165, 116, 0.3);
+}
+
+.afflatus-restriction-option input[type="checkbox"]:checked + .afflatus-restriction-checkmark::after {
+    transform: rotate(45deg) scale(1);
+}
+
+.afflatus-restriction-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 0.5rem;
+    object-fit: contain;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+    flex-shrink: 0;
+}
+
+.afflatus-restriction-label {
+    color: var(--text-primary);
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.afflatus-restriction-option:hover .afflatus-restriction-label {
+    color: var(--accent-gold);
+}
+
+.afflatus-restriction-option input[type="checkbox"]:checked ~ .afflatus-restriction-label {
+    color: var(--accent-gold);
+}
+
+/* Experimental features animations */
+.experimental-content .experimental-section {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: none;
+}
+
+.experimental-content:not(.hidden) .experimental-section {
+    animation: experimentalSlideIn 0.5s ease forwards;
+    animation-delay: 0.2s;
+}
+
+@keyframes experimentalSlideIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

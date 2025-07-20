@@ -1,0 +1,64 @@
+/* CSS Custom Properties and Global Variables */
+:root {
+    /*Nouveau Color Palette */
+    --bg-primary: #0F0E0C;
+    --bg-secondary: #1A1612;
+    --bg-tertiary: #2A2218;
+    --bg-card: #1F1B15;
+    --bg-elevated: #252017;
+    
+    --accent-gold: #D4A574;
+    --accent-amber: #E6B886;
+    --accent-bronze: #B8956C;
+    --accent-copper: #A67C5A;
+    
+    --text-primary: #F5F2E8;
+    --text-secondary: #E0D5C3;
+    --text-muted: #B8A896;
+    --text-accent: var(--accent-gold);
+    
+    --border-primary: #3A3226;
+    --border-secondary: #2A261C;
+    --border-accent: var(--accent-bronze);
+    --border-glow: var(--accent-amber);
+    
+    --shadow-warm: rgba(212, 165, 116, 0.15);
+    --shadow-gold: rgba(230, 184, 134, 0.25);
+}
+
+/* Global Reset and Base Styles */
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-image: url('../assets/bg.png');
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+    color: var(--text-primary);
+    margin: 0;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* Art Nouveau pattern */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: 
+        radial-gradient(circle at 20% 80%, rgba(212, 165, 116, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(230, 184, 134, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(184, 149, 108, 0.02) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: -1;
+}

@@ -1,0 +1,182 @@
+/* Responsive Styles */
+
+/* Search and Filter Responsive */
+@media (max-width: 768px) {
+    .search-filter-section {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .filter-container {
+        flex-direction: row;
+        justify-content: center;
+        flex-wrap: wrap;
+    }
+    
+    .filter-dropdown {
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        right: auto;
+        transform: translate(-50%, -50%) scale(0.9);
+        max-width: 90vw;
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+    
+    .filter-dropdown:not(.hidden) {
+        transform: translate(-50%, -50%) scale(1);
+    }
+    
+    .search-container {
+        max-width: none;
+    }
+}
+
+/* Character Grid Responsive */
+@media (min-width: 640px) {
+    #character-selection {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 1.25rem;
+    }
+    
+    .team-cards-grid,
+    .substitute-cards-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 1.25rem;
+    }
+}
+
+@media (min-width: 1024px) {
+    #character-selection {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 1.5rem;
+    }
+    
+    .team-cards-grid,
+    .substitute-cards-grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+        gap: 1.5rem;
+    }
+}
+
+/* Controls Responsive */
+@media (min-width: 640px) {
+    .controls {
+        flex-direction: row;
+        justify-content: center;
+    }
+}
+
+/* Notification Responsive */
+@media (max-width: 640px) {
+    .notification {
+        top: 1rem;
+        right: 1rem;
+        left: 1rem;
+        min-width: auto;
+        max-width: none;
+    }
+    
+    .notification-content {
+        padding: 0.875rem 1rem;
+    }
+}
+
+/* General Layout Responsive */
+@media (max-width: 640px) {
+    .container {
+        padding: 1rem 0.75rem;
+    }
+    
+    .character-card {
+        padding: 0.5rem;
+    }
+    
+    .team-container {
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+    }
+}
+
+/* Sidebar Mobile Responsive */
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        left: -100%;
+    }
+    
+    .sidebar.open {
+        left: 0;
+    }
+    
+    .main-content.sidebar-open {
+        margin-left: 0;
+    }
+    
+    .sidebar-toggle {
+        top: 1rem;
+        left: 1rem;
+        padding: 0.5rem;
+    }
+}
+
+/* Floating Buttons Mobile */
+@media (max-width: 768px) {
+    .floating-button {
+        width: 48px;
+        height: 48px;
+        font-size: 18px;
+    }
+    
+    .scroll-to-top {
+        bottom: 20px;
+        right: 20px;
+    }
+    
+    .floating-clear-selection {
+        bottom: 20px;
+        left: 20px;
+    }
+}
+
+/* Library Responsive */
+@media (min-width: 640px) {
+    #library-grid {
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    }
+}
+
+@media (min-width: 1024px) {
+    #library-grid {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    }
+}
+
+/* Experimental Features Responsive */
+@media (max-width: 480px) {
+    .afflatus-restriction-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.5rem;
+    }
+    
+    .afflatus-restriction-option {
+        padding: 0.5rem;
+    }
+    
+    .afflatus-restriction-icon {
+        width: 16px;
+        height: 16px;
+    }
+    
+    .afflatus-restriction-label {
+        font-size: 0.6875rem;
+    }
+}
+
+/* Roadmap Responsive */
+@media (max-width: 700px) {
+    .roadmap-container {
+        padding: 1.2rem 0.5rem 1.2rem 0.5rem;
+    }
+}
