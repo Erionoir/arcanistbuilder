@@ -21,9 +21,8 @@ export const budgetDescriptionMap = {
     '5': 'Maximum Reasoning: The model uses its full capacity for analysis.'
 };
 
-// API Configuration
 export const API_CONFIG = {
-    GEMINI_API_KEY: "AIzaSyBdflNZ8DmJrc1HadPYoxbFFyerdg6rrJE",
+    GEMINI_API_KEY: "AIzaSyAdFrE13TQvqUtdF6lOoHh_HZOVzqYs8Lo",
     MODELS: {
         STANDARD: 'gemini-2.0-flash',
         BIG_BRAIN: 'gemini-2.5-flash'
