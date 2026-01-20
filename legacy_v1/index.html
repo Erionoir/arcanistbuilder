@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    <title>ArcanistBuilder</title>
+    <link rel="icon" type="image/png" href="assets/logo.png">
+    <link rel="shortcut icon" type="image/png" href="assets/logo.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body class="text-white">
+    <!-- Sidebar Navigation -->
+    <nav id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <img src="assets/logo.png" alt="Logo" class="sidebar-logo">
+            <h3 class="sidebar-title">ArcanistBuilder</h3>
+        </div>
+        
+        <div class="sidebar-menu">
+            <a href="#" id="team-builder-link" class="sidebar-item active">
+                <svg class="sidebar-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>                <span class="sidebar-text">Team Builder</span>
+            </a>
+            
+            <a href="#" id="tier-list-link" class="sidebar-item">
+                <svg class="sidebar-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+                <span class="sidebar-text">Tier List</span>
+            </a>
+            
+            <a href="#" id="library-link" class="sidebar-item library-item">
+                <svg class="sidebar-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                </svg>
+                <span class="sidebar-text">Library</span>
+            </a>
+            
+            <a href="#" id="roadmap-link" class="sidebar-item">
+                <svg class="sidebar-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <span class="sidebar-text">Roadmap</span>
+            </a>
+        </div>
+        
+        <div class="sidebar-footer">
+            <span class="version-text">Beta v1.7</span>
+        </div>
+    </nav>
+
+    <!-- Sidebar Toggle Button -->
+    <button id="sidebar-toggle" class="sidebar-toggle">
+        <svg class="hamburger-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+    </button>
+
+    <!-- Main Content -->
+    <div id="main-content" class="main-content">
+        <div class="container mx-auto px-4 py-8">
+            <header class="text-center mb-8">
+                <h1 class="text-4xl md:text-5xl font-bold mb-2">Reverse: 1999</h1>
+                <h2 class="text-2xl md:text-3xl font-semibent text-blue-400">Team Builder</h2>
+                <p class="text-gray-400 mt-4 max-w-2xl mx-auto">Select 1 to 2 Arcanists, then click "Generate"</p>
+            </header><main>            <div class="controls">
+                <div class="generation-controls">
+                    
+                </div>
+            </div>
+
+            <!-- Search and Filter Section -->
+            <div class="search-filter-section">
+                <div class="search-container">
+                    <div class="search-input-wrapper">
+                        <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                        </svg>
+                        <input type="text" id="character-search" class="search-input" placeholder="Search characters..." />
+                        <button class="search-clear hidden" id="search-clear">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1-1H9a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                        </button>
+                    </div>                </div>
+
+                <div class="filter-container">
+                    <div class="settings-container">
+                        <button id="settings-toggle" class="settings-button">
+                            <svg class="settings-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                        </button>
+                        
+                        <div class="settings-dropdown hidden" id="settings-dropdown">
+                            <div class="settings-section">
+                                <h4 class="settings-title">Team Generation</h4>
+                                  <!-- Team Count Buttons -->
+                                <div class="setting-item">
+                                    <label class="setting-label">Number of Teams</label>
+                                    <div class="team-count-buttons" id="team-count-buttons">
+                                        <button class="team-count-btn active" data-value="1">1</button>
+                                        <button class="team-count-btn" data-value="2">2</button>
+                                        <button class="team-count-btn" data-value="3">3</button>
+                                        <button class="team-count-btn" data-value="4">4</button>
+                                    </div>
+                                </div>
+                                
+                                <!-- Enhanced Generation Info -->
+                                <div class="setting-item">
+                                    <label class="setting-label">Enhanced Generation</label>
+                                    <div class="meta-mode-toggle">
+                                        <div class="enhanced-generation-info">
+                                            <p class="toggle-description">✨ <strong>All advanced features are now enabled by default:</strong></p>
+                                            <ul style="margin-left: 1rem; margin-top: 0.5rem; color: var(--text-secondary);">
+                                                <li>🔥 <strong>Meta Analysis:</strong> Uses verified CN meta data from Prydwen.gg</li>
+                                                <li>🧠 <strong>Deep Analysis:</strong> Enhanced reasoning and detailed explanations</li>
+                                                <li>💡 <strong>Insights:</strong> Character synergy analysis and strategic recommendations</li>
+                                                <li>🤝 <strong>Synergy Cores:</strong> Inspirational team building foundations</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Experimental Features -->
+                                <div class="setting-item">
+                                    <label class="setting-label experimental-warning">⚠️ Experimental Features</label>
+                                    <div class="experimental-content" id="experimental-content">
+                                        <div class="experimental-section">
+                                            <label class="experimental-section-label">Afflatus Restrictions</label>                                            <p class="experimental-section-description">Generate teams using only specific afflatus types (Max 3 selections)</p>
+                                            <div class="afflatus-restriction-grid" id="afflatus-restrictions">
+                                                <!-- Afflatus options will be dynamically generated -->
+                                            </div>
+                                        </div>
+                                        <div class="experimental-section" id="reasoning-section">
+                                            <label class="experimental-section-label">Reasoning</label>
+                                            <p class="experimental-section-description">Adjusts the reasoning level for Big Brain Mode.</p>
+                                            <div class="slider-container">
+                                                <input type="range" min="-1" max="5" value="-1" class="slider" id="reasoning-slider">
+                                                <div class="slider-value" id="slider-value-label">Dynamic</div>
+                                                <div class="slider-labels">
+                                                    <span>-1</span>
+                                                    <span>0</span>
+                                                    <span>1</span>
+                                                    <span>2</span>
+                                                    <span>3</span>
+                                                    <span>4</span>
+                                                    <span>5</span>
+                                                </div>
+                                            </div>
+                                            <p id="slider-description" class="toggle-description">Dynamic Reasoning: The model adapts its reasoning level as needed.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="filter-toggle" id="filter-toggle">
+                        <svg class="filter-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.414A1 1 0 013 6.707V4z" />
+                        </svg>
+                        <span>Filters</span>
+                        <span class="filter-count hidden" id="filter-count">0</span>
+                    </button>
+
+                    <div class="filter-dropdown hidden" id="filter-dropdown">
+                        <div class="filter-section">
+                            <h4 class="filter-title">Afflatus</h4>
+                            <div class="filter-options" id="afflatus-filters">
+                                <label class="filter-option">
+                                    <input type="checkbox" value="Beast" />
+                                    <span class="filter-checkmark"></span>
+                                    <img src="assets/afflatus/Beast.png" alt="Beast" class="afflatus-icon" />
+                                    <span>Beast</span>
+                                </label>
+                                <label class="filter-option">
+                                    <input type="checkbox" value="Intellect" />
+                                    <span class="filter-checkmark"></span>
+                                    <img src="assets/afflatus/Intellect.png" alt="Intellect" class="afflatus-icon" />
+                                    <span>Intellect</span>
+                                </label>
+                                <label class="filter-option">
+                                    <input type="checkbox" value="Mineral" />
+                                    <span class="filter-checkmark"></span>
+                                    <img src="assets/afflatus/Mineral.png" alt="Mineral" class="afflatus-icon" />
+                                    <span>Mineral</span>
+                                </label>
+                                <label class="filter-option">
+                                    <input type="checkbox" value="Plant" />
+                                    <span class="filter-checkmark"></span>
+                                    <img src="assets/afflatus/Plant.png" alt="Plant" class="afflatus-icon" />
+                                    <span>Plant</span>
+                                </label>
+                                <label class="filter-option">
+                                    <input type="checkbox" value="Spirit" />
+                                    <span class="filter-checkmark"></span>
+                                    <img src="assets/afflatus/Spirit.png" alt="Spirit" class="afflatus-icon" />
+                                    <span>Spirit</span>
+                                </label>
+                                <label class="filter-option">
+                                    <input type="checkbox" value="Star" />
+                                    <span class="filter-checkmark"></span>
+                                    <img src="assets/afflatus/Star.png" alt="Star" class="afflatus-icon" />
+                                    <span>Star</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="filter-section">
+                            <h4 class="filter-title">Damage Type</h4>
+                            <div class="filter-options" id="damage-type-filters">
+                                <label class="filter-option">
+                                    <input type="checkbox" value="Mental" />
+                                    <span class="filter-checkmark"></span>
+                                    <span>Mental</span>
+                                </label>
+                                <label class="filter-option">
+                                    <input type="checkbox" value="Reality" />
+                                    <span class="filter-checkmark"></span>
+                                    <span>Reality</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="filter-section">
+                            <h4 class="filter-title">Rank</h4>
+                            <div class="filter-options" id="rank-filters">
+                                <label class="filter-option">
+                                    <input type="checkbox" value="S+" />
+                                    <span class="filter-checkmark"></span>
+                                    <span>S+</span>
+                                </label>
+                                <label class="filter-option">
+                                    <input type="checkbox" value="S" />
+                                    <span class="filter-checkmark"></span>
+                                    <span>S</span>
+                                </label>
+                                <label class="filter-option">
+                                    <input type="checkbox" value="A+" />
+                                    <span class="filter-checkmark"></span>
+                                    <span>A+</span>
+                                </label>
+                                <label class="filter-option">
+                                    <input type="checkbox" value="A" />
+                                    <span class="filter-checkmark"></span>
+                                    <span>A</span>
+                                </label>
+                                <label class="filter-option">
+                                    <input type="checkbox" value="B" />
+                                    <span class="filter-checkmark"></span>
+                                    <span>B</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="filter-section">
+                            <h4 class="filter-title">Role</h4>
+                            <div class="filter-options" id="role-filters">
+                                <label class="filter-option">
+                                    <input type="checkbox" value="DPS" />
+                                    <span class="filter-checkmark"></span>
+                                    <span>DPS</span>
+                                </label>
+                                <label class="filter-option">
+                                    <input type="checkbox" value="Sub DPS" />
+                                    <span class="filter-checkmark"></span>
+                                    <span>Sub DPS</span>
+                                </label>
+                                <label class="filter-option">
+                                    <input type="checkbox" value="Support" />
+                                    <span class="filter-checkmark"></span>
+                                    <span>Support</span>
+                                </label>
+                                <label class="filter-option">
+                                    <input type="checkbox" value="Survival" />
+                                    <span class="filter-checkmark"></span>
+                                    <span>Survival</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="filter-actions">
+                            <button class="filter-clear" id="filter-clear">Clear All</button>
+                            <button class="filter-apply" id="filter-apply">Apply Filters</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="character-selection">
+                <!-- Character cards will be dynamically inserted here -->
+            </div>
+            
+            <div id="loading-spinner" class="hidden"></div>
+
+            <div id="results-container" class="hidden">
+                 <div id="team-results-wrapper">
+                    <!-- AI generated teams will be displayed here -->
+                </div>
+                 <div id="action-buttons" class="action-buttons">
+                    <!-- Regenerate button will be here -->
+                 </div>            </div>        </main>
+        </div>
+    </div>
+    
+    <div id="tier-list-view" class="hidden">
+        <!-- Tier list content will be generated here -->
+    </div>
+    <div id="library-view" class="hidden">
+        <!-- Library content will be generated here -->
+    </div>
+    <div id="character-profile-view" class="hidden">
+        <!-- Character profile content will be generated here -->
+    </div>
+    <div id="roadmap-view" class="hidden">
+        <div class="roadmap-container">
+            <h2 class="roadmap-title">Site Roadmap</h2>
+            <div class="roadmap-list">
+                <div class="roadmap-item">
+                    <div class="roadmap-label">Team Builder Core</div>
+                    <div class="roadmap-progress-bar" data-progress="100">
+                        <div class="roadmap-progress-fill"></div>
+                    </div>
+                    <div class="roadmap-progress-text">Complete</div>
+                </div>
+                <div class="roadmap-item">
+                    <div class="roadmap-label">Character Library</div>
+                    <div class="roadmap-progress-bar" data-progress="85">
+                        <div class="roadmap-progress-fill"></div>
+                    </div>
+                    <div class="roadmap-progress-text">85%</div>
+                </div>
+                <div class="roadmap-item">
+                    <div class="roadmap-label">Tier List</div>
+                    <div class="roadmap-progress-bar" data-progress="60">
+                        <div class="roadmap-progress-fill"></div>
+                    </div>
+                    <div class="roadmap-progress-text">60%</div>
+                </div>
+                <div class="roadmap-item">
+                    <div class="roadmap-label">User Accounts</div>
+                    <div class="roadmap-progress-bar" data-progress="20">
+                        <div class="roadmap-progress-fill"></div>
+                    </div>
+                    <div class="roadmap-progress-text">Planned</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Buttons -->
+    <button class="floating-button scroll-to-top" id="scrollToTop" title="Scroll to top">
+        ↑
+    </button>
+    
+    <div id="selected-arcanists-container" class="floating-selections-container hidden">
+        <p class="selected-arcanists-title">Selected Arcanists</p>
+        <div id="selected-arcanists-cards" class="selected-cards-grid">
+        </div>
+        <div class="floating-selections-actions">
+            <button id="clearSelection" class="clear-all-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-2"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
+            </button>
+            <button id="generate-team-btn" class="generate-button">
+                Generate Teams
+            </button>
+        </div>
+    </div>
+
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>
